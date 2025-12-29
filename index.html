@@ -287,7 +287,7 @@
             margin: 0 10px 0 0;
             filter: drop-shadow(0);
         }
-        #notif_success, #notif_decline, #notif_question {
+        #notif_success, #notif_decline, /*#notif_question*/ {
             
             box-shadow: 0 0 10px #000;
         }
@@ -296,10 +296,10 @@
         }
         #notif_decline {
             background-image: linear-gradient(to right, #57001C, #E80023);
-        }
+        }/*
         #notif_question {
             background-image: linear-gradient(to right, #AD9100, #E8D500);
-        }
+        }*/
     </style>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script> <!-- Скрипт для работы с рекламой adsgram -->
 </head> 
@@ -321,9 +321,9 @@
             <img src="notif_decline.png"/>
             <p>Вы <b>не досмотрели</b> рекламу</p> 
         </div>
-        <div id="notif_question" class="notifiaction">
+        <!--<div id="notif_question" class="notifiaction">
             <img src="notif_question.png" />
-            <p><b>Ошибка</b> при просмотре рекламы</p>
+            <p><b>Ошибка</b> при просмотре рекламы</p>-->
         </div>
         <div id="top-ui">
             <p><b>Звезды</b></p>
@@ -386,7 +386,7 @@
                 }
             })
             .catch((err) => {
-                showNotification('notif_question');
+                /*showNotification('notif_question');*/
                 console.error('Ad error:', err);
             })
             .finally(() => {
