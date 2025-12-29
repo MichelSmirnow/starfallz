@@ -174,6 +174,10 @@
             background-position: left center;
             transition: background-position 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease, margin 0.25s ease;
         }
+        /*
+        #button_ad:disabled {
+            background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #eeeeee 100%);
+        }*/
 
         #top-ui { /* Верхний пользовательский интерфейс (балланс) */
             position: fixed;
@@ -218,7 +222,7 @@
             z-index: 100;
             max-width: 90%;
             max-height: 50px;
-            padding: 5px 40px;
+            padding: 5px 90px;
 
             display: flex;
             align-items: center;
@@ -245,9 +249,62 @@
             transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
             opacity: 0.9;
         }
-    </style> 
+
+        .notification {
+            visibility: hidden;
+            opacity: 0;
+
+            position: fixed;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 30px;
+            max-width: 80%;
+            min-width: 50%;
+            padding: 5px 20px 5px 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            border-radius: 30px;
+
+            color: #FAFAFA;
+            font-family: 'StarfallVAGRounded-Regular';
+            letter-spacing: 1px;
+            text-shadow: 0px 0px 7px #000000;
+
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .notification.show {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .notification img {
+            width: 40px;
+            height: 40px;
+            margin: 0 10px 0 0;
+            filter: drop-shadow(0);
+        }
+        #notif_success, #notif_decline, #notif_question {
+            
+            box-shadow: 0 0 10px #000;
+        }
+        #notif_success {
+            background-image: linear-gradient(to right, #0D5700, #43E802);
+        }
+        #notif_decline {
+            background-image: linear-gradient(to right, #57001C, #E80023);
+        }
+        #notif_question {
+            background-image: linear-gradient(to right, #AD9100, #E8D500);
+        }
+    </style>
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script> <!-- Скрипт для работы с рекламой adsgram -->
 </head> 
 <body>
+    <div id="int-20171"></div> <!-- Контейнер для рекламы -->
     <div id="main"> <!-- Основное окно приложения -->
         <div id="bg">
             <div id="bg-city"><img src="city.png" alt=""/></div>
@@ -256,16 +313,30 @@
                 <img src="scenery.png" alt=""/>
             </div>
         </div>
+        <div id="notif_success" class="notification">
+            <img src="notif_success.png"/>
+            <p>Реклама просмотрена <b>успешно</b>!</p>
+        </div>
+        <div id="notif_decline" class="notification">
+            <img src="notif_decline.png"/>
+            <p>Вы <b>не досмотрели</b> рекламу</p> 
+        </div>
+        <div id="notif_question" class="notifiaction">
+            <img src="notif_question.png" />
+            <p><b>Ошибка</b> при просмотре рекламы</p>
+        </div>
         <div id="top-ui">
             <p><b>Звезды</b></p>
-            <img src="ui/ui-star.png"/>
+            <img src="ui-star.png"/>
             <p><b>Жетоны</b></p>
-            <img src="ui/ui-token.png"/>
+            <img src="ui-token.png"/>
         </div>
         <div id="bottom-ui">
+            <img id="bottom-ui-set" src="bottom-ui-set.png" />
             <img id="bottom-ui-income" src="bottom-ui-income.png"/>
             <img id="bottom-ui-star" src="bottom-ui-star.png" />
-            <img id="bottom-ui-set" src="bottom-ui-set.png" />
+            <img id="botton-ui-home" src="botton-ui-home.png"/>
+            <img id="botton-ui-user" src="botton-ui-user.png"/>
         </div>
     </div>
     <div id="toosmall"> <!-- Если окно приложения слишком маленькое -->
@@ -288,6 +359,44 @@
             tg.ready();
         } else {
             console.log('Запущено вне Telegram Web App'); 
+        }
+
+        // Функции отображения уведомлений
+        function showNotification(notif_id) {
+            const notification = document.getElementById(notif_id);
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2500);
+        }
+
+        // Рекламная интеграция
+        const AdController = window.Adsgram.init({ blockId: "int-20171" });
+        const advertise_button = document.getElementById('button_ad');
+        advertise_button.addEventListener('click', () => {
+            advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ
+            AdController.show()
+            .then((result) => {
+                if (result.done && !result.error) {
+                    showNotification('notif_success');
+                    giveRewardToUser(); // Пользователь досмотрел (или закрыл в межстраничном формате) — выдаём вознаграждение
+                } else {
+                    showNotification('notif_decline');
+                    console.log('Ad not completed:', result.description); // Пользователь не досмотрел — можно не давать награду
+                }
+            })
+            .catch((err) => {
+                showNotification('notif_question');
+                console.error('Ad error:', err);
+            })
+            .finally(() => {
+                advertise_button.disabled = false;
+            });
+        });
+        function giveRewardToUser() {и
+            alert('Спасибо! Вы получили вознаграждение.');
+            // localStorage.points = (Number(localStorage.points || 0) + 10).toString();
+            // или выполнить fetch('/reward', { method: 'POST', body: ... })
         }
 
         // Функция рассчета параллакса (отклик на прокрутку)
@@ -315,6 +424,7 @@
             const set_image = document.getElementById('bottom-ui-set');
 
             income_image.addEventListener('click', function() {
+                showNotification('notif_success');
                 income_targetSection.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
@@ -335,5 +445,4 @@
         });
     </script> 
 </body> 
-
 </html>
