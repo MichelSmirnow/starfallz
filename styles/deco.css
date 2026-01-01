@@ -1,0 +1,55 @@
+/* ✓ Статичная подложка окна */
+body {
+    z-index: 0;
+    display: block;
+    background-color: #171717;
+    margin: 0;
+    padding: 0;
+}
+
+/* ✓ Задний фон приложения */
+#background {
+    z-index: 1;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    background-image: url('../images/background.png');
+    background-repeat: no-repeat;
+    background-position: top;
+    background-attachment: fixed;
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+#bg-container {
+    z-index: 2;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* ✓ Оцентрованные элементов параллакса */
+#bg-container>div { 
+    width: 100%;
+    position: absolute; 
+    left: 50%; top: 0; 
+    transform: translateX(-50%);
+    align-items: center;
+    justify-content: center; 
+    padding: 0;
+    margin: 0;
+}
+#bg-container>div>img { width: 100%; }
+
+/* ✓ Элементы параллаксов фона */
+#parallax-city { z-index: 3; }
+#parallax-city-bottom { z-index: 4; }
+#parallax-mountain { z-index: 5; }
+
+#bg-scenery { z-index: 10; }
+#advertise-container { z-index: 100; }

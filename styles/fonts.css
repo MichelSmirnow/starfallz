@@ -1,0 +1,46 @@
+@font-face {
+    font-family: 'FindSansPro-Regular';
+    src: url('fonts/FindSansPro-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'FindSansPro-Light';
+    src: url('fonts/FindSansPro-Light.ttf') format('truetype');
+    font-weight: lighter;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'FindSansPro-Medium';
+    src: url('fonts/FindSansPro-Medium.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'FindSansPro-Bold';
+    src: url('fonts/FindSansPro-Bold.ttf') format('truetype');
+    font-weight: bolder;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'StarfallVAGRounded-Regular';
+    src: url('fonts/StarfallVAGRounded-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'StarfallVAGRounded-Bold';
+    src: url('fonts/StarfallVAGRounded-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+h1, h2, h3 {
+    color: #D7D7D7;
+    font-family: 'FindSansPro-Medium';
+}
+p, li {
+    color: #CACACA;
+    font-family: 'StarfallVAGRounded-Regular';
+    font-size: small;
+}

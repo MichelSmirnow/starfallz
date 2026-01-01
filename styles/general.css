@@ -1,0 +1,9 @@
+/* Класс мягкого отображения скрытых элементов */
+.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: opacity 0.5s ease, visible 0.5s ease;
+}
+.visible_block {
+    display: block !important;
+}

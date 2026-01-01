@@ -1,0 +1,307 @@
+/* ========================================== Интерфейс рекламы ========================================== */
+
+/* ✓ Контейнер блоков рекламы */
+#advertise-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50% !important;
+}
+
+/* ✓ Кнопка просмотра рекламы */
+#button-ad {
+    position: static;
+    z-index: 50;
+    width: 70%;
+    padding: 10px 20px;
+    margin: 0;
+    
+    color: #2e0606;
+    text-align: center;
+    font-family: 'FindSansPro-Regular';
+    font-size: large;
+
+    border: 0;
+    border-radius: 25px;
+    background-size: 150% auto;
+    background-position: left center;
+    background-image: linear-gradient(to right, #eb9b23 0%, #e5c319 50%, #eea928 100%);
+    box-shadow: 0 5px 15px 0 rgba(246, 152, 11, 0.7);
+    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
+}
+#button-ad:hover {
+    background-position: right center;
+    box-shadow: 0 5px 40px 0 rgba(246, 136, 11, 0.7);
+    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
+    padding: 12px 22px;
+    cursor: pointer;
+}
+#button-ad:active {
+    background-position: left center;
+    padding: 6px 16px;
+    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
+}
+#button_ad:disabled {
+    background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #eeeeee 100%) !important;
+}
+
+/* Режим кнопки при заполненной шкале генератора звездопада */
+#button-ad.button-starfall {
+    color: #CACACA;
+    background-image: linear-gradient(to right, #803bc0 0%, #de19e5 50%, #1a25c4 100%);
+    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease;
+}
+
+/* ======================================== Интерфейс генератора ========================================= */
+
+/* ✓ Кнопка на генераторе */
+#button-generator {
+    z-index: 20;
+    position: absolute;
+    top: 5%; left: 22%;
+    width: 22%;
+    height: 3%;
+    cursor: pointer;
+    opacity: 0.1;
+    border-radius: 20%;
+}
+
+/* ✓ Панель информации о генераторе*/
+#generator-info {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    
+    background-color: rgba(17, 17, 17, 0.5);
+    border-radius: 30px;
+    padding: 1px 20px;
+    margin: 20px 0;
+    width: 100%;
+
+    text-align: center;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: opacity 0.5s ease, visible 0.5s ease;
+}
+#generator-info-container {
+    position: static;
+    display: flex;
+    justify-content: center;
+}
+.generator-info-side {
+    position: static;
+    width: 50%;
+    margin: 0 10px;
+}
+#advertise-fuel, #advertise-charge {
+    font-size: x-large;
+    margin: 0;
+    margin-top: 5px;
+}
+#generator-info-container h1, h2, h3 {
+    font-size: small;
+}
+
+/* Шкала генератора */
+.generator-bar {
+    background-color:rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 40%;
+    height: 25vh;
+    margin: 10px auto;
+    border-radius: 100px;
+    overflow: hidden;
+
+    position: relative;
+    display: inline-block;
+    vertical-align: bottom;
+}
+.generator-bar .fill {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0%;
+    transition: height 0.5s ease;
+}
+#generator-bar-charge .fill {
+    background: linear-gradient(0deg, #b1277c 0%, #6948c4 50%, #59a1ff 100%);
+}
+#generator-bar-fuel .fill {
+    background: linear-gradient(0deg, #b12727 0%, #e0904e 50%, #cbce34 100%);
+}
+.generator-bar .label {
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    transform: translateX(-50%);
+    color: #CACACA;
+    font-family: 'StarfallVAGRounded-Regular';
+    font-size: medium;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* ✓ Кнопка закрытия окна генератора */
+#button-close-generator {
+    position: static;
+    padding: 7px 30px;
+    margin: 10px;
+    border-radius: 10px;
+    border: 0;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 1);
+    color: #d1d1d1;
+    background-color: rgba(0, 0, 0, 0.23);
+    text-shadow: 0;
+    text-align: center;
+    font-family: 'FindSansPro-Regular';
+    font-size: large;
+    transition: padding 0.5s ease, text-shadow 0.5s ease;
+}
+#button-close-generator:hover {
+    padding: 10px 33px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition: padding 0.5s ease, text-shadow 0.5s ease;
+}
+#button-close-generator:active {
+    padding: 3px 20px;
+    cursor: pointer;
+    transition: padding 0.5s ease;
+}
+/* ======================================= Интерфейс верхней панели ====================================== */
+
+#top-ui { /* Верхний пользовательский интерфейс (балланс жетонов и звезд) */
+    position: fixed;
+    top: 47px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    max-width: 200px;
+    height: 29px;
+    padding: 0 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.23);
+    border-radius: 100px;
+    backdrop-filter: blur(10px);
+}
+#top-ui p { /* ✓ Шрифт текста балланса*/
+    color: #FFFFFF;
+    font-family: 'FindSansPro-Light';
+    font-size: small;
+    font-weight: bold;
+    padding: 0 5px;
+}
+#top-ui img { /* Мини-изображения балланса */
+    width: 16px;
+    height: 16px;
+    margin: 1px 0px;
+    transition: width 0.5s ease, height 0.5s ease;
+}
+#top-ui img:hover { /* Наведенные мини-изображения балланса */
+    width: 20px;
+    height: 20px;
+    margin: 1px 0px;
+    transition: width 0.25s ease, height 0.25s ease;
+}
+/* Нажатые мини-изображения балланса */
+
+/* ======================================= Интерфейс нижней панели ======================================= */
+
+#bottom-ui { /* Нижний пользовательский интерфейс (навигационное меню) */
+    position: fixed;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    max-width: 90%;
+    max-height: 50px;
+    padding: 5px 90px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.23);
+    border-radius: 100px;
+    backdrop-filter: blur(10px);
+}
+#bottom-ui img { /* Изображения навигационного меню */
+    width: 35px;
+    height: 35px;
+    margin: 1px 10%;
+    filter: drop-shadow(0);
+    transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease, box-shadow 0.5s ease;
+    opacity: 0.7;
+}
+#bottom-ui img:hover { /* Наведенные изображения навигационного меню */
+    width: 40px;
+    height: 40px;
+    margin: 1px 10%;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+    cursor: pointer;
+    transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
+    opacity: 0.9;
+}
+
+/* ========================================= Уведомления ========================================= */
+
+.notification { /* основной стиль уведомления*/
+    visibility: hidden;
+    opacity: 0;
+
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 30px;
+    max-width: 80%;
+    min-width: 50%;
+    padding: 5px 20px 5px 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    border-radius: 30px;
+
+    color: #FAFAFA;
+    font-family: 'StarfallVAGRounded-Regular';
+    letter-spacing: 1px;
+    text-shadow: 0px 0px 7px #000000;
+
+    transition: opacity 0.5s ease, visibility 0.5s ease, top 0.4s ease;
+}
+.notification.show { /* Включенное уведомление */
+    opacity: 1 !important;
+    visibility: visible !important;
+    top: 100px !important;
+    transition: opacity 0.5s ease, visibility 0.5s ease, top 0.4s ease;
+}
+.notification img { /* Изображение на уведомлении */
+    width: 40px;
+    height: 40px;
+    margin: 0 10px 0 0;
+    filter: drop-shadow(0);
+}
+#notif_success, #notif_decline, #notif_question { /* Общие свойства всех типов уведомлений */
+    box-shadow: 0 0 10px #000;
+}
+#notif_success { /* Уведомление об успешном просмотре рекламы */
+    background-image: linear-gradient(to right, #0D5700, #43E802);
+}
+#notif_decline { /* Уведомление о прерванном просмотре рекламы */
+    background-image: linear-gradient(to right, #57001C, #E80023);
+}
+#notif_question { /* Уведомление с ошибкой при загрузке рекламы */
+    background-image: linear-gradient(to right, #AD9100, #E8D500);
+}
+
+/* ============================================ Переключатель ============================================ */
