@@ -1,0 +1,116 @@
+<!doctype html> 
+<html lang="ru"> 
+<head> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>StarFallz - Бесплатные звезды Телеграм</title> 
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script> <!-- Скрипт для работы с рекламой adsgram -->
+    <link rel="stylesheet" href="styles/fonts.css"> <!-- Шрифты приложения -->
+    <link rel="stylesheet" href="styles/mode.css">  <!-- Режимы отображения окна приложения -->
+    <link rel="stylesheet" href="styles/general.css"> <!-- Общие классы отображения и анимации -->
+    <link rel="stylesheet" href="styles/deco.css">  <!-- Стиль окружения приложения -->
+    <link rel="stylesheet" href="styles/ui.css">    <!-- Стиль пользовательского интерфейса -->
+</head> 
+<body>
+    <div id="int-20171"></div> <!-- Контейнер для рекламы -->
+
+    <!-- Страница приложения, если оно запущено не в telegram -->
+    <div id="site"></div>
+
+    <!-- Основное окно приложения -->
+    <div id="main">
+        <div id="settings" class="panel_bottom"> <!-- Настройки (Левая боковая панель) -->
+            <h1>Настройки</h1>
+        </div>
+        <div id="profile" class="panel_bottom"> <!-- Профиль (правая боковая панель) -->
+            <h1>Профиль</h1>
+        </div>
+
+        <div id="background"></div>
+        <div id="bg-container"> <!-- Декорации и элементы поверх декораций -->
+            <div id="parallax-city"><img src="images/parrallax-city.png" alt="Город на заднем фоне (Просмотр с вершины)" /></div>
+            <!-- <div id="parrallax-city-bottom"><img src="images/parrallax-city-bottom.png" alt="Город на заднем фоне (присмотр из долины)" /></div>
+            <div id="parallax-mountain"><img src="images/parrallax-mountain.png" alt="Гора на заднем фоне долины" /></div> -->
+
+            <div id="bg-scenery">
+                <img src="images/scenery.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
+                <button id="button-generator"></button>
+                <button id="button-clocks"></button>
+            </div>
+            <div id="advertise-container">
+                <button id="button-ad">Смотреть рекламу</button>
+                <div id="generator-info">
+                    <h1>Генератор звездопада</h1>
+                    <p>Заполните шкалу заряда генератора до конца, чтобы запустить звездопад и получить жетоны!</p>
+                    <div id="generator-info-container">
+                        <div class="generator-info-side">
+                            <div id="generator-bar-fuel" class="generator-bar"></div>
+                            <p id="advertise-fuel">0/0</p>
+                            <h2>Топливо</h2>
+                            <p>Сколько рекламных видеороликов можно посмотреть</p>
+                            <p id="advertise-lasttime">0</p>
+                        </div>
+                        <div class="generator-info-side">
+                            <div id="generator-bar-charge" class="generator-bar"></div>
+                            <p id="advertise-charge">0/0</p>
+                            <h2>Заряд генератора</h2>
+                            <p>Оставшиеся просмотры рекламы до запуска звездопада</p>
+                        </div>
+                    </div>
+                    <button id="button-close-generator">Закрыть</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Уведомления -->
+        <div id="notif_success" class="notification">
+            <img src="images/notif_success.png" alt="Реклама просмотрена успешно"/>
+        </div>
+        <div id="notif_decline" class="notification">
+            <img src="images/notif_decline.png" alt="Пользователь прервал просмотр рекламы"/>
+        </div>
+        <div id="notif_question" class="notification">
+            <img src="images/notif_question.png" alt="Во время загрузки рекламы произошла ошибка" />
+        </div>
+
+        <!-- Пользовательские интерфейсы -->
+        <div id="top-ui" class="ui-background">
+            <p id="released-count">0</p>
+            <img src="images/ui-star.png"/>
+            <p id="tokens-count">0</p>
+            <img src="images/ui-token.png"/>
+        </div>
+        <div id="bottom-ui" class="ui-background">
+            <img id="bottom-ui-set" src="images/bottom-ui-set.png" />
+            <img id="bottom-ui-income" src="images/bottom-ui-income.png"/>
+            <img id="bottom-ui-star" src="images/bottom-ui-star.png" />
+            <img id="bottom-ui-home" src="images/botton-ui-home.png"/>
+            <img id="bottom-ui-user" src="images/botton-ui-user.png"/>
+        </div>
+    </div>
+
+    <!-- Если окно приложения слишком маленькое -->
+    <div id="toosmall">
+        <img src="images/NikaCalm.png" width="180px" height="180px"/>
+        <div>
+            <h1>У-упс!</h1>
+            <p>Похоже, что окно приложения <b>слишком маленькое</b>.</p>
+            <p>Чтобы решить эту проблему, попробуйте:</p>
+            <ul><li>Использовать другое устройство</li><li>Увеличить размер окна (для пользователей компьютеров или в многооконном режиме)</li></ul>
+        </div>
+    </div>
+
+    <!-- Окно загрузки контента страницы -->
+    <div id="load">
+
+    </div>
+
+    <script src="scripts/ui.js"></script>  <!-- Скрипт для работы пользовательского интерфейса и декораций-->
+    <script src="scripts/ads.js"></script> <!-- Скрипт дял поддержки просмотра рекламы -->
+    <script>
+        document.onselectstart = function() { return false; }; // Запрет выделения
+        document.oncontextmenu = function() { return false; }; // Запрет правого клика
+        document.ondragstart = function() { return false; };   // Запрет перетаскивания
+    </script>
+</body> 
+</html>
