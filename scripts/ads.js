@@ -26,7 +26,7 @@ const balance_stars = document.getElementById('released-count'); // Баллан
 // Связанные с рекламой элементы страницы
 const advertise_fuel = document.getElementById('advertise-fuel');     // <p> с доступным к просмотру количеством рекламы
 const advertise_charge = document.getElementById('advertise-charge'); // <p> с зарядом генератора
-const advertise_status = document.getElementById('status');           // <p> для надписи под кнопкой просмотра рекламы
+/*const advertise_status = document.getElementById('status');           // <p> для надписи под кнопкой просмотра рекламы*/
 const advertise_lasttime = document.getElementById('advertise-lasttime'); // <p> с оставшимся временем заряда топливной единицы
 const advertise_button = document.getElementById('button-ad');        // Кнопка просмотра рекламы
 const advertise_watched = document.getElementById('ad-count');        // Общее количество просмотренной рекламы
@@ -70,7 +70,7 @@ advertise_button.addEventListener('click', () => {
     return;
   } else {
     advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ
-    AdController.show().then(() => {giveReward();}).catch((result) => { // Ошибка просмотра
+    AdController.show().then(() => {}).catch((result) => { // Ошибка просмотра
       showNotification('notif_question');
       console.error('Ошибка просмотра рекламного видеоролика: ', JSON.stringify(result, null, 4));
     }).finally(() => {
@@ -113,7 +113,7 @@ function updateUI(state) {
   balance_stars.textContent = `${state.stars}`;
   advertise_fuel.textContent = `${state.fuel} / ${MAX_FUEL}`;
   advertise_charge.textContent = `${state.charge} / ${MAX_CHARGE}`;
-  advertise_status.textContent = `${state.charge} / ${MAX_CHARGE} просмотров доступно`;
+  /*advertise_status.textContent = `${state.charge} / ${MAX_CHARGE} просмотров доступно`;*/
   advertise_button.disabled = state.fuel === 0; // Блокировка кнопки при недостаточном уровне топлива
 
   // Время до заряда топливной единицы

@@ -43,20 +43,20 @@ window.addEventListener('scroll', function() {
 
     // Находим элементы и слои параллакса
     const scroll_parallax_city = document.getElementById('parallax-city');
-    const scroll_parallax_city_bottom = document.getElementById('parallax-city-bottom');
-    const scroll_parallax_mountain = document.getElementById('parallax-mountain');
+    /*const scroll_parallax_city_bottom = document.getElementById('parallax-city-bottom');
+    const scroll_parallax_mountain = document.getElementById('parallax-mountain');*/
     const scroll_advertise_container = document.getElementById('advertise-container');
     
     // Рассчитываем новые значения положения элементов параллакса
     const newPosition_parallax_city = scrollPosition * 0.2;
-    const newPosition_parallax_city_bottom = scrollPosition * 0.2;
-    const newPosition_parallax_mountain = scrollPosition * 0.2;
+    /*const newPosition_parallax_city_bottom = scrollPosition * 0.2;
+    const newPosition_parallax_mountain = scrollPosition * 0.2;*/
     const newPosition_advertise_container = scrollPosition * 0.07;
 
     // Применение значений новых положений
     scroll_parallax_city.style.margin = `${newPosition_parallax_city}px 0 0 0`;
-    scroll_parallax_city_bottom.style.margin = `${newPosition_parallax_city_bottom}px 0 0 0`;
-    scroll_parallax_mountain.style.margin = `${newPosition_parallax_mountain}px 0 0 0`;
+    /*scroll_parallax_city_bottom.style.margin = `${newPosition_parallax_city_bottom}px 0 0 0`;
+    scroll_parallax_mountain.style.margin = `${newPosition_parallax_mountain}px 0 0 0`;*/
     scroll_advertise_container.style.margin = `${newPosition_advertise_container}px 0 0 0`;
 });
 
