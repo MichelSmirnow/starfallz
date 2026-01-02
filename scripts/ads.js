@@ -69,13 +69,9 @@ advertise_button.addEventListener('click', () => {
     generatorStart();
     return;
   } else {
-    advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ
-    AdController.show().then(() => {}).catch((result) => { // Ошибка просмотра
-      showNotification('notif_question');
-      console.error('Ошибка просмотра рекламного видеоролика: ', JSON.stringify(result, null, 4));
-    }).finally(() => {
-      advertise_button.disabled = false;
-    });
+    /*advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ*/
+    AdController.show();
+    /*advertise_button.disabled = false;*/
   }
 });
 
