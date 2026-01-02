@@ -59,7 +59,7 @@ function saveState(state) {
 }
 
 // ✓ Обработка нажатия кнопки просмотра рекламы
-const AdController = window.Adsgram.init({ blockId: "int-20171" }); // Для adsgram_ai
+const AdController = window.Adsgram.init({ blockId: "int-20432" }); // Для adsgram_ai
 advertise_button.addEventListener('click', () => {
   if (state.fuel <= 0) { // Если не хватает топлива в генераторе
     showNotification('notif_notenoughfuel');
