@@ -79,6 +79,10 @@ advertise_button.addEventListener('click', () => {
   }
 });
 
+AdController.addEventListener('onReward', () => {
+    giveReward();
+});
+
 function giveReward() {
   state.fuel = Math.max(0, state.fuel - 1);
   state.charge = Math.min(MAX_CHARGE, state.charge + 1);
@@ -88,19 +92,6 @@ function giveReward() {
   saveState(state);
   updateUI(state);
 }
-
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  const userId = params.get('userid');
-  if (userId) {
-    try {
-      giveReward();
-      console.log('userid:', userId);
-    } catch (e) {
-      console.error('Ошибка просмотра рекламного видеоролика: ', e);
-    }
-  }
-})();
 
 // ✓ Функция запуска звездопада
 function generatorStart() {
