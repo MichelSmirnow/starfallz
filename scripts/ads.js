@@ -80,10 +80,10 @@ advertise_button.addEventListener('click', () => {
 });
 
 AdController.addEventListener('onReward', () => {
-    giveReward();
+    giveReward(state);
 });
 
-function giveReward() {
+function giveReward(state) {
   state.fuel = Math.max(0, state.fuel - 1);
   state.charge = Math.min(MAX_CHARGE, state.charge + 1);
   showNotification('notif_success');
@@ -94,7 +94,7 @@ function giveReward() {
 }
 
 // ✓ Функция запуска звездопада
-function generatorStart() {
+function generatorStart(state) {
   state.tokens = Math.min(0, Math.floor(state.tokens || 0) + 1);
   saveState(state);
   updateUI(state);
