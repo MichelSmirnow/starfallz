@@ -40,7 +40,7 @@ function loadState() {
   try {
     const s = JSON.parse(raw);
     return {
-      stars: Math.max(0, Math.floor(s.tokens || 0)),  // Текущее количество выведенных звезд
+      stars: Math.max(0, Math.floor(s.stars || 0)),  // Текущее количество выведенных звезд
       tokens: Math.max(0, Math.floor(s.tokens || 0)), // Текущее количество токенов
       fuel: Math.min(MAX_FUEL, Math.max(0, Math.floor(s.fuel || 0))),        // Текущее количество топлива
       charge: Math.min(MAX_CHARGE, Math.max(0, Math.floor(s.charge || 0))), // Текущее количество зарядов генератора
@@ -66,9 +66,9 @@ advertise_button.addEventListener('click', () => {
     alert('В данный момент просмотр рекламных видеороликов недоступен. Чтобы снять ограничение, требуется подождать восстановления');
     return;
   } else if (state.charge >= MAX_CHARGE) { // Если накоплена шкала генератора
-    generatorStart();
+    generatorStart(state);
     return;
-  } else {
+  } else if (state.fuel > 0 && state.charge < MAX_CHARGE) {
     /*advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ*/
     AdController.show();
     /*advertise_button.disabled = false;*/
@@ -80,8 +80,8 @@ AdController.addEventListener('onReward', () => {
 });
 
 function giveReward(state) {
-  state.fuel = Math.max(0, state.fuel - 1);
-  state.charge = Math.min(MAX_CHARGE, state.charge + 1);
+  state.fuel = Math.max(0, Math.floor(state.fuel || 0) - 1);
+  state.charge = Math.min(MAX_CHARGE, Math.floor(state.charge || 0) + 1);
   showNotification('notif_success');
   alert('Рекламный видеоролик просмотрен успешно: ', result.description);
   if (state.charges < MAX_CHARGES && !state.recoverStart) { state.recoverStart = Date.now(); }
@@ -92,7 +92,7 @@ function giveReward(state) {
 // ✓ Функция запуска звездопада
 function generatorStart(state) {
   state.charge = 0;
-  state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 1));
+  state.tokens = Math.max(0, (state.tokens + 1));
   saveState(state);
   updateUI(state);
 }

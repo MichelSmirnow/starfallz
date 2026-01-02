@@ -105,7 +105,8 @@
 
     <!-- Окно загрузки контента страницы -->
     <div id="load">
-
+        <img id="load-image" src="images/load.png" alt="Изображение загрузки страницы" />
+        <div id="load-message">Загрузка приложения...</div>
     </div>
 
     <script src="scripts/ui.js"></script>  <!-- Скрипт для работы пользовательского интерфейса и декораций-->
@@ -114,6 +115,73 @@
         document.onselectstart = function() { return false; }; // Запрет выделения
         document.oncontextmenu = function() { return false; }; // Запрет правого клика
         document.ondragstart = function() { return false; };   // Запрет перетаскивания
+    </script>
+    <script> /* Скрипт загрузки страницы */
+        (function () {
+            // ✓ Настройки загрузки страницы
+            const messages = [
+                "Чиним генератор звездопада...",
+                "Прихорашиваем Нику перед выходом...",
+                "Загружаем генератор топливом...",
+                "Скачиваем рекламные ролики...",
+                "Полируем жетоны и звезды...",
+                "Запаковываем подарки...",
+                "Включаем фонари в городе на фоне...",
+                "Сгоняем с неба облака...",
+            ];
+            const changeInterval = 1000;
+            const overlay = document.getElementById('load');
+            const load_message = document.getElementById('load-message');
+
+            if (!overlay || !load_message) return; // Если страница уже загружена, то выходим
+
+            // ✓ Функция случайного выбора индекса
+            let currentIndex = -1;
+            function randomIndexExcluding(max, exclude) {
+                if (max <= 1) return 0;
+                let i;
+                do { i = Math.floor(Math.random() * max); } while (i === exclude);
+                return i;
+            }
+
+            // ✓ Функция случайного выбора сообщения
+            function setRandomMessage() {
+                if (!messages.length) return;
+                currentIndex = randomIndexExcluding(messages.length, currentIndex);
+                load_message.style.opacity = '0';
+                setTimeout(() => {
+                    load_message.textContent = messages[currentIndex];
+                    load_message.style.opacity = '1';
+                }, 500);
+            }
+
+            // Выбор сообщения сразу при загрузке страницы
+            setRandomMessage();
+            const msgTimer = setInterval(setRandomMessage, changeInterval);
+
+            // ✓ Функция скрытия загрузочного окна
+            function hideOverlay() {
+                if (!overlay) return;
+                if (overlay.dataset.hiding === '1') return;
+                overlay.dataset.hiding = '1';
+                overlay.style.transition = 'opacity 0.5s ease';
+                overlay.style.opacity = '0';
+                overlay.setAttribute('aria-hidden', 'true');
+                clearInterval(msgTimer);
+                setTimeout(() => {
+                    if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                }, 400);
+            }
+
+            // ✓ Проверка на завершение загрузки
+            if (document.readyState === 'complete') { // Проверка на завершение
+                setTimeout(hideOverlay, 250);
+            } else {
+                window.addEventListener('load', hideOverlay, { once: true }); // Проверка на истечение максимального времени ожидания
+                setTimeout(hideOverlay, 60000);
+            }
+            window.hideOnloadOverlay = hideOverlay;
+            })();
     </script>
 </body> 
 </html>
