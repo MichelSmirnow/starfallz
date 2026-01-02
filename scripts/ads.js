@@ -92,7 +92,7 @@ function giveReward(state) {
 // ✓ Функция запуска звездопада
 function generatorStart(state) {
   state.charge = 0;
-  state.tokens = Math.max(0, (state.tokens + 1));
+  state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 1));
   saveState(state);
   updateUI(state);
 }
