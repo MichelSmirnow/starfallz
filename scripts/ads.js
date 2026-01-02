@@ -74,7 +74,7 @@ advertise_button.addEventListener('click', () => {
     AdController.show().then((result) => {
       if (result.done === true) { // Просмотр успешно
         state.fuel = Math.max(0, state.fuel - 1);
-        state.charge = Math.min(MAX_CHARGE, loadGen() + 1);
+        state.charge = Math.min(MAX_CHARGE, state.charge + 1);
         showNotification('notif_success');
         alert('Рекламный видеоролик просмотрен успешно: ', result.description);
         if (state.charges < MAX_CHARGES && !state.recoverStart) { state.recoverStart = Date.now(); }
