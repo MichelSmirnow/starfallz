@@ -66,7 +66,7 @@ advertise_button.addEventListener('click', () => {
     alert('В данный момент просмотр рекламных видеороликов недоступен. Чтобы снять ограничение, требуется подождать восстановления');
     return;
   } else if (state.charge >= MAX_CHARGE) { // Если накоплена шкала генератора
-    generatorStart();
+    generatorStart(state);
     return;
   } else {
     /*advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ*/
@@ -91,8 +91,8 @@ function giveReward(state) {
 
 // ✓ Функция запуска звездопада
 function generatorStart(state) {
+  state.tokens = Math.max(0, (state.tokens + 1));
   state.charge = 0;
-  state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 1));
   saveState(state);
   updateUI(state);
 }
