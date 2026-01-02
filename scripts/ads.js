@@ -65,26 +65,12 @@ advertise_button.addEventListener('click', () => {
     showNotification('notif_notenoughfuel');
     alert('В данный момент просмотр рекламных видеороликов недоступен. Чтобы снять ограничение, требуется подождать восстановления');
     return;
-
   } else if (state.charge >= MAX_CHARGE) { // Если накоплена шкала генератора
     generatorStart();
     return;
   } else {
     advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ
-    AdController.show().then((result) => {
-      if (result.done === true) { // Просмотр успешно
-        state.fuel = Math.max(0, state.fuel - 1);
-        state.charge = Math.min(MAX_CHARGE, state.charge + 1);
-        showNotification('notif_success');
-        alert('Рекламный видеоролик просмотрен успешно: ', result.description);
-        if (state.charges < MAX_CHARGES && !state.recoverStart) { state.recoverStart = Date.now(); }
-        saveState(state);
-        updateUI(state);
-      } else { // просмотр прерван
-        showNotification('notif_decline');
-        console.log('Просмотр рекламного видеоролика прерван: ', result.description);
-      }
-    }).catch((result) => { // Ошибка просмотра
+    AdController.show().then(() => {}).catch((result) => { // Ошибка просмотра
       showNotification('notif_question');
       console.error('Ошибка просмотра рекламного видеоролика: ', JSON.stringify(result, null, 4));
     }).finally(() => {
@@ -92,6 +78,29 @@ advertise_button.addEventListener('click', () => {
     });
   }
 });
+
+function giveReward() {
+  state.fuel = Math.max(0, state.fuel - 1);
+  state.charge = Math.min(MAX_CHARGE, state.charge + 1);
+  showNotification('notif_success');
+  alert('Рекламный видеоролик просмотрен успешно: ', result.description);
+  if (state.charges < MAX_CHARGES && !state.recoverStart) { state.recoverStart = Date.now(); }
+  saveState(state);
+  updateUI(state);
+}
+
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const userId = params.get('userid');
+  if (userId) {
+    try {
+      giveReward();
+      console.log('userid:', userId);
+    } catch (e) {
+      console.error('Ошибка просмотра рекламного видеоролика: ', e);
+    }
+  }
+})();
 
 // ✓ Функция запуска звездопада
 function generatorStart() {
