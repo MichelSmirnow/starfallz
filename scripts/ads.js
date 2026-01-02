@@ -70,7 +70,7 @@ advertise_button.addEventListener('click', () => {
     return;
   } else {
     advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ
-    AdController.show().then(() => {}).catch((result) => { // Ошибка просмотра
+    AdController.show().then(() => {giveReward();}).catch((result) => { // Ошибка просмотра
       showNotification('notif_question');
       console.error('Ошибка просмотра рекламного видеоролика: ', JSON.stringify(result, null, 4));
     }).finally(() => {
