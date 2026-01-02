@@ -12,9 +12,6 @@
 \***********************************************************************************************************/
 // =========================================== Просмотр рекламы ========================================== \\
 
-// Рекламные блоки
-const AdController = window.Adsgram.init({ blockId: "int-20171" }); // Для adsgram_ai
-
 // Настройки заряда шкалы просмотра рекламы
 const MAX_FUEL = 7;                               // Максимальное количество зарядов
 const MAX_CHARGE = 10;                            // Количество рекламы, необходимой для запуска звездопада
@@ -62,6 +59,7 @@ function saveState(state) {
 }
 
 // ✓ Обработка нажатия кнопки просмотра рекламы
+const AdController = window.Adsgram.init({ blockId: "int-20171" }); // Для adsgram_ai
 advertise_button.addEventListener('click', () => {
   if (state.fuel <= 0) { // Если не хватает топлива в генераторе
     showNotification('notif_notenoughfuel');
@@ -73,27 +71,23 @@ advertise_button.addEventListener('click', () => {
     return;
   } else {
     advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ
-    AdController.show()
-    .then((result) => {
-      if (result.done && !result.error) { // Просмотр успешно
+    AdController.show().then((result) => {
+      if (result.done === true) { // Просмотр успешно
         state.fuel = Math.max(0, state.fuel - 1);
         state.charge = Math.min(MAX_CHARGE, loadGen() + 1);
         showNotification('notif_success');
-        alert('Рекламный видеоролик просмотрен успешно');
+        alert('Рекламный видеоролик просмотрен успешно: ', result.description);
         if (state.charges < MAX_CHARGES && !state.recoverStart) { state.recoverStart = Date.now(); }
         saveState(state);
         updateUI(state);
-
       } else { // просмотр прерван
         showNotification('notif_decline');
-        console.log('Просмотр рекламного видеоролика прерван:', result.description);
+        console.log('Просмотр рекламного видеоролика прерван: ', result.description);
       }
-    })
-    .catch((err) => { // Ошибка просмотра
+    }).catch((result) => { // Ошибка просмотра
       showNotification('notif_question');
-      console.error('Ошибка просмотра рекламного видеоролика', err);
-    })
-      .finally(() => {
+      console.error('Ошибка просмотра рекламного видеоролика: ', JSON.stringify(result, null, 4));
+    }).finally(() => {
       advertise_button.disabled = false;
     });
   }
