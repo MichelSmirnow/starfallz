@@ -14,7 +14,7 @@
 
 // Настройки заряда шкалы просмотра рекламы
 const MAX_FUEL = 7;                               // Максимальное количество зарядов
-const MAX_CHARGE = 10;                            // Количество рекламы, необходимой для запуска звездопада
+const MAX_CHARGE = 4;                            // Количество рекламы, необходимой для запуска звездопада
 const RECOVER_MINUTES = 25;                       // Время восстановления просмотра одной рекламы в минутах
 const RECOVER_MS = RECOVER_MINUTES * 60 * 1000;   // Время восстановления просмотра одной рекламы в миллисекундах
 const FULL_RECOVER_MS = RECOVER_MS * MAX_FUEL; // Полное время восстановления заряда в миллисекундах
@@ -91,7 +91,8 @@ function giveReward(state) {
 
 // ✓ Функция запуска звездопада
 function generatorStart(state) {
-  state.tokens = Math.min(0, Math.floor(state.tokens || 0) + 1);
+  state.charge = 0;
+  state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 1));
   saveState(state);
   updateUI(state);
 }
