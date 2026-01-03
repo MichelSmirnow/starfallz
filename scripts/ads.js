@@ -62,16 +62,16 @@ function saveState(state) {
 const AdController = window.Adsgram.init({ blockId: "20435" }); // Для adsgram_ai
 advertise_button.addEventListener('click', () => {
   if (state.fuel <= 0) { // Если не хватает топлива в генераторе
-    showNotification('notif_notenoughfuel');
+    showNotification('notif-question');
     alert('В данный момент просмотр рекламных видеороликов недоступен. Чтобы снять ограничение, требуется подождать восстановления');
     return;
   } else if (state.charge >= MAX_CHARGE) { // Если накоплена шкала генератора
     generatorStart(state);
     return;
   } else if (state.fuel > 0 && state.charge < MAX_CHARGE) {
-    /*advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ*/
+    /* advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ*/
     AdController.show();
-    /*advertise_button.disabled = false;*/
+    /* advertise_button.disabled = false;*/
   }
 });
 
@@ -82,7 +82,7 @@ AdController.addEventListener('onReward', () => {
 function giveReward(state) {
   state.fuel = Math.max(0, Math.floor(state.fuel || 0) - 1);
   state.charge = Math.min(MAX_CHARGE, Math.floor(state.charge || 0) + 1);
-  showNotification('notif_success');
+  showNotification('notif-success');
   alert('Рекламный видеоролик просмотрен успешно: ', result.description);
   if (state.charges < MAX_CHARGES && !state.recoverStart) { state.recoverStart = Date.now(); }
   saveState(state);
@@ -95,6 +95,7 @@ function generatorStart(state) {
   state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 1));
   saveState(state);
   updateUI(state);
+  showNotification('notif-starfall');
 }
 
 // Обновление пользовательского интерфейса (данными из струкруры state)
@@ -126,6 +127,9 @@ function updateUI(state) {
     const s = totalSec % 60;
     advertise_lasttime.textContent = `До заряда следующей единицы: ${m}мин ${s}сек`;
   }
+
+  // Стиль заблокированной кнопки
+  if (state.fuel <= 0 || advertise_button.disabled === true) { advertise_button.classList.add('disabled'); } else { advertise_button.classList.remove('disabled'); }
 }
 
 // ✓ Функция для добавления топливных единиц (восстановление по 1 единице каждые 25 минут)
@@ -139,7 +143,7 @@ function applyRecovery(state) {
     const elapsed = now - start;
     const recovered = Math.floor(elapsed / RECOVER_MS);
     if (recovered > 0) {
-      state.fuel = Math.min(MAX_FUEL, state.charges + recovered);
+      state.fuel = Math.min(MAX_FUEL, state.fuel + recovered);
       if (state.fuel >= MAX_FUEL) {
         state.recoverStart = null;
       } else {

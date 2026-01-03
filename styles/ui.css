@@ -42,8 +42,9 @@
     padding: 6px 16px;
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
-#button_ad:disabled {
+#button_ad.disabled {
     background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #eeeeee 100%) !important;
+    box-shadow: 0 5px 15px 0 rgba(206, 206, 206, 0.7) !important;
 }
 
 /* Режим кнопки при заполненной шкале генератора звездопада */
@@ -263,9 +264,10 @@
     left: 50%;
     transform: translateX(-50%);
     height: 30px;
-    max-width: 80%;
-    min-width: 50%;
-    padding: 5px 20px 5px 0;
+    width: 30%;
+    max-width: 250px;
+    padding: 0;
+    margin: 0;
 
     display: flex;
     align-items: center;
@@ -287,10 +289,8 @@
     transition: opacity 0.5s ease, visibility 0.5s ease, top 0.4s ease;
 }
 .notification img { /* Изображение на уведомлении */
-    width: 40px;
-    height: 40px;
-    margin: 0 10px 0 0;
-    filter: drop-shadow(0);
+    width: 100%;
+    height: 100%;
 }
 #notif_success, #notif_decline, #notif_question { /* Общие свойства всех типов уведомлений */
     box-shadow: 0 0 10px #000;

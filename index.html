@@ -66,14 +66,23 @@
         </div>
 
         <!-- Уведомления -->
-        <div id="notif_success" class="notification">
-            <img src="images/notif_success.png" alt="Реклама просмотрена успешно"/>
+        <div id="notif-success" class="notification">
+            <img src="images/notif_success.png" alt="Рекламный видеоролик просмотрен успешно!"/>
         </div>
-        <div id="notif_decline" class="notification">
-            <img src="images/notif_decline.png" alt="Пользователь прервал просмотр рекламы"/>
+        <div id="notif-decline" class="notification">
+            <img src="images/notif_decline.png" alt="Просмотр прерван пользователем"/>
         </div>
-        <div id="notif_question" class="notification">
-            <img src="images/notif_question.png" alt="Во время загрузки рекламы произошла ошибка" />
+        <div id="notif-question" class="notification">
+            <img src="images/notif_question.png" alt="Во время загрузки произошла ошибка" />
+        </div>
+        <div id="notif-achivement" class="notification">
+            <img src="images/notif_achivement.png" alt="Получено новое достижение!" />
+        </div>
+        <div id="notif-income" class="notification">
+            <img src="images/notif_income.png" alt="Звезды успешно выведены из игры!" />
+        </div>
+        <div id="notif-starfall" class="notification">
+            <img src="images/notif_starfall.png" alt="Звездопад завершен, +1 жетон на балланс" />
         </div>
 
         <!-- Пользовательские интерфейсы -->
@@ -109,9 +118,10 @@
         <div id="load-message">Загрузка приложения...</div>
     </div>
 
+    <script src="scripts/db.js"></script>  <!-- Скрипт базы данных -->
     <script src="scripts/ui.js"></script>  <!-- Скрипт для работы пользовательского интерфейса и декораций-->
-    <script src="scripts/ads.js"></script> <!-- Скрипт дял поддержки просмотра рекламы -->
-    <script>
+    <script src="scripts/ads.js"></script> <!-- Скрипт для поддержки просмотра рекламы -->
+    <script> /* Скрипт запрета исследования страницы*/
         document.onselectstart = function() { return false; }; // Запрет выделения
         document.oncontextmenu = function() { return false; }; // Запрет правого клика
         document.ondragstart = function() { return false; };   // Запрет перетаскивания
@@ -129,7 +139,7 @@
                 "Включаем фонари в городе на фоне...",
                 "Сгоняем с неба облака...",
             ];
-            const changeInterval = 1000;
+            const changeInterval = 2500;
             const overlay = document.getElementById('load');
             const load_message = document.getElementById('load-message');
 
