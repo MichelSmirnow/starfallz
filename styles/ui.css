@@ -9,7 +9,7 @@
     width: 50% !important;
 }
 
-/* ✓ Кнопка просмотра рекламы */
+/* ✓ Кнопка просмотра рекламы (Активный режим)*/
 #button-ad {
     position: static;
     z-index: 50;
@@ -42,16 +42,42 @@
     padding: 6px 16px;
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
+
+/* Режим отключенной кнопки */
 #button_ad.disabled {
+    background-position: left center;
     background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #eeeeee 100%) !important;
-    box-shadow: 0 5px 15px 0 rgba(206, 206, 206, 0.7) !important;
+    box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.7) !important;
+    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
+}
+#button_ad.disabled:hover {
+    background-position: left center;
+    box-shadow: 0 5px 40px 0 rgba(0, 0, 0, 0.7) !important;
+    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
+}
+#button_ad.disabled:active {
+    background-position: left center;
+    padding: 6px 16px;
+    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
 
 /* Режим кнопки при заполненной шкале генератора звездопада */
-#button-ad.button-starfall {
-    color: #CACACA;
-    background-image: linear-gradient(to right, #803bc0 0%, #de19e5 50%, #1a25c4 100%);
-    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease;
+#button-ad.starfall {
+    color: #e2e2e2 !important;
+    background-position: left center;
+    background-image: linear-gradient(to right, #803bc0 0%, #de19e5 50%, #1a25c4 100%) !important;
+    box-shadow: 0 5px 15px 0 rgba(206, 206, 206, 0.7) !important;
+    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
+}
+#button-ad.starfall:hover {
+    background-position: left center;
+    box-shadow: 0 5px 40px 0 rgba(172, 11, 246, 0.7) !important;
+    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
+}
+#button-ad.starfall:active {
+    background-position: left center;
+    padding: 6px 16px;
+    transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
 
 /* ======================================== Интерфейс генератора ========================================= */
@@ -255,7 +281,7 @@
 
 /* ========================================= Уведомления ========================================= */
 
-.notification { /* основной стиль уведомления*/
+.notification { /* Основной стиль уведомления*/
     visibility: hidden;
     opacity: 0;
 
@@ -263,8 +289,8 @@
     top: 50px;
     left: 50%;
     transform: translateX(-50%);
-    height: 30px;
     width: 30%;
+    height: auto;
     max-width: 250px;
     padding: 0;
     margin: 0;

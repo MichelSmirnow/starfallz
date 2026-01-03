@@ -93,9 +93,9 @@ function giveReward(state) {
 function generatorStart(state) {
   state.charge = 0;
   state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 1));
+  showNotification('notif-starfall');
   saveState(state);
   updateUI(state);
-  showNotification('notif-starfall');
 }
 
 // Обновление пользовательского интерфейса (данными из струкруры state)
@@ -114,7 +114,7 @@ function updateUI(state) {
   /*advertise_status.textContent = `${state.charge} / ${MAX_CHARGE} просмотров доступно`;*/
   advertise_button.disabled = state.fuel === 0; // Блокировка кнопки при недостаточном уровне топлива
 
-  // Время до заряда топливной единицы
+  // Топливо и заряд генератора
   if (state.fuel >= MAX_FUEL) {
     advertise_lasttime.textContent = `Полный бак`;
   } else {
@@ -128,8 +128,21 @@ function updateUI(state) {
     advertise_lasttime.textContent = `До заряда следующей единицы: ${m}мин ${s}сек`;
   }
 
-  // Стиль заблокированной кнопки
-  if (state.fuel <= 0 || advertise_button.disabled === true) { advertise_button.classList.add('disabled'); } else { advertise_button.classList.remove('disabled'); }
+  // Режимы кнопки просмотра рекламы
+  if ((state.fuel <= 0 || advertise_button.disabled === true) && state.charge < MAX_CHARGE) { 
+    advertise_button.classList.add('disabled'); 
+    advertise_charge.textContent = `Нет топлива`;
+  } else { 
+    advertise_button.classList.remove('disabled');
+    advertise_charge.textContent = `Смотреть рекламу`; 
+  }
+  if (state.charge >= MAX_CHARGE) { 
+    advertise_button.classList.add('starfall');
+    advertise_charge.textContent = `Начать звездопад`; 
+  } else { 
+    advertise_button.classList.remove('starfall'); 
+    advertise_charge.textContent = `Смотреть рекламу`;
+  }
 }
 
 // ✓ Функция для добавления топливных единиц (восстановление по 1 единице каждые 25 минут)
