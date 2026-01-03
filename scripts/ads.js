@@ -125,7 +125,7 @@ function updateUI(state) {
     const totalSec = Math.floor(remainder / 1000);
     const m = Math.floor(totalSec / 60);
     const s = totalSec % 60;
-    advertise_lasttime.textContent = `До заряда следующей единицы: ${m}мин ${s}сек`;
+    advertise_lasttime.textContent = `До новой топливной единицы: ${m}мин ${s}сек`;
   }
 
   // Режимы кнопки просмотра рекламы

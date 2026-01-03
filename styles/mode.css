@@ -5,11 +5,12 @@
         width: 100%;
         background-size: 100%;
         top: 27vh;
-        transition: top 1s ease, width 1s ease, background-size 1s ease;  
+        transition: top 1s ease, width 1s ease, background-size 1s ease, opacity 0.5s ease;  
     }
-    #button-ad {margin-top: 0vh !important; transition: margin-top 1s ease;}
+    .panel_bottom {width: 80%;}
+    #button-ad {margin-top: 0vh !important; transition: margin-top 1s ease; font-size: medium !important;}
     #advertise-container {top: 12vw; transition: top 1s ease;}
-    #advertise-container.ad-container-opened {top: -30vh !important; transition: top 1s ease;}
+    #advertise-container.ad-container-opened {top: -17vh !important; transition: top 1s ease;}
 }
 
 /* Режим тачпада (Малый горизонтальный) */
@@ -19,11 +20,12 @@
         width: 70%;
         background-size: 70%;
         top: 20vh;
-        transition: top 1s ease, width 1s ease, background-size 1s ease; 
+        transition: top 1s ease, width 1s ease, background-size 1s ease, opacity 0.5s ease; 
     }
+    .panel_bottom {width: 60%;}
     #button-ad {margin-top: 6vh !important; transition: margin-top 1s ease;}
     #advertise-container {top: 10vw; transition: top 1s ease;}
-    #advertise-container.ad-container-opened {top: -30vh !important; transition: top 1s ease;}
+    #advertise-container.ad-container-opened {top: -17vh !important; transition: top 1s ease;}
 }
 
 /* Режим  ПК (Широкий горизонтальный) */
@@ -33,11 +35,12 @@
         width: 50%;
         background-size: 50%;
         top: 15vh;
-        transition: top 1s ease, width 1s ease, background-size 1s ease; 
+        transition: top 1s ease, width 1s ease, background-size 1s ease, opacity 0.5s ease; 
     }
+    .panel_bottom {width: 40%;}
     #button-ad {margin-top: 12vh !important; transition: margin-top 1s ease;}
     #advertise-container {top: 8vw; transition: top 1s ease;}
-    #advertise-container.ad-container-opened {top: -30vh !important; transition: top 1s ease;}
+    #advertise-container.ad-container-opened {top: -17vh !important; transition: top 1s ease;}
 }
 
 /* Режим слишком маленького окна */

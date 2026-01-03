@@ -11,9 +11,14 @@
 
 \***********************************************************************************************************/
 
-// Отчет о запуске приложения вне или в телеграмме 
 const perfomance_site = document.getElementById('site');
 const perfomance_main = document.getElementById('main');
+const left_panel = document.getElementById('daily');
+const right_panel = document.getElementById('profile');
+const panel_background = document.getElementById('background');
+const panel_scenery = document.getElementById('bg-container');
+
+// Отчет о запуске приложения вне или в телеграмме 
 const tg = window.Telegram && window.Telegram.WebApp;
 if (tg) { 
     perfomance_site.style.display = `none`;
@@ -28,7 +33,7 @@ if (tg) {
 
 // ======================================== Декорации и интерфейс ======================================== \\
 
-// ✓ Функции отображения уведомлений
+// ✓ Функция отображения уведомлений
 function showNotification(notif_id) {
     const notification = document.getElementById(notif_id);
     notification.classList.add('show');
@@ -67,33 +72,50 @@ document.addEventListener('DOMContentLoaded', function() {
     const home_targetSection = document.getElementById('bottom-ui-home-index');
     const income_image = document.getElementById('bottom-ui-income');
     const income_targetSection = document.getElementById('bottom-ui-income-index');
-    const settings_image = document.getElementById('bottom-ui-set');
+    const daily_image = document.getElementById('bottom-ui-daily');
     const user_image = document.getElementById('bottom-ui-user');
     star_image.addEventListener('click', function() {
+        returnOnPage();
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
     });
     home_image.addEventListener('click', function() {
+        returnOnPage();
         home_targetSection.scrollIntoView({
             behavior: 'smooth',
             block: 'start'
         });
     });
     income_image.addEventListener('click', function() {
+        returnOnPage();
         income_targetSection.scrollIntoView({
             behavior: 'smooth',
             block: 'start'
         });
     });
-    settings_image.addEventListener('click', function() {
-        // Открывается левая часть
+    daily_image.addEventListener('click', function() {
+        right_panel.classList.remove('panel_bottom_shown');
+        left_panel.classList.add('panel_bottom_shown');
+        panel_background.classList.add('page_moved');
+        panel_scenery.classList.add('page_moved');
     });
     user_image.addEventListener('click', function() {
-        // Открывается правая часть
+        left_panel.classList.remove('panel_bottom_shown');
+        right_panel.classList.add('panel_bottom_shown');
+        panel_background.classList.add('page_moved');
+        panel_scenery.classList.add('page_moved');
     });
 });
+
+// Функция для возврата на главную линию страницы после посещения боковых панелей
+function returnOnPage() {
+    left_panel.classList.remove('panel_bottom_shown');
+    right_panel.classList.remove('panel_bottom_shown');
+    panel_background.classList.remove('page_moved');
+    panel_scenery.classList.remove('page_moved');
+}
 
 // Функция отображения информации генератора звездопада при нажатии
 const advertise_container = document.getElementById('advertise-container');

@@ -19,11 +19,12 @@
 
     <!-- Основное окно приложения -->
     <div id="main">
-        <div id="settings" class="panel_bottom"> <!-- Настройки (Левая боковая панель) -->
-            <h1>Настройки</h1>
-        </div>
-        <div id="profile" class="panel_bottom"> <!-- Профиль (правая боковая панель) -->
+        <div id="profile" class="panel_bottom"> <!-- Настройки (Левая боковая панель) -->
             <h1>Профиль</h1>
+        </div>
+        <div id="daily" class="panel_bottom"> <!-- Профиль (правая боковая панель) -->
+            <h1>Ежедневник</h1>
+            <p>Смотрите 2 рекламных видео каждый день, чтобы получить большую награду к концу недели!</p>
         </div>
 
         <div id="background"></div>
@@ -51,7 +52,6 @@
                             <p id="advertise-fuel">0/0</p>
                             <h2>Топливо</h2>
                             <p>Сколько рекламных видеороликов можно посмотреть</p>
-                            <p id="advertise-lasttime"></p>
                         </div>
                         <div class="generator-info-side">
                             <div id="generator-bar-charge" class="generator-bar"></div>
@@ -60,6 +60,7 @@
                             <p>Оставшиеся просмотры рекламы до запуска звездопада</p>
                         </div>
                     </div>
+                    <p id="advertise-lasttime"></p>
                     <button id="button-close-generator">Закрыть</button>
                 </div>
             </div>
@@ -93,7 +94,7 @@
             <img src="images/ui-token.png"/>
         </div>
         <div id="bottom-ui" class="ui-background">
-            <img id="bottom-ui-set" src="images/bottom-ui-set.png" />
+            <img id="bottom-ui-daily" src="images/bottom-ui-daily.png" />
             <img id="bottom-ui-income" src="images/bottom-ui-income.png"/>
             <img id="bottom-ui-star" src="images/bottom-ui-star.png" />
             <img id="bottom-ui-home" src="images/botton-ui-home.png"/>
@@ -121,12 +122,13 @@
     <script src="scripts/db.js"></script>  <!-- Скрипт базы данных -->
     <script src="scripts/ui.js"></script>  <!-- Скрипт для работы пользовательского интерфейса и декораций-->
     <script src="scripts/ads.js"></script> <!-- Скрипт для поддержки просмотра рекламы -->
-    <script> /* Скрипт запрета исследования страницы*/
+    <script> /* ✓ Скрипт запрета исследования страницы*/
+        // console.log = () => {};
         document.onselectstart = function() { return false; }; // Запрет выделения
         document.oncontextmenu = function() { return false; }; // Запрет правого клика
         document.ondragstart = function() { return false; };   // Запрет перетаскивания
     </script>
-    <script> /* Скрипт загрузки страницы */
+    <script> /* ✓ Скрипт загрузки страницы */
         (function () {
             // ✓ Настройки загрузки страницы
             const messages = [

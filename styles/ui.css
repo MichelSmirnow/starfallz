@@ -43,7 +43,7 @@
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
 
-/* Режим отключенной кнопки */
+/* ✓ Режим отключенной кнопки */
 #button_ad.disabled {
     background-position: left center;
     background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #eeeeee 100%) !important;
@@ -51,7 +51,7 @@
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
 #button_ad.disabled:hover {
-    background-position: left center;
+    background-position: right center;
     box-shadow: 0 5px 40px 0 rgba(0, 0, 0, 0.7) !important;
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
@@ -61,7 +61,7 @@
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
 
-/* Режим кнопки при заполненной шкале генератора звездопада */
+/* ✓ Режим кнопки при заполненной шкале генератора звездопада */
 #button-ad.starfall {
     color: #e2e2e2 !important;
     background-position: left center;
@@ -70,7 +70,7 @@
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
 #button-ad.starfall:hover {
-    background-position: left center;
+    background-position: right center;
     box-shadow: 0 5px 40px 0 rgba(172, 11, 246, 0.7) !important;
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
@@ -105,12 +105,17 @@
     border-radius: 30px;
     padding: 1px 20px;
     margin: 20px 0;
-    width: 100%;
+    max-width: 100%;
+    width: auto;
+    /*max-height: 700px;*/
 
     text-align: center;
     backdrop-filter: blur(5px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: opacity 0.5s ease, visible 0.5s ease;
+}
+#generator-info>h1 {
+    font-size: x-large;
 }
 #generator-info-container {
     position: static;
@@ -120,6 +125,7 @@
 .generator-info-side {
     position: static;
     width: 50%;
+    max-width: 150px;
     margin: 0 10px;
 }
 #advertise-fuel, #advertise-charge {
@@ -130,8 +136,16 @@
 #generator-info-container h1, h2, h3 {
     font-size: small;
 }
+#advertise-lasttime {
+    width: auto;
+    background-color: rgba(30, 30, 30, 0.75);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 20px rgba(200, 200, 200, 0.25);
+    margin: 0;
+}
 
-/* Шкала генератора */
+/* ✓ Шкала генератора */
 .generator-bar {
     background-color:rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.5);
@@ -286,12 +300,12 @@
     opacity: 0;
 
     position: fixed;
-    top: 50px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 30%;
+    width: 80%;
     height: auto;
-    max-width: 250px;
+    max-width: 500px;
     padding: 0;
     margin: 0;
 
@@ -311,7 +325,7 @@
 .notification.show { /* Включенное уведомление */
     opacity: 1 !important;
     visibility: visible !important;
-    top: 100px !important;
+    top: 50px !important;
     transition: opacity 0.5s ease, visibility 0.5s ease, top 0.4s ease;
 }
 .notification img { /* Изображение на уведомлении */
@@ -330,5 +344,45 @@
 #notif_question { /* Уведомление с ошибкой при загрузке рекламы */
     background-image: linear-gradient(to right, #AD9100, #E8D500);
 }
+
+/* ==================================== Свойства левой боковой панели ==================================== */
+
+/* Общие свойства боковых панелей */
+.panel_bottom {
+    z-index: 0;
+    position: fixed;
+    top: 30px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 30px;
+    padding: 25px;
+    opacity: 0.05;
+    height: 80%;
+    transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s, opacity 0.5s ease;
+}
+.panel_bottom_shown {
+    z-index: 99999;
+    left: 50% !important;
+    right: 0;
+    transform: translateX(-50%);
+    opacity: 1 !important;
+    transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s, opacity 0.5s ease;
+}
+#daily { left: 30px; text-align: left;}
+#profile { right: 30px; text-align: right;}
+
+.page_moved {
+    opacity: 0.1;
+    transition: opacity 0.5s ease;
+}
+
+
+
+
+
+
+
+
+
+
 
 /* ============================================ Переключатель ============================================ */
