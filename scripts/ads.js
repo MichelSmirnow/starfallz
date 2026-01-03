@@ -131,17 +131,17 @@ function updateUI(state) {
   // Режимы кнопки просмотра рекламы
   if ((state.fuel <= 0 || advertise_button.disabled === true) && state.charge < MAX_CHARGE) { 
     advertise_button.classList.add('disabled'); 
-    advertise_charge.textContent = `Нет топлива`;
+    advertise_button.textContent = `Нет топлива`;
   } else { 
     advertise_button.classList.remove('disabled');
-    advertise_charge.textContent = `Смотреть рекламу`; 
+    advertise_button.textContent = `Смотреть рекламу`; 
   }
   if (state.charge >= MAX_CHARGE) { 
     advertise_button.classList.add('starfall');
-    advertise_charge.textContent = `Начать звездопад`; 
+    advertise_button.textContent = `Начать звездопад`; 
   } else { 
     advertise_button.classList.remove('starfall'); 
-    advertise_charge.textContent = `Смотреть рекламу`;
+    advertise_button.textContent = `Смотреть рекламу`;
   }
 }
 

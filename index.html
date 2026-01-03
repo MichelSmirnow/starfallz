@@ -142,7 +142,10 @@
             const changeInterval = 2500;
             const overlay = document.getElementById('load');
             const load_message = document.getElementById('load-message');
+            const load_image = document.getElementById('load-image');
 
+            load_image.style.transition = 'opacity 0.5s ease';
+            load_image.style.opacity = '1';
             if (!overlay || !load_message) return; // Если страница уже загружена, то выходим
 
             // ✓ Функция случайного выбора индекса
@@ -171,6 +174,7 @@
 
             // ✓ Функция скрытия загрузочного окна
             function hideOverlay() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 if (!overlay) return;
                 if (overlay.dataset.hiding === '1') return;
                 overlay.dataset.hiding = '1';

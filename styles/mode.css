@@ -72,6 +72,8 @@
     max-width: 500px;
     height: auto;
     display: block;
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 #load-message {
     color: #CACACA;

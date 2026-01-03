@@ -61,10 +61,6 @@ window.addEventListener('scroll', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Демонстрация
-    /*SetBar(80, 'generator-bar-acc');
-    SetBar(20, 'generator-bar-charge');*/
-
     // Функции использования bottom-ui
     const star_image = document.getElementById('bottom-ui-star');
     const home_image = document.getElementById('bottom-ui-home');
