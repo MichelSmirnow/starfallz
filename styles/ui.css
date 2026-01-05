@@ -44,18 +44,18 @@
 }
 
 /* ✓ Режим отключенной кнопки */
-#button_ad.disabled {
+#button_ad.button-disabled {
     background-position: left center;
     background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #eeeeee 100%) !important;
     box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.7) !important;
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
-#button_ad.disabled:hover {
+#button_ad.button-disabled:hover {
     background-position: right center;
     box-shadow: 0 5px 40px 0 rgba(0, 0, 0, 0.7) !important;
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
-#button_ad.disabled:active {
+#button_ad.button-disabled:active {
     background-position: left center;
     padding: 6px 16px;
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
@@ -354,26 +354,67 @@
     top: 30px;
     background-color: rgba(0, 0, 0, 0.9);
     border-radius: 30px;
-    padding: 25px;
+    padding: 25px 50px;
+    padding-top: 40px;
     opacity: 0.05;
-    height: 80%;
-    transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s, opacity 0.5s ease;
+    height: 77%;
+    transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s, opacity 0.5s ease, width 1s ease;
 }
 .panel_bottom_shown {
-    z-index: 99999;
     left: 50% !important;
-    right: 0;
-    transform: translateX(-50%);
+    right: auto !important;
+    transform: translateX(-50%) !important;
     opacity: 1 !important;
-    transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s, opacity 0.5s ease;
+    z-index: 99;
+    transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s, opacity 0.5s ease, width 1s ease;
 }
-#daily { left: 30px; text-align: left;}
-#profile { right: 30px; text-align: right;}
-
 .page_moved {
     opacity: 0.1;
     transition: opacity 0.5s ease;
 }
+
+#daily { left: 30px; text-align: left; transform: translateX(0);}
+#daily-nika {
+    min-width: 200px;
+    width: 40%;
+    height: auto;
+    margin-left: 20px;
+}
+#button-daily {
+    padding: 10px 20px;
+    margin: 5px;
+    width: 70%;
+}
+#daily-gallery {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 16px;
+    box-sizing: border-box;
+}
+.daily-gallery-element {
+    margin: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+}
+.daily-gallery-element img {
+    min-width: 50px;
+    max-width: 100px;
+    width: 80%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+#profile { right: 30px; text-align: right; transform: translateX(0);}
+/*input[type=checkbox]{
+}*/
+
+/* Свойства переключателя (switch)*/
 
 
 

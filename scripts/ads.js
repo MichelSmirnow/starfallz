@@ -6,37 +6,32 @@
     |____/ \__\__,_|_|  |_|  \__,_|_|_/___| |_| |_| |_|_|_| |_|_|  \__,_| .__/| .__/ 
                                                                         |_|   |_|    
     Скрипт для мини-приложения телеграмм @starfallz_bot
-    MichelSmirnow, Михаил Смирнов - Россия, 2025г.
-    https://github.com/MichelSmirnow
 
 \***********************************************************************************************************/
-// =========================================== Просмотр рекламы ========================================== \\
+const MAX_FUEL = 7;
+const MAX_CHARGE = 4;
+const RECOVER_MINUTES = 25;
+const RECOVER_MS = RECOVER_MINUTES * 60 * 1000;
+const FULL_RECOVER_MS = RECOVER_MS * MAX_FUEL;
+const MAX_DAILY = 2;
 
-// Настройки заряда шкалы просмотра рекламы
-const MAX_FUEL = 7;                               // Максимальное количество зарядов
-const MAX_CHARGE = 4;                            // Количество рекламы, необходимой для запуска звездопада
-const RECOVER_MINUTES = 25;                       // Время восстановления просмотра одной рекламы в минутах
-const RECOVER_MS = RECOVER_MINUTES * 60 * 1000;   // Время восстановления просмотра одной рекламы в миллисекундах
-const FULL_RECOVER_MS = RECOVER_MS * MAX_FUEL; // Полное время восстановления заряда в миллисекундах
-
-// Элементы балланса
 const balance_tokens = document.getElementById('tokens-count');  // Балланс токенов
 const balance_stars = document.getElementById('released-count'); // Балланс выведенных звезд
 
-// Связанные с рекламой элементы страницы
-const advertise_fuel = document.getElementById('advertise-fuel');     // <p> с доступным к просмотру количеством рекламы
-const advertise_charge = document.getElementById('advertise-charge'); // <p> с зарядом генератора
-/*const advertise_status = document.getElementById('status');           // <p> для надписи под кнопкой просмотра рекламы*/
-const advertise_lasttime = document.getElementById('advertise-lasttime'); // <p> с оставшимся временем заряда топливной единицы
-const advertise_button = document.getElementById('button-ad');        // Кнопка просмотра рекламы
-const advertise_watched = document.getElementById('ad-count');        // Общее количество просмотренной рекламы
+const advertise_fuel = document.getElementById('advertise-fuel');
+const advertise_charge = document.getElementById('advertise-charge');
+const advertise_status = document.getElementById('status');
+const advertise_lasttime = document.getElementById('advertise-lasttime');
+const advertise_button = document.getElementById('button-ad');
 
-const STORAGE_KEY = 'ad_state'; // Ключ локального хранилища данных
+const daily_button = document.getElementById('button-daily');
+
+const STORAGE_KEY = 'ad_state';
 
 // ✓ Функция загрузки пользовательских данных
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), recoverStart: null };
+  if (!raw) return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, recoverStart: null };
   try {
     const s = JSON.parse(raw);
     return {
@@ -45,10 +40,11 @@ function loadState() {
       fuel: Math.min(MAX_FUEL, Math.max(0, Math.floor(s.fuel || 0))),        // Текущее количество топлива
       charge: Math.min(MAX_CHARGE, Math.max(0, Math.floor(s.charge || 0))), // Текущее количество зарядов генератора
       lastUpdate: s.lastUpdate || Date.now(), // Время последнего обновления
+      dailyEnabled: Math.min(MAX_DAILY, Math.max(0, Math.floor(s.dailyEnabled || 0))),
       recoverStart: s.recoverStart || null    // Время начала обновления, если количество зарядов меньше максимального
     };
   } catch {
-    return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), recoverStart: null };
+    return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, recoverStart: null };
   }
 }
 
@@ -58,27 +54,36 @@ function saveState(state) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); 
 }
 
-// ✓ Обработка нажатия кнопки просмотра рекламы
-const AdController = window.Adsgram.init({ blockId: "20435" }); // Для adsgram_ai
+// ✓ Обработка нажатия кнопок просмотра рекламы
+const RewarderAdButton = window.Adsgram.init({ blockId: "20435" }); // Для adsgram_ai
+const InitAdButton = window.Adsgram.init({ blockId: "int-20487" }); // Для adsgram_ai
+const InitAdDaily = window.Adsgram.init({ blockId: "int-20619" });  // Для adsgram_ai
 advertise_button.addEventListener('click', () => {
-  if (state.fuel <= 0) { // Если не хватает топлива в генераторе
+  if (state.fuel <= 0) {
     showNotification('notif-question');
-    alert('В данный момент просмотр рекламных видеороликов недоступен. Чтобы снять ограничение, требуется подождать восстановления');
     return;
-  } else if (state.charge >= MAX_CHARGE) { // Если накоплена шкала генератора
-    generatorStart(state);
-    return;
+  } else if (state.charge >= MAX_CHARGE) {
+    generatorStart(state); return;
   } else if (state.fuel > 0 && state.charge < MAX_CHARGE) {
-    /* advertise_button.disabled = true; // Блокируем кнопку, пока идет загрузка и показ*/
-    AdController.show();
-    /* advertise_button.disabled = false;*/
+    switch (state.fuel % 2) {
+      case 1: InitAdButton.show(); break;
+      default: RewarderAdButton.show();
+    } return;
+  }
+});
+daily_button.addEventListener('click', () => {
+  if (state.dailyEnabled >= 0) {
+    switch (state.dailyEnabled % 2) {
+      case 1: InitAdDaily.show(); break;
+      default: InitAdDaily.show();
+    }
   }
 });
 
-AdController.addEventListener('onReward', () => {
-    giveReward(state);
-});
-
+// Функции награждения за просмотр рекламы
+RewarderAdButton.addEventListener('onReward', () => { giveReward(state); });
+InitAdButton.addEventListener('onReward', () => { giveReward(state); });
+InitAdDaily.addEventListener('onReward', () => {});
 function giveReward(state) {
   state.fuel = Math.max(0, Math.floor(state.fuel || 0) - 1);
   state.charge = Math.min(MAX_CHARGE, Math.floor(state.charge || 0) + 1);
@@ -130,10 +135,10 @@ function updateUI(state) {
 
   // Режимы кнопки просмотра рекламы
   if ((state.fuel <= 0 || advertise_button.disabled === true) && state.charge < MAX_CHARGE) { 
-    advertise_button.classList.add('disabled'); 
+    advertise_button.classList.add('button-disabled'); 
     advertise_button.textContent = `Нет топлива`;
   } else { 
-    advertise_button.classList.remove('disabled');
+    advertise_button.classList.remove('button-disabled');
     advertise_button.textContent = `Смотреть рекламу`; 
   }
   if (state.charge >= MAX_CHARGE) { 

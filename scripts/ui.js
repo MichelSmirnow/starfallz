@@ -29,7 +29,45 @@ if (tg) {
     /* perfomance_site.style.display = `block`;
     perfomance_main.style.display = `none`;*/
     console.log('Запущено вне Telegram Web App, запускаем сайт для ознакомления с приложением...'); 
+}/*
+// Информация о пользователе
+// Проверим, что WebApp доступен
+const tg = window.Telegram?.WebApp || null;
+
+// Функция безопасно получить поле из initDataUnsafe
+function getUserData() {
+  if (!tg || !tg.initDataUnsafe || !tg.initDataUnsafe.user) {
+    return null;
+  }
+  return tg.initDataUnsafe.user;
 }
+
+// Вставка в DOM
+function renderUser(user) {
+  if (!user) return;
+  document.getElementById('profile-info-name').textContent = user.first_name || '';
+  document.getElementById('profile-info-tag').textContent = user.id || '';
+
+  // Попытка получить фото — обычно user.photo_url может отсутствовать
+  const avatarEl = document.getElementById('avatar');
+  const photoUrl = user.photo_url || user.photo?.small_file_id || null;
+
+  if (photoUrl) {
+    // Если это прямой URL — вставляем
+    if (photoUrl.startsWith('http')) {
+      avatarEl.src = photoUrl;
+    } else {
+      // Если получен file_id, потребуется серверный запрос к Bot API для получения файла
+      avatarEl.alt = 'Фото доступно через Bot API (file_id)';
+      avatarEl.src = ''; // можно поставить заглушку
+    }
+  } else {
+    avatarEl.src = ''; // заглушка или avatarEl.style.display='none'
+  }
+}
+
+const user = getUserData();
+renderUser(user);*/
 
 // ======================================== Декорации и интерфейс ======================================== \\
 

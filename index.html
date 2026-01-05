@@ -4,29 +4,76 @@
     <meta charset="utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>StarFallz - Бесплатные звезды Телеграм</title> 
+    <link type="image/x-icon" href="favicon.ico" rel="shortcut icon">
+    <link type="Image/x-icon" href="favicon.ico" rel="icon">
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script> <!-- Скрипт для работы с рекламой adsgram -->
-    <link rel="stylesheet" href="styles/fonts.css"> <!-- Шрифты приложения -->
-    <link rel="stylesheet" href="styles/mode.css">  <!-- Режимы отображения окна приложения -->
+    <link rel="stylesheet" href="styles/fonts.css">   <!-- Шрифты приложения -->
+    <link rel="stylesheet" href="styles/mode.css">    <!-- Режимы отображения окна приложения -->
     <link rel="stylesheet" href="styles/general.css"> <!-- Общие классы отображения и анимации -->
-    <link rel="stylesheet" href="styles/deco.css">  <!-- Стиль окружения приложения -->
-    <link rel="stylesheet" href="styles/ui.css">    <!-- Стиль пользовательского интерфейса -->
+    <link rel="stylesheet" href="styles/deco.css">    <!-- Стиль окружения приложения -->
+    <link rel="stylesheet" href="styles/ui.css">      <!-- Стиль пользовательского интерфейса -->
 </head> 
 <body>
-    <div id="20435"></div> <!-- Контейнер для рекламы -->
+    <!-- Контейнеры для рекламы -->
+    <div id="20435"></div>
 
     <!-- Страница приложения, если оно запущено не в telegram -->
-    <div id="site"></div>
+    <div id="site">
+
+    </div>
 
     <!-- Основное окно приложения -->
     <div id="main">
-        <div id="profile" class="panel_bottom"> <!-- Настройки (Левая боковая панель) -->
+        <!-- Профиль (правая боковая панель) -->
+        <div id="profile" class="panel_bottom">
             <h1>Профиль</h1>
-        </div>
-        <div id="daily" class="panel_bottom"> <!-- Профиль (правая боковая панель) -->
-            <h1>Ежедневник</h1>
-            <p>Смотрите 2 рекламных видео каждый день, чтобы получить большую награду к концу недели!</p>
+            <div id="profile-info">
+                <div><img id="avatar" alt="avatar" width="120" height="120" /></div>
+                <div>
+                    <p>Имя: <span id="profile-info-name"></span></p>
+                    <p>ID: <span id="profile-info-tag"></span></p>
+                    <p>Дата регистрации: <span id="profile-info-register"></span></p>
+                </div>
+            </div>
+            <details id="achivements" class="profile-details">
+                <summary>Достижения</summary>
+            </details>
+            <details id="settings" class="profile-details">
+                <summary>Настройки</summary>
+                <p></p>
+                <h3>Музыка и звук</h3>
+                <div class="columns"><input type="checkbox" id="settings-audio" class="settings-checkbox" checked="checked"/><p>Звуковые эффекты</p></div>
+                <div class="columns"><input type="checkbox" id="settings-music" class="settings-checkbox" checked="checked"/><p>Музыка на фоне</p></div>
+                <div class="columns"><input type="checkbox" id="settings-animations" class="settings-checkbox" checked="checked"/><p>Анимация обстановки</p></div>
+                <div class="columns"><input type="checkbox" id="settings-" class="settings-checkbox"/><p>LDM (Низкое качество графики)</p></div>
+                <div class="columns"><input type="checkbox" id="settings-" class="settings-checkbox"/><p></p></div>
+                <div class="columns"><input type="checkbox" id="settings-" class="settings-checkbox"/><p></p></div>
+            </details>
         </div>
 
+        <!-- Ежедневник (левая боковая панель) -->
+        <div id="daily" class="panel_bottom">
+            <h1>Ежедневник</h1>
+            <div id="daily-desc" class="columns">
+                <span>
+                    <p>Смотрите по 2 рекламных видео каждый день, чтобы получить большую награду к концу недели!</p>
+                    <p>А</p>
+                    <button id="button-daily">Смотреть рекламу</button>
+                </span>
+                <img id="daily-nika" src="images/daily-nika.png" alt="Ника с плюшевым мишкой в руках сидит на большом красном подарке с желтой лентой"/>
+            </div>
+            <div id="daily-gallery" class="columns">
+                <div id="daily-day-1" class="daily-gallery-element"><p>День 1</p><div id=""></div><img  /><button>Закрыто</button></div>
+                <div id="daily-day-2" class="daily-gallery-element"><p>День 2</p><div id=""></div><img /><button>Закрыто</button></div>
+                <div id="daily-day-3" class="daily-gallery-element"><p>День 3</p><div id=""></div><img /><button>Закрыто</button></div>
+                <div id="daily-day-4" class="daily-gallery-element"><p>День 4</p><div id=""></div><img /><button>Закрыто</button></div>
+                <div id="daily-day-5" class="daily-gallery-element"><p>День 5</p><div id=""></div><img /><button>Закрыто</button></div>
+                <div id="daily-day-6" class="daily-gallery-element"><p>День 6</p><div id=""></div><img /><button>Закрыто</button></div>
+                <div id="daily-day-7" class="daily-gallery-element"><p>День 7</p><div id=""></div><img src="images/daily-gift.png" alt="Изображение накопленного подарка" /><button>Закрыто</button></div>
+            </div>
+        </div>
+
+        <!-- Основное информационное окно -->
         <div id="background"></div>
         <div id="bg-container"> <!-- Декорации и элементы поверх декораций -->
             <div id="parallax-city"><img src="images/parrallax-city.png" alt="Город на заднем фоне (Просмотр с вершины)" /></div>
