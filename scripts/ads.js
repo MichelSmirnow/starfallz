@@ -66,7 +66,10 @@ advertise_button.addEventListener('click', () => {
     generatorStart(state); return;
   } else if (state.fuel > 0 && state.charge < MAX_CHARGE) {
     switch (state.fuel % 2) {
-      case 1: InitAdButton.show(); break;
+      case 1: InitAdButton.show()
+      .then((result) => { giveReward(state); 
+      }).catch((result) => { alert('Произошла ошибка во время просмотра рекламного видеоролика: ', result); }); 
+      break;
       default: RewarderAdButton.show();
     } return;
   }
@@ -74,16 +77,19 @@ advertise_button.addEventListener('click', () => {
 daily_button.addEventListener('click', () => {
   if (state.dailyEnabled >= 0) {
     switch (state.dailyEnabled % 2) {
-      case 1: InitAdDaily.show(); break;
-      default: InitAdDaily.show();
+      case 1: InitAdDaily.show().then((result) => {
+
+      }).catch((result) => {alert('Произошла ошибка во время просмотра рекламного видеоролика: ', result);}); 
+      break;
+      default: InitAdDaily.show().then((result) => {
+        
+      }).catch((result) => {alert('Произошла ошибка во время просмотра рекламного видеоролика: ', result);});
     }
   }
 });
 
-// Функции награждения за просмотр рекламы
+// Функции награждения за просмотр рекламы (Только для type reward!)
 RewarderAdButton.addEventListener('onReward', () => { giveReward(state); });
-InitAdButton.addEventListener('onReward', () => { giveReward(state); });
-InitAdDaily.addEventListener('onReward', () => {});
 function giveReward(state) {
   state.fuel = Math.max(0, Math.floor(state.fuel || 0) - 1);
   state.charge = Math.min(MAX_CHARGE, Math.floor(state.charge || 0) + 1);

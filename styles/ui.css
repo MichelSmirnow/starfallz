@@ -10,10 +10,11 @@
 }
 
 /* ✓ Кнопка просмотра рекламы (Активный режим)*/
-#button-ad {
+#button-ad, #button-daily {
     position: static;
     z-index: 50;
     width: 70%;
+    max-width: 300px;
     padding: 10px 20px;
     margin: 0;
     
@@ -30,14 +31,14 @@
     box-shadow: 0 5px 15px 0 rgba(246, 152, 11, 0.7);
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
 }
-#button-ad:hover {
+#button-ad:hover, #button-daily:hover {
     background-position: right center;
     box-shadow: 0 5px 40px 0 rgba(246, 136, 11, 0.7);
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
     padding: 12px 22px;
     cursor: pointer;
 }
-#button-ad:active {
+#button-ad:active, #button-daily:active {
     background-position: left center;
     padding: 6px 16px;
     transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, margin-top 1s ease;
@@ -346,16 +347,15 @@
 }
 
 /* ==================================== Свойства левой боковой панели ==================================== */
-
-/* Общие свойства боковых панелей */
 .panel_bottom {
     z-index: 0;
     position: fixed;
+    overflow-y: scroll;
     top: 30px;
     background-color: rgba(0, 0, 0, 0.9);
     border-radius: 30px;
     padding: 25px 50px;
-    padding-top: 40px;
+    padding-top: 50px;
     opacity: 0.05;
     height: 77%;
     transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s, opacity 0.5s ease, width 1s ease;
@@ -374,6 +374,11 @@
 }
 
 #daily { left: 30px; text-align: left; transform: translateX(0);}
+#daily-desc {
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
 #daily-nika {
     min-width: 200px;
     width: 40%;
@@ -381,33 +386,79 @@
     margin-left: 20px;
 }
 #button-daily {
-    padding: 10px 20px;
-    margin: 5px;
-    width: 70%;
+    width: 100% !important;
 }
+
+/* Галерея карточек */
 #daily-gallery {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 16px;
     box-sizing: border-box;
 }
 .daily-gallery-element {
     margin: 5px;
-    padding: 5px;
+    padding: 0px 10px 10px 10px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-width: 0;
+
+    background-image: linear-gradient(to bottom left, #3f1f1f 0%, #472323 50%, #500d0d 100%);
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 .daily-gallery-element img {
-    min-width: 50px;
+    min-width: 55px;
     max-width: 100px;
     width: 80%;
     height: auto;
     margin-bottom: 15px;
+}
+.daily-gallery-element button {
+    width: 100%;
+    padding: 5px;
+    border: 0;
+    background-size: 150% auto;
+    background-position: right center;
+    background-image: linear-gradient(to left, #5f1212 0%, #830d0d 60%, #640f0c 100%);
+    border-radius: 100px;
+    box-shadow: 0 0 15px #000;
+
+    font-family: 'FindSansPro-Light';
+    font-size: small;
+    text-align: center;
+    text-shadow: 0 0 10px #000;
+    color: #E5E5E5;
+
+    transition: background-position 0.5s ease, padding 0.5s ease;
+}
+.daily-gallery-element button:hover {
+    background-position: left center;
+    padding: 7px;
+    transition: background-position 0.5s ease, padding 0.5s ease;
+}
+.daily-gallery-element button:active {
+    background-position: right center;
+    padding: 3px;
+    transition: background-position 0.5s ease, padding 0.5s ease;
+}
+
+.daily-gallery-element.activated {
+    background-image: linear-gradient(to left, #0b5e12 0%, #24c41f 60%, #095a14 100%);
+}
+.daily-gallery-element.activated button {
+    background-image: linear-gradient(to left, #0b5e12 0%, #24c41f 60%, #095a14 100%);
+}
+
+.daily-gallery-element.disabled {
+    background-image: linear-gradient(to left, #754f08 0%, #c49d1f 60%, #64340c 100%);
+}
+.daily-gallery-element.disabled button {
+    background-image: linear-gradient(to left, #754f08 0%, #c49d1f 60%, #64340c 100%);
 }
 
 #profile { right: 30px; text-align: right; transform: translateX(0);}
