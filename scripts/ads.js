@@ -9,7 +9,7 @@
 
 \***********************************************************************************************************/
 const MAX_FUEL = 7;
-const MAX_CHARGE = 4;
+const MAX_CHARGE = 5;
 const RECOVER_MINUTES = 25;
 const RECOVER_MS = RECOVER_MINUTES * 60 * 1000;
 const FULL_RECOVER_MS = RECOVER_MS * MAX_FUEL;
@@ -24,14 +24,12 @@ const advertise_status = document.getElementById('status');
 const advertise_lasttime = document.getElementById('advertise-lasttime');
 const advertise_button = document.getElementById('button-ad');
 
-const daily_button = document.getElementById('button-daily');
-
 const STORAGE_KEY = 'ad_state';
 
 // ✓ Функция загрузки пользовательских данных
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, recoverStart: null };
+  if (!raw) return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, dailyDay: 0, recoverStart: null };
   try {
     const s = JSON.parse(raw);
     return {
@@ -41,10 +39,12 @@ function loadState() {
       charge: Math.min(MAX_CHARGE, Math.max(0, Math.floor(s.charge || 0))), // Текущее количество зарядов генератора
       lastUpdate: s.lastUpdate || Date.now(), // Время последнего обновления
       dailyEnabled: Math.min(MAX_DAILY, Math.max(0, Math.floor(s.dailyEnabled || 0))),
+      dailyDay: Math.min(7, Math.max(0, Math.floor(s.dailyDay || 0))),
+      dailyUpdTime: s.dailyUpdTime || Date.now(),
       recoverStart: s.recoverStart || null    // Время начала обновления, если количество зарядов меньше максимального
     };
   } catch {
-    return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, recoverStart: null };
+    return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, dailyDay: 0, recoverStart: null };
   }
 }
 
@@ -66,25 +66,12 @@ advertise_button.addEventListener('click', () => {
     generatorStart(state); return;
   } else if (state.fuel > 0 && state.charge < MAX_CHARGE) {
     switch (state.fuel % 2) {
-      case 1: InitAdButton.show()
-      .then((result) => { giveReward(state); 
+      case 1: InitAdButton.show().then((result) => { 
+        giveReward(state); 
       }).catch((result) => { alert('Произошла ошибка во время просмотра рекламного видеоролика: ', result); }); 
       break;
       default: RewarderAdButton.show();
     } return;
-  }
-});
-daily_button.addEventListener('click', () => {
-  if (state.dailyEnabled >= 0) {
-    switch (state.dailyEnabled % 2) {
-      case 1: InitAdDaily.show().then((result) => {
-
-      }).catch((result) => {alert('Произошла ошибка во время просмотра рекламного видеоролика: ', result);}); 
-      break;
-      default: InitAdDaily.show().then((result) => {
-        
-      }).catch((result) => {alert('Произошла ошибка во время просмотра рекламного видеоролика: ', result);});
-    }
   }
 });
 
@@ -107,53 +94,6 @@ function generatorStart(state) {
   showNotification('notif-starfall');
   saveState(state);
   updateUI(state);
-}
-
-// Обновление пользовательского интерфейса (данными из струкруры state)
-function updateUI(state) {
-  // Шкалы генератора
-  const fuel_percentage = (state.fuel / MAX_FUEL) * 100;
-  const charge_percentage = (state.charge / MAX_CHARGE) * 100;
-  setBar(fuel_percentage, 'generator-bar-fuel');
-  setBar(charge_percentage, 'generator-bar-charge');
-
-  // Надписи с данными
-  balance_tokens.textContent = `${state.tokens}`;
-  balance_stars.textContent = `${state.stars}`;
-  advertise_fuel.textContent = `${state.fuel} / ${MAX_FUEL}`;
-  advertise_charge.textContent = `${state.charge} / ${MAX_CHARGE}`;
-  /*advertise_status.textContent = `${state.charge} / ${MAX_CHARGE} просмотров доступно`;*/
-  advertise_button.disabled = state.fuel === 0; // Блокировка кнопки при недостаточном уровне топлива
-
-  // Топливо и заряд генератора
-  if (state.fuel >= MAX_FUEL) {
-    advertise_lasttime.textContent = `Полный бак`;
-  } else {
-    const now = Date.now();
-    const start = state.recoverStart || state.lastUpdate || now;
-    const elapsed = now - start;
-    const remainder = RECOVER_MS - (elapsed % RECOVER_MS);
-    const totalSec = Math.floor(remainder / 1000);
-    const m = Math.floor(totalSec / 60);
-    const s = totalSec % 60;
-    advertise_lasttime.textContent = `До новой топливной единицы: ${m}мин ${s}сек`;
-  }
-
-  // Режимы кнопки просмотра рекламы
-  if ((state.fuel <= 0 || advertise_button.disabled === true) && state.charge < MAX_CHARGE) { 
-    advertise_button.classList.add('button-disabled'); 
-    advertise_button.textContent = `Нет топлива`;
-  } else { 
-    advertise_button.classList.remove('button-disabled');
-    advertise_button.textContent = `Смотреть рекламу`; 
-  }
-  if (state.charge >= MAX_CHARGE) { 
-    advertise_button.classList.add('starfall');
-    advertise_button.textContent = `Начать звездопад`; 
-  } else { 
-    advertise_button.classList.remove('starfall'); 
-    advertise_button.textContent = `Смотреть рекламу`;
-  }
 }
 
 // ✓ Функция для добавления топливных единиц (восстановление по 1 единице каждые 25 минут)
@@ -185,8 +125,12 @@ state = applyRecovery(state);
 updateUI(state);
 window.addEventListener('beforeunload', () => saveState(state));
 
-// Таймеры обновления пользовательского интерфейса 
+// Общие таймеры
 let uiTimer = setInterval(() => {
   state = applyRecovery(state);
   updateUI(state);
 }, 1000);
+
+let saveTimer = setInterval(() => {
+  saveState(state);
+}, 10000);

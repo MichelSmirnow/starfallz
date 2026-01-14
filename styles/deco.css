@@ -1,70 +1,89 @@
-/* ✓ Статичная подложка окна */
 body {
     z-index: 0;
     display: block;
+    align-items: center;
+    justify-content: center;
     background-color: #171717;
     margin: 0;
     padding: 0;
 }
-
-/* ✓ Задний фон приложения */
 #background {
     z-index: 1;
     position: fixed;
     align-items: center;
     justify-content: center;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    background-image: url('../images/background.png');
-    background-repeat: no-repeat;
-    background-position: top;
-    background-attachment: fixed;
+    top: 0; left: 50%; transform: translateX(-50%);
     height: 100vh;
     width: 100%;
     margin: 0;
     padding: 0;
+    background-size: 100%;
+    background-image: url('../images/decorations/background.png');
+    background-repeat: no-repeat;
+    background-position: top;
+    background-attachment: fixed;
+    transition: width 1s ease, background-size 1s ease, opacity 0.5s ease;
 }
-#bg-container {
+#scenery {
     z-index: 2;
-    position: relative;
+    display: block;
+    position: absolute;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
+    top: 0; left: 50%; transform: translateX(-50%);
+    margin: 0;
     padding: 0;
+    transition: top 1s ease, width 1s ease, opacity 0.5s ease;
 }
-
-/* ✓ Оцентрованные элементов параллакса */
-#bg-container>div { 
+.scenery-element {
+    position: relative;
+    display: block;
+    height: 100vh;
     width: 100%;
-    position: absolute; 
-    left: 50%; top: 0; 
-    transform: translateX(-50%);
-    align-items: center;
-    justify-content: center; 
     padding: 0;
     margin: 0;
 }
-#bg-container>div>img { width: 100%; }
-/*#animations {
-    padding: 0;
-    margin: 0;
-}*/
-
-/* ✓ Элементы параллаксов фона */
-#parallax-city { z-index: 3; }
-#parallax-city-bottom { z-index: 4; }
-#parallax-mountain { z-index: 5; }
-
-#bg-scenery { z-index: 10; }
-/*
-#animation-nika-home { 
-    z-index: 20;
+.scenery-element div {
     position: absolute;
-    top: 1711px; left: 15px;
-    margin: 0;
+    left: 50%; transform: translateX(-50%);
+    width: 100%;
     padding: 0;
-    width: 469;
-    height: 789;
-}*/
+    margin: 0;
+    transition: width 1s ease;
+}
+.scenery-element div img, .scenery-postlayer img {width: 100%; padding: 0; margin: 0;}
 
-#advertise-container { z-index: 100; }
+.scenery-postlayer {
+    position: relative;
+    margin: 5vh 0;
+    width: 100%;
+    height: 0;
+    padding: 0;
+}
+#scenery-postlayer-image {
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 100%;
+    margin: -45% 0;
+    padding: 0;
+}
+
+#scenery-stars {height: 90vh !important}
+
+/* Элементы нижнего параллакса */
+#scenery-stars-parallax {z-index: 7; bottom: 0;}
+#scenery-home-parallax  {z-index: 6; bottom: 0;}
+
+/* Элементы prelayer параллакса */
+#scenery-home-prelayer {z-index: 8; top: 0;}
+
+/* Элементы среднего уровня параллакса*/
+#scenery-stars-scenery {z-index: 13; bottom: 0;}
+#scenery-home-scenery {z-index: 12; bottom: 0;}
+/*#scenery-income-scenery {z-index: 11; top: 0 !important; margin-top: 100px;}*/
+
+/* Элементы postlayer параллакса */
+#scenery-stars-postlayer {z-index: 100;}
+#scenery-home-postlayer {z-index: 101;}
+
+#footer {height: 100% !important; padding: 0; margin: 0;}

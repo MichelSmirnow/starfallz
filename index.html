@@ -3,23 +3,39 @@
 <head> 
     <meta charset="utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>StarFallz - Бесплатные звезды Телеграм</title> 
     <link type="image/x-icon" href="favicon.ico" rel="shortcut icon">
     <link type="Image/x-icon" href="favicon.ico" rel="icon">
+
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script> <!-- Скрипт для работы с рекламой adsgram -->
     <link rel="stylesheet" href="styles/fonts.css">   <!-- Шрифты приложения -->
     <link rel="stylesheet" href="styles/mode.css">    <!-- Режимы отображения окна приложения -->
     <link rel="stylesheet" href="styles/general.css"> <!-- Общие классы отображения и анимации -->
     <link rel="stylesheet" href="styles/deco.css">    <!-- Стиль окружения приложения -->
     <link rel="stylesheet" href="styles/ui.css">      <!-- Стиль пользовательского интерфейса -->
+    <link rel="stylesheet" href="styles/site.css">    <!-- Стиль приложения, открытого вне telegram -->
 </head> 
 <body>
     <!-- Контейнеры для рекламы -->
-    <div id="20435"></div>
+    <div id="20435"></div><div id="int-20487"></div><div id="int-20619"></div>
 
     <!-- Страница приложения, если оно запущено не в telegram -->
     <div id="site">
-
+        <div id="site-container">
+            <img src="" width="200px" height="200px" alt="" />
+            <h1>У-упс, приложение открыто <b>вне telegram</b></h1>
+            <p>К сожалению, не получится получать звезды и подарки за просмотр рекламы вне телеграмма.</p>
+            <p>Чтобы играть в starfallz, необходимо:</p>
+            <ol>
+                <li>Скачать telegram с официального сайта или из магазина приложений</li>
+                <li>Найти бота @starfallz_bot или перейти в него через канал @starfallz_chan</li>
+            </ol>
+            <p>Чтобы ускорить нахождение приложения, можно перейти по <a href="https://t.me">ссылке здесь</a> или навести камеру телефона на QR-код:</p>
+            <img src="images/qr.png" width="300" height="300" alt="QR-код для перехода в бота приложения" />
+            <p><i>Открывая данное приложение, Вы соглашаетесь с <a href="policy.html">политикой использования приложения Starfallz</a> в полном ее объеме.</i></p>
+        </div>
+        <div id="site-footer"><p>Starfallz, 2026</p></div>
     </div>
 
     <!-- Основное окно приложения -->
@@ -44,8 +60,14 @@
                 <h3>Музыка и звук</h3>
                 <div class="columns"><input type="checkbox" id="settings-audio" class="settings-checkbox" checked="checked"/><p>Звуковые эффекты</p></div>
                 <div class="columns"><input type="checkbox" id="settings-music" class="settings-checkbox" checked="checked"/><p>Музыка на фоне</p></div>
+                <h3>Графика</h3>
+                <select id="settings-graphics-mode" name="graphics-mode">
+                    <option value="best">Наилучшее качество</option>
+                    <option value="economy">Экономия ресурсов</option>
+                    <option value="low">Для слабых устройств</option>
+                </select>
                 <div class="columns"><input type="checkbox" id="settings-animations" class="settings-checkbox" checked="checked"/><p>Анимация обстановки</p></div>
-                <div class="columns"><input type="checkbox" id="settings-" class="settings-checkbox"/><p>LDM (Низкое качество графики)</p></div>
+                <div class="columns"><input type="checkbox" id="settings-parallax" class="settings-checkbox" checked="checked"/><p>Эффект параллакса</p></div>
                 <div class="columns"><input type="checkbox" id="settings-" class="settings-checkbox"/><p></p></div>
                 <div class="columns"><input type="checkbox" id="settings-" class="settings-checkbox"/><p></p></div>
             </details>
@@ -56,83 +78,80 @@
             <div class="columns"><h1>Ежедневник</h1><img src="images/ui-calendar.png" width="50px" height="50px" alt="Изображение календаря"></div>
             <div id="daily-desc" class="columns">
                 <div>
-                    <span id="daily-time"></span>
                     <p>Смотрите по 2 рекламных видео каждый день, чтобы получить большую награду к концу недели!</p>
                     <button id="button-daily">Смотреть рекламу</button>
+                    <p>Сегодня доступно к просмотру: <span id="daily-enabled">0</span>/2</p>
                 </div>
                 <img id="daily-nika" src="images/daily-nika.png" alt="Ника с плюшевым мишкой в руках сидит на большом красном подарке с желтой лентой"/>
             </div>
             <p><i>* Не забывайте каждый день открывать карточки - иначе накопленные рекламные ролики сгорят!</i></p>
             <div id="daily-gallery" class="columns">
-                <div id="daily-day-1" class="daily-gallery-element"><p>День 1</p><div id=""></div><img src="images/ui-star.png" alt="Изображение звезды" /><button>Закрыто</button></div>
-                <div id="daily-day-2" class="daily-gallery-element"><p>День 2</p><div id=""></div><img src="images/ui-star.png" alt="Изображение звезды" /><button>Закрыто</button></div>
-                <div id="daily-day-3" class="daily-gallery-element"><p>День 3</p><div id=""></div><img src="images/ui-star.png" alt="Изображение звезды" /><button>Закрыто</button></div>
-                <div id="daily-day-4" class="daily-gallery-element"><p>День 4</p><div id=""></div><img src="images/ui-star.png" alt="Изображение звезды" /><button>Закрыто</button></div>
-                <div id="daily-day-5" class="daily-gallery-element"><p>День 5</p><div id=""></div><img src="images/ui-star.png" alt="Изображение звезды" /><button>Закрыто</button></div>
-                <div id="daily-day-6" class="daily-gallery-element"><p>День 6</p><div id=""></div><img src="images/ui-star.png" alt="Изображение звезды" /><button>Закрыто</button></div>
-                <div id="daily-day-7" class="daily-gallery-element"><p>День 7</p><div id=""></div><img src="images/daily-gift.png" alt="Изображение накопленного подарка" /><button>Закрыто</button></div>
+                <div id="daily-day-1" class="daily-gallery-element"><p>День 1</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-1">Закрыто</button></div>
+                <div id="daily-day-2" class="daily-gallery-element"><p>День 2</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-2">Закрыто</button></div>
+                <div id="daily-day-3" class="daily-gallery-element"><p>День 3</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-3">Закрыто</button></div>
+                <div id="daily-day-4" class="daily-gallery-element"><p>День 4</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-4">Закрыто</button></div>
+                <div id="daily-day-5" class="daily-gallery-element"><p>День 5</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-5">Закрыто</button></div>
+                <div id="daily-day-6" class="daily-gallery-element"><p>День 6</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-6">Закрыто</button></div>
+                <div id="daily-day-7" class="daily-gallery-element"><p>День 7</p><img src="images/daily-gift.png" alt="Изображение накопленного подарка" /><button id="daily-button-7">Закрыто</button></div>
             </div>
         </div>
 
         <!-- Основное информационное окно -->
         <div id="background"></div>
-        <div id="bg-container"> <!-- Декорации и элементы поверх декораций -->
-            <div id="parallax-city"><img src="images/parrallax-city.png" alt="Город на заднем фоне (Просмотр с вершины)" /></div>
-            <!-- <div id="parrallax-city-bottom"><img src="images/parrallax-city-bottom.png" alt="Город на заднем фоне (присмотр из долины)" /></div>
-            <div id="parallax-mountain"><img src="images/parrallax-mountain.png" alt="Гора на заднем фоне долины" /></div> -->
-
-            <div id="bg-scenery">
-                <img src="images/scenery.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
-                <button id="button-generator"></button>
-                <button id="button-clocks"></button>
-            </div>
-            <!-- <div id="animations">
-                <img id="animation-nika-home" src="animations/nika_home.gif" alt="Анимированное изображение Ники, home" />
-            </div> -->
-            <div id="advertise-container">
-                <button id="button-ad">Смотреть рекламу</button>
-                <div id="generator-info">
-                    <h1>Генератор звездопада</h1>
-                    <p>Заполните шкалу заряда генератора до конца, чтобы запустить звездопад и получить жетоны!</p>
-                    <div id="generator-info-container">
-                        <div class="generator-info-side">
-                            <div id="generator-bar-fuel" class="generator-bar"></div>
-                            <p id="advertise-fuel">0/0</p>
-                            <h2>Топливо</h2>
-                            <p>Сколько рекламных видеороликов можно посмотреть</p>
+        <div id="scenery">
+            <div id="scenery-stars" class="scenery-element">
+                <div id="scenery-stars-parallax"><img src="images/decorations/scenery_stars_parallax.png" alt="Город на заднем фоне (Просмотр с вершины)" /></div>
+                <div id="scenery-stars-scenery"><img src="images/decorations/scenery_stars.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" /></div>
+                <button id="scenery-stars-button" class="scenery-button"></button>
+                <div id="scenery-stars-container" class="scenery-element-container">
+                    <button id="button-ad">Смотреть рекламу</button>
+                    <div id="generator-info"><!--
+                        <h1>Генератор звездопада</h1>
+                        <p>Заполните шкалу заряда генератора до конца, чтобы запустить звездопад и получить жетоны!</p>
+                        <div id="generator-info-container">
+                            <div class="generator-info-side">
+                                <div id="generator-bar-fuel" class="generator-bar"></div>
+                                <p id="advertise-fuel">0/0</p>
+                                <h2>Топливо</h2>
+                                <p>Сколько рекламных видеороликов можно посмотреть</p>
+                            </div>
+                            <div class="generator-info-side">
+                                <div id="generator-bar-charge" class="generator-bar"></div>
+                                <p id="advertise-charge">0/0</p>
+                                <h2>Заряд генератора</h2>
+                                <p>Оставшиеся просмотры рекламы до запуска звездопада</p>
+                            </div>
                         </div>
-                        <div class="generator-info-side">
-                            <div id="generator-bar-charge" class="generator-bar"></div>
-                            <p id="advertise-charge">0/0</p>
-                            <h2>Заряд генератора</h2>
-                            <p>Оставшиеся просмотры рекламы до запуска звездопада</p>
-                        </div>
+                        <p id="advertise-lasttime"></p>
+                        <button id="button-close-generator">Закрыть</button>-->
                     </div>
-                    <p id="advertise-lasttime"></p>
-                    <button id="button-close-generator">Закрыть</button>
                 </div>
             </div>
+            <div id="scenery-stars-postlayer" class="scenery-postlayer"><img id="scenery-postlayer-image" src="images/decorations/scenery_stars_postlayer.png" alt="" /></div>
+            <div id="scenery-home" class="scenery-element">
+                <div id="scenery-home-parallax"><img src="images/decorations/scenery_home_parallax.png" alt="Город на заднем фоне (Просмотр из долины)" /></div>
+                <div id="scenery-home-prelayer"><img src="images/decorations/scenery_home_prelayer.png"/></div>
+                <div id="scenery-home-scenery"><img src="images/decorations/scenery_home.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" /></div>
+                <button id="scenery-home-button" class="scenery-button"></button>
+                <div id="scenery-home-container" class="scenery-element-container">
+                </div>
+            </div>
+            <div id="scenery-income" class="scenery-element">
+                <img src="#" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
+                <button id="scenery-income-button" class="scenery-button"></button>
+                <div id="scenery-income-container" class="scenery-element-container">    
+                </div>
+            </div>
+            <div id="footer" class="scenery-element">
+                <div><img src="images/decorations/footer.png" alt="Starfallz, 2026г."/></div>
+            </div>
         </div>
 
+            <!-- Элементы postlayer параллакса
+            <div id="scenery-home-postlayer" class="scenery-postlayer"><img src="#" alt="" /></div>-->
+
         <!-- Уведомления -->
-        <div id="notif-success" class="notification">
-            <img src="images/notif_success.png" alt="Рекламный видеоролик просмотрен успешно!"/>
-        </div>
-        <div id="notif-decline" class="notification">
-            <img src="images/notif_decline.png" alt="Просмотр прерван пользователем"/>
-        </div>
-        <div id="notif-question" class="notification">
-            <img src="images/notif_question.png" alt="Во время загрузки произошла ошибка" />
-        </div>
-        <div id="notif-achivement" class="notification">
-            <img src="images/notif_achivement.png" alt="Получено новое достижение!" />
-        </div>
-        <div id="notif-income" class="notification">
-            <img src="images/notif_income.png" alt="Звезды успешно выведены из игры!" />
-        </div>
-        <div id="notif-starfall" class="notification">
-            <img src="images/notif_starfall.png" alt="Звездопад завершен, +1 жетон на балланс" />
-        </div>
+        <div id="notification"></div>
 
         <!-- Пользовательские интерфейсы -->
         <div id="top-ui" class="ui-background">
@@ -143,14 +162,14 @@
         </div>
         <div id="bottom-ui" class="ui-background">
             <img id="bottom-ui-daily" src="images/bottom-ui-daily.png" />
-            <img id="bottom-ui-income" src="images/bottom-ui-income.png"/>
-            <img id="bottom-ui-star" src="images/bottom-ui-star.png" />
             <img id="bottom-ui-home" src="images/botton-ui-home.png"/>
+            <img id="bottom-ui-star" src="images/bottom-ui-star.png" />
+            <img id="bottom-ui-income" src="images/bottom-ui-income.png"/>
             <img id="bottom-ui-user" src="images/botton-ui-user.png"/>
         </div>
     </div>
 
-    <!-- Если окно приложения слишком маленькое -->
+    <!-- Режим маленького окна приложения -->
     <div id="toosmall">
         <img src="images/NikaCalm.png" width="180px" height="180px"/>
         <div>
@@ -167,9 +186,12 @@
         <div id="load-message">Загрузка приложения...</div>
     </div>
 
-    <script src="scripts/db.js"></script>  <!-- Скрипт базы данных -->
+    <!-- Скрипты внешнего объявления -->
+    <script src="scripts/daily.js"></script> <!-- Скрипт для поддержки просмотра рекламы -->
     <script src="scripts/ui.js"></script>  <!-- Скрипт для работы пользовательского интерфейса и декораций-->
     <script src="scripts/ads.js"></script> <!-- Скрипт для поддержки просмотра рекламы -->
+
+    <!-- Скрипты внутреннего объявления -->
     <script> /* ✓ Скрипт запрета исследования страницы*/
         // console.log = () => {};
         document.onselectstart = function() { return false; }; // Запрет выделения
