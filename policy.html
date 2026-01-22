@@ -4,127 +4,61 @@
     <link type="image/x-icon" href="favicon.ico" rel="shortcut icon">
     <link type="Image/x-icon" href="favicon.ico" rel="icon">
     <style>
-        html {
-            /*scroll-behavior: smooth;*/
-            width: 100vw;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-color: FFF;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            scroll-behavior: smooth;
-        }
+        /* Элементы интерфейса */
+        html { width: 100vw; margin: 0; padding: 0; scroll-behavior: smooth; overflow-x: hidden; }
+        body { background-color: #FFF; margin: 0; padding: 0; width: 100vw; scroll-behavior: smooth; }
+        #main { min-width: 200px; max-width: 800px; padding: 20px; margin: 0 auto; padding-top: 70px; scroll-behavior: smooth; }
+        #footer { text-align: center; font-size: medium; margin: 30px; }
 
-        #start {
-            z-index: 99;
-            position: fixed;
-            width: 50px;
-            height: 50px;
-            bottom: 50px;
-            right: 50px;
-            background-color: #7a16b4;
-            opacity: 0.7;
-            border-radius: 100px;
-        }
+        /* Кнопка возврата в начало страницы */
+        #start { z-index: 99; position: fixed; width: 50px; height: 50px; bottom: 50px; right: 50px; background-color: #7a16b4; opacity: 0.7; border-radius: 100px; box-shadow: 0 0 10px rgba(83, 6, 128, 0.75); backdrop-filter: blur(10px); transition: width 0.5s ease, height 0.5s ease, bottom 0.5s ease, right 0.5s ease; }
+        #start:hover { width: 60px; height: 60px; bottom: 45px; right: 45px; transition: width 0.5s ease, height 0.5s ease, bottom 0.5s ease, right 0.5s ease; }
+        #start:active { width: 40px; height: 40px; bottom: 55px; right: 55px; transition: width 0.5s ease, height 0.5s ease, bottom 0.5s ease, right 0.5s ease; }
+        #start img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 25px; height: 25px; backdrop-filter: blur(10px); transition: width 0.75s ease, height 0.75s ease;}
+        #start:hover img { width: 30px !important; height: 30px !important; transition: width 0.75s ease, height 0.75s ease; }
+        #start:active img { width: 20px !important; height: 20px !important; transition: width 0.75s ease, height 0.75s ease; }
 
-        #header {
-            z-index: 100;
-            position: fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            min-height: 50px;
-            width: 100%;
-            margin: 0;
-            padding: 5px 50px;
-
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            background-color: #FFF;
-        }
-        #header-left, #header-right {
-            position: absolute;
-            display: flex;
-            gap: 30px;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        }
-        #header-left { top: 0; left: 0; }
-        #header-right { top: 0; right: 0; }
-        #header-left h1 { font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: x-large; }
-
-        #main {
-            min-width: 200px;
-            max-width: 800px;
-            padding: 20px;
-            margin: 0 auto;
-            padding-top: 70px;
-            scroll-behavior: smooth;
-        }
-
-
-        label, p, li, a, figcaption { font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'; color: #000; }
+        /* Свойства заголовков и основного текста */
+        label, p, li, a { font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'; color: #000; font-size: 16px; }
         h1, h2, h3 { font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: #000; scroll-margin-top: 100px; }
-        h1 { font-size: xx-large; }
-        h2, h3 { font-size: x-large; }
-
-
-        p {
-            text-indent: 15px;
-        }
-        dd p, dt p {
-            text-indent: 0
-        }
-        hr {
-            opacity: 0.2;
-            margin: 20px 0;
-        }
-        strong {
-            color: #000;
-        }
-        
-        a {
-            color: #5b0b8a;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        a:hover, a:focus {
-            color: #7a16b4;
-            text-decoration: underline;
-        }
-
-        dt {
-            float: left;
-            width: 20%;
-            min-width: 100px;
-            font-weight: bold;
-            text-align: left;
-            padding-right: 10px;
-        }
+        h1 { font-size: 32px; }
+        h2, h3 { font-size: 24px; }
+        p { text-indent: 15px; }
+        dd p, dt p { text-indent: 0; }
+        hr { opacity: 0.2; margin: 20px 0; }
+        strong { color: #000; font-weight: bold; }
+        dt { float: left; width: 20%; min-width: 100px; font-weight: bold; text-align: left; padding-right: 10px; }
         dd { margin-left: 0; padding-left: 20px; }
-
         .float-image { float: right; }
+        
+        /* Навигационная панель */
+        #header { z-index: 100; position: fixed; display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 50px; width: 100%; margin: 0; padding: 5px 50px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); background-color: #FFF; }
+        #header-left, #header-right { position: absolute; display: flex; gap: 30px; align-items: center; justify-content: center; padding: 0; }
+        #header-left { top: 0; left: 0; } #header-right { top: 0; right: 0; }
+        #header-left h1 { font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; font-size: x-large; }
+        a { border: 0; color: #5b0b8a; text-decoration: none; font-weight: bold; transition: color 0.5s ease, font-size 0.5s ease; }
+        a:hover { border: 0; color: #8c1bce; text-decoration: underline; transition: color 0.5s ease, font-size 0.5s ease; }
+        #header a:hover { font-size: 18px; }
 
-        #footer { text-align: center; font-size: medium; margin: 40px; }
-
-        @media (max-width: 950px) { 
+        /* Узкий и широкий режимы просмотра */
+        @media (max-width: 950px) or (max-aspect-ratio: 1) { 
             .overflow-hidden { display: none; }  
             #main { width: 90%; } 
-            #header-left, #header-right { margin: 0 20px; font-size: small; min-width: 20px; flex-direction: row;} 
+            #header-left, #header-right { margin: 0 20px; min-width: 20px; flex-direction: row;} 
+            #header a {font-size: 14px;}
+            #header a:hover { font-size: 16px; }
         }
         @media (min-width: 950px) { 
             .overflow-hidden { display: block; } 
             #main { width: 70%; } 
-            #header-left, #header-right { margin: 0 50px; font-size: medium; min-width: 50px;} 
+            #header-left, #header-right { margin: 0 50px; min-width: 50px;} 
+            #header a {font-size: 16px;}
+            #header a:hover { font-size: 18px; }
         }
     </style>
 </head>
 <body>
-    <a id="start" href="#main"><img src="" width="30px" height="30px"/></a>
+    <a id="start" href="#main"><img src="images/up.png" width="25px" height="25px"/></a>
     <div id="header">
         <div id="header-left">
             <h1><b>Starfallz</b></h1>
