@@ -15,49 +15,17 @@ const RECOVER_MS = RECOVER_MINUTES * 60 * 1000;
 const FULL_RECOVER_MS = RECOVER_MS * MAX_FUEL;
 const MAX_DAILY = 2;
 
-const balance_tokens = document.getElementById('tokens-count');  // Балланс токенов
-const balance_stars = document.getElementById('released-count'); // Балланс выведенных звезд
-
 const advertise_fuel = document.getElementById('advertise-fuel');
 const advertise_charge = document.getElementById('advertise-charge');
 const advertise_status = document.getElementById('status');
 const advertise_lasttime = document.getElementById('advertise-lasttime');
 const advertise_button = document.getElementById('button-ad');
 
-const STORAGE_KEY = 'ad_state';
-
-// ✓ Функция загрузки пользовательских данных
-function loadState() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, dailyDay: 0, recoverStart: null };
-  try {
-    const s = JSON.parse(raw);
-    return {
-      stars: Math.max(0, Math.floor(s.stars || 0)),  // Текущее количество выведенных звезд
-      tokens: Math.max(0, Math.floor(s.tokens || 0)), // Текущее количество токенов
-      fuel: Math.min(MAX_FUEL, Math.max(0, Math.floor(s.fuel || 0))),        // Текущее количество топлива
-      charge: Math.min(MAX_CHARGE, Math.max(0, Math.floor(s.charge || 0))), // Текущее количество зарядов генератора
-      lastUpdate: s.lastUpdate || Date.now(), // Время последнего обновления
-      dailyEnabled: Math.min(MAX_DAILY, Math.max(0, Math.floor(s.dailyEnabled || 0))),
-      dailyDay: Math.min(7, Math.max(0, Math.floor(s.dailyDay || 0))),
-      dailyUpdTime: s.dailyUpdTime || Date.now(),
-      recoverStart: s.recoverStart || null    // Время начала обновления, если количество зарядов меньше максимального
-    };
-  } catch {
-    return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, dailyDay: 0, recoverStart: null };
-  }
-}
-
-// ✓ Функция сохранения пользовательских данных
-function saveState(state) { 
-  state.lastUpdate = Date.now();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); 
-}
-
-// ✓ Обработка нажатия кнопок просмотра рекламы
 const RewarderAdButton = window.Adsgram.init({ blockId: "20435" }); // Для adsgram_ai
 const InitAdButton = window.Adsgram.init({ blockId: "int-20487" }); // Для adsgram_ai
 const InitAdDaily = window.Adsgram.init({ blockId: "int-20619" });  // Для adsgram_ai
+
+// ✓ Обработка нажатия кнопок просмотра рекламы
 advertise_button.addEventListener('click', () => {
   if (state.fuel <= 0) {
     showNotification('notif-question');

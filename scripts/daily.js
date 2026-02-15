@@ -8,8 +8,7 @@
     Скрипт для мини-приложения телеграмм @starfallz_bot
 
 \***********************************************************************************************************/
-const daily_button = document.getElementById('button-daily');
-const daily_enabled = document.getElementById('daily-enabled');
+
 
 // ✓ обработка нажатия на кнопку
 daily_button.addEventListener('click', () => {
@@ -81,13 +80,6 @@ function changeDaily(card_id, button_id, card_mode) {
       daily_button.textContent = `Закрыто`;
     }
 }
-const daily_button_1 = document.getElementById('daily-button-1');
-const daily_button_2 = document.getElementById('daily-button-2');
-const daily_button_3 = document.getElementById('daily-button-3');
-const daily_button_4 = document.getElementById('daily-button-4');
-const daily_button_5 = document.getElementById('daily-button-5');
-const daily_button_6 = document.getElementById('daily-button-6');
-const daily_button_7 = document.getElementById('daily-button-7');
 daily_button_1.addEventListener('click', () => {fetchDaily(1)});
 daily_button_2.addEventListener('click', () => {fetchDaily(2)});
 daily_button_3.addEventListener('click', () => {fetchDaily(3)});

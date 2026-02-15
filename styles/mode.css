@@ -1,13 +1,20 @@
 /* Режим смартфона (Вертикальный) */
 @media (max-aspect-ratio: 1) or (max-width: 720px) {
     #toosmall { display: none; }
-    #background, #scenery {width: 100% !important;}
-    #scenery-home, #scenery-income {height: 100vh; min-height: 150vw; max-height: clamp(70vh, 150vw, 100vh);}
+    .panel_bottom { width: 70% !important; } #daily { left: -70px; } #profile { right: -70px; }
+    #background, #scenery { width: 100% !important; }
+    #scenery-stars { height: 90vh !important; min-height: 100vw !important; max-height: 180vw !important; } 
+    #scenery-home { height: 120vh !important; min-height: 150vw !important; max-height: 190vw !important; }
+    #scenery-income { height: 140vw !important; }
+    .scenery-postlayer { height: 15vw; }
 
-    .panel_bottom {width: 70% !important;}
+    #scenery-stars-container, #scenery-home-container { bottom: 45% !important;}
+
+
+
     #daily-desc {display: block !important; text-align: center !important;}
 
-    #button-ad {bottom: 65vw !important; font-size: medium !important;}
+    #scenery-button-ad {font-size: medium !important;}
     #advertise-container {top: 12vw;}
     #advertise-container.ad-container-opened {top: -17vh !important;}
 }
@@ -15,13 +22,18 @@
 /* Режим тачпада (Малый горизонтальный) */
 @media (min-aspect-ratio: 1) and (max-aspect-ratio: 1.4) and (min-width: 720px) {
     #toosmall { display: none; }
-    #background, #scenery {width: 70% !important;}
-    #scenery-home, #scenery-income {height: 130vh; min-height: clamp(100vh, 150vw, 130vh);}
+    .panel_bottom { width: 49% !important; } #daily { left: 30px; } #profile { right: 30px; }
+    #background, #scenery { width: 70% !important;}
+    #scenery-stars { height: 100vh !important; min-height: 70vw !important; } 
+    #scenery-home { height: 140vh !important; min-height: 110vw !important; max-height: 130vw !important; }
+    #scenery-income { height: 100vw !important; }
+    .scenery-postlayer { height: 10vw; }
 
-    .panel_bottom {width: 49% !important;}
+    #scenery-home-container { bottom: 35% !important;}
+   
+
     #daily-desc {display: flex !important;}
 
-    #button-ad {bottom: 45vw !important;}
     #advertise-container {top: 10vw;}
     #advertise-container.ad-container-opened {top: -17vh !important;}
 }
@@ -29,63 +41,91 @@
 /* Режим  ПК (Широкий горизонтальный) */
 @media (min-aspect-ratio: 1.4) and (min-width: 720px) {
     #toosmall { display: none; }
-    #background, #scenery {width: 50% !important;}
-    #scenery-home, #scenery-income {height: 150vh; min-height: clamp(100vh, 150vw, 130vh);}
+    .panel_bottom { width: 35% !important; } #daily { left: 30px; } #profile { right: 30px; }
+    #background, #scenery { width: 50% !important; }
+    #scenery-stars { height: 110vh !important; min-height: 50vw !important; } 
+    #scenery-home { height: 170vh !important; min-height: 70vw !important; max-height: 90vw !important;}
+    #scenery-income { height: 72vw !important; }
+    .scenery-postlayer { height: 7vw; }
 
-    .panel_bottom {width: 35% !important;}
+    #scenery-stars-container { bottom: 55% !important;}
+    #scenery-home-container { bottom: 35% !important;}
+
+   
+
+
+
     #daily-desc {display: flex !important;}
 
-    #button-ad {bottom: 30vw !important;}
     #advertise-container {top: 8vw;}
     #advertise-container.ad-container-opened {top: -17vh !important;}
 }
 
-/* Режим слишком маленького окна */
+
+
+
+
+/* ✓ Режим малого размера страницы */
 @media (max-width: 330px) or (max-height: 280px) {
     #main { display: none !important; }
+    #load { display: none !important; }
+    #toosmall { z-index: 99999; justify-content: center; align-items: center; padding: 5%; }
     @media (max-width: 330px) and (min-height: 280px ) {#toosmall{display: block !important;}}
     @media (min-width: 330px) and (max-height: 280px) {#toosmall{display: flex !important;}}
-    #toosmall { 
-        justify-content: center;
-        align-items: center;
-        padding: 5%;
-    }
-    #load { display: none !important; }
 }
 
-/* Загрузка страницы */
-#load {
-    position: fixed;
-    top:0; right:0; bottom:0; left:0;
-    display: flex;
+/* ✓ Окно загрузки страницы */
+#load { z-index: 999999; position: fixed; top: 0; right: 0; bottom: 0; left: 0; display: flex; flex-direction: column; box-sizing: border-box; align-items: center; justify-content: center; gap: 10px; padding: 20px; background-color: #171717; }
+#load img { display: block; width: 100%; max-width: 500px; height: auto; opacity: 0; transition: opacity 0.5s ease; }
+#load-message { color: #CACACA; font-family: 'StarfallVAGRounded-Regular'; font-size: large; text-align: center; line-height: 1.2; max-width: 60%; opacity: 1; transition: opacity 0.5s ease; }
+#load.hidden { z-index: 0; opacity: 0; pointer-events: none; transition: z-index 0.5s ease, opacity 0.5s ease; }
+
+/* Окно приложения, открытого вне telegram */
+#site {
+    display: none;
+    z-index: 999999;
+    width: 80%;
+    height: auto;
+    margin: 20px;
+    padding: 25px; padding-right: 50px;
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    align-items: left;
+    justify-content: left;
+    border-radius: 30px;
+    background-color: #111;
+    /* background-image: url('../images/site_background.png'); */
+    background-repeat: no-repeat;
+    background-position: top;
+    background-attachment: fixed;
+}
+#site-container {
+    z-index: 2;
+    display: block;
+    position: static;
     align-items: center;
     justify-content: center;
-    background-color: #171717;
-    z-index: 999999;
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px;
-    box-sizing: border-box;
+    width: 70%;
+    height: 80%;
+    margin: 0;
+    padding: 25px;
+    border-radius: 20px;
+    background-color: rgba(10, 10, 10, 0.25);
+    backdrop-filter: blur(5px);
+    text-align: center;
 }
-#load img {
-    width: 100%;
-    max-width: 500px;
+#site-footer {
+    width: 70%;
     height: auto;
-    display: block;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-#load-message {
-    color: #CACACA;
-    font-family: 'StarfallVAGRounded-Regular';
-    font-size: large;
-    max-width: 60%;
-    line-height: 1.2;
-    opacity: 1;
-    transition: opacity 0.5s ease;
-}
-#load.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
+    margin: 0;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    color: #D5D5D5;
+    text-align: center;
+    font-family: 'FindSansPro-Light';
+    font-size: medium;
 }

@@ -1,15 +1,9 @@
 /* Класс мягкого отображения скрытых элементов */
-.visible {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transition: opacity 0.5s ease, visible 0.5s ease;
-}
-.visible_block {
-    display: block !important;
-}
+.visible { opacity: 1 !important; visibility: visible !important; transition: opacity 0.5s ease, visibility 0.5s ease !important; }
+.hidden { opacity: 0 !important; visibility: hidden !important; transition: opacity 0.5s ease, visibility 0.5s ease; }
+.visible_block { display: block !important; }
 
 /* Стандартные шаблоны форматирования */
-.columns {
-    width: 100%;
-    display: flex;
-}
+.columns { width: 100%; display: flex !important; }
+.overflow-scroll { overflow-y: scroll; }
+.position-relative { position: relative; }

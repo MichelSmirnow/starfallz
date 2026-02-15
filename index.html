@@ -1,26 +1,30 @@
 <!doctype html> 
 <html lang="ru"> 
 <head> 
-    <meta charset="utf-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <title>StarFallz - Бесплатные звезды Телеграм</title> 
+    <meta charset="utf-8">
+    <meta name="language" content="ru">
+    <title>StarFallz - Бесплатные звезды Телеграмм</title> 
     <link type="image/x-icon" href="favicon.ico" rel="shortcut icon">
     <link type="Image/x-icon" href="favicon.ico" rel="icon">
+    <meta name="version" content="alpha 1.0.4">
+    <meta name="description" content="✨💸 Зарабатывайте бесплатные ТГ звёзды на просмотре рекламы! 📱💰🌟 Телеграм-канал: https://t.me/starfallz_chan 📢">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <script src="https://sad.adsgram.ai/js/sad.min.js"></script> <!-- Скрипт для работы с рекламой adsgram -->
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <link rel="stylesheet" href="styles/fonts.css">   <!-- Шрифты приложения -->
-    <link rel="stylesheet" href="styles/mode.css">    <!-- Режимы отображения окна приложения -->
     <link rel="stylesheet" href="styles/general.css"> <!-- Общие классы отображения и анимации -->
-    <link rel="stylesheet" href="styles/deco.css">    <!-- Стиль окружения приложения -->
+    <link rel="stylesheet" href="styles/mode.css">    <!-- Режимы отображения окна приложения -->
     <link rel="stylesheet" href="styles/ui.css">      <!-- Стиль пользовательского интерфейса -->
-    <link rel="stylesheet" href="styles/site.css">    <!-- Стиль приложения, открытого вне telegram -->
 </head> 
 <body>
     <!-- Контейнеры для рекламы -->
-    <div id="20435"></div><div id="int-20487"></div><div id="int-20619"></div>
+    <div id="20435"></div>
+    <div id="int-20487"></div>
+    <div id="int-20619"></div>
 
-    <!-- Страница приложения, если оно запущено не в telegram -->
+    <div id="notifications"></div>
+
+    <!--
     <div id="site">
         <div id="site-container">
             <img src="" width="200px" height="200px" alt="" />
@@ -36,56 +40,113 @@
             <p><i>Открывая данное приложение, Вы соглашаетесь с <a href="policy.html">политикой использования приложения Starfallz</a> в полном ее объеме.</i></p>
         </div>
         <div id="site-footer"><p>Starfallz, 2026</p></div>
-    </div>
+    </div>-->
 
-    <!-- Основное окно приложения -->
-    <div id="main">
-        <!-- Профиль (правая боковая панель) -->
+    <div id="main" class="position-relative">
         <div id="profile" class="panel_bottom">
-            <h1>Профиль</h1>
-            <div id="profile-info">
-                <div><img id="avatar" alt="avatar" width="120" height="120" /></div>
+            <div class="columns"><img src="" alt=""/><h1>Профиль</h1></div>
+            <div id="profile-info" class="columns">
+                <div><img id="profile-info-avatar" alt="Изображение пользовательского аватара" /></div>
                 <div>
-                    <p>Имя: <span id="profile-info-name"></span></p>
-                    <p>ID: <span id="profile-info-tag"></span></p>
-                    <p>Дата регистрации: <span id="profile-info-register"></span></p>
+                    <p><i>Имя: </i><span id="profile-info-name">Загрузка...</span></p>
+                    <p><i>Уникальный ID: </i><span id="profile-info-id">Загрузка...</span></p>
+                    <p><i>Дата регистрации: </i><span id="profile-info-date">Загрузка...</span></p>
                 </div>
             </div>
-            <details id="achivements" class="profile-details">
-                <summary>Достижения</summary>
+
+            <details id="profile-stats" class="profile-details">
+                <summary><div class="columns">
+                    <div><h2>Статистика</h2>
+                    <p>Узнайте</p></div>
+                    <img src="images/ui/ui-profile-stats.png" alt="Изображение на кнопке открытия статистики"/>
+                </div></summary>
+                <div class="profile-details-container"><table id="profile-stats-table">
+                    <tr>
+                        <td><p><i>Количество запусков звездопада</i></p></td>
+                        <td><p><span id="profile-stats-tokens">0</span></p></td>
+                    </tr><tr>
+                        <td><p><i>Количество выведенных звезд</i></p></td>
+                        <td><p><span id="profile-stats-stars">0</span></p></p></td>
+                    </tr><tr>
+                        <td><p><i>Количество выведенных подарков</i></p></td>
+                        <td><p><span id="profile-stats-gifts">0</span></p></td>
+                    </tr><tr>
+                        <td><p><i>Количество завершенных недельных серий</i></p></td>
+                        <td><p><span id="profile-stats-serials">0</span></p></td>
+                    </tr><tr>
+                        <td><p><i>Максимальная ежедневная серия</i></p></td>
+                        <td><p><span id="profile-stats-maxserial">0</span></p></td>
+                    </tr><tr>
+                        <td><p><i>Принято участие в событиях</i></p></td>
+                        <td><p><span id="profile-stats-events">Никаких</span></p></td>
+                    </tr><tr>
+                        <td><p><i>Дней в приложении</i></p></td>
+                        <td><p><span id="profile-stats-days">0</span></p></td>
+                    </tr>
+                </table></div>
             </details>
-            <details id="settings" class="profile-details">
-                <summary>Настройки</summary>
-                <p></p>
-                <h3>Музыка и звук</h3>
-                <div class="columns"><input type="checkbox" id="settings-audio" class="settings-checkbox" checked="checked"/><p>Звуковые эффекты</p></div>
-                <div class="columns"><input type="checkbox" id="settings-music" class="settings-checkbox" checked="checked"/><p>Музыка на фоне</p></div>
-                <h3>Графика</h3>
-                <select id="settings-graphics-mode" name="graphics-mode">
-                    <option value="best">Наилучшее качество</option>
-                    <option value="economy">Экономия ресурсов</option>
-                    <option value="low">Для слабых устройств</option>
-                </select>
-                <div class="columns"><input type="checkbox" id="settings-animations" class="settings-checkbox" checked="checked"/><p>Анимация обстановки</p></div>
-                <div class="columns"><input type="checkbox" id="settings-parallax" class="settings-checkbox" checked="checked"/><p>Эффект параллакса</p></div>
-                <div class="columns"><input type="checkbox" id="settings-" class="settings-checkbox"/><p></p></div>
-                <div class="columns"><input type="checkbox" id="settings-" class="settings-checkbox"/><p></p></div>
+
+            <details id="profile-achiv" class="profile-details">
+                <summary><div class="columns">
+                    <div><h2>Достижения</h2>
+                    <p>Получено <span id="profile-achiv-number">0</span> достижений из N</p></div>
+                    <img src="images/ui-profile-achiv.png" alt="Изображение на кнопке открытия достижений"/>
+                </div></summary>
+                <div id="profile-achiv-container" class="profile-details-container">
+                    <div class="achivement" class="columns"><img src="images/achivements/" alt=""/><div><h3></h3><p></p></div>
+                </div>
             </details>
+
+            <details id="profile-settings" class="profile-details">
+                <summary><div class="columns">
+                    <div><h2>Настройки</h2>
+                    <p>Настройте приложение под возможности Вашего устройства</p></div>
+                    <img src="images/ui/ui-profile-settings.png" alt="Изображение на кнопке открытия настроек"/>
+                </div></summary>
+                <div class="profile-details-container">
+                    <div class="columns"><h3>Музыка и звук</h3><img src="" alt=""/></div>
+                    <p>Для тех, кто хочет послушать свою музыку или побыть в тишине</p>
+                        <div class="columns"><input type="checkbox" id="settings-audio" class="settings-checkbox" checked="checked"/><p>Звуковые эффекты</p></div>
+                        <div class="columns"><input type="checkbox" id="settings-music" class="settings-checkbox" checked="checked"/><p>Музыка на фоне</p></div>
+                        <div class="columns"><input type="checkbox" id="settings-notif" class="settings-checkbox" checked="checked"/><p>Звук уведомлений</p></div>
+                        <div class="columns"><input type="checkbox" id="settings-nika" class="settings-checkbox" checked="checked"/><p>Озвучка Ники</p></div>
+                    <div class="columns"><h3>Графика</h3><img src="" alt=""/></div>
+                    <p>Влияет на производительность и скорость загрузки</p>
+                        <div class="columns"><input type="radio" name="settings-graphics" id="settings-graphics-best" class="settings-radio" checked="checked"/><p>Наилучшее качество</p></div>
+                        <div class="columns"><input type="radio" name="settings-graphics" id="settings-graphics-economy" class="settings-radio"/><p>Экономия ресурсов</p></div>
+                        <div class="columns"><input type="radio" name="settings-graphics" id="settings-graphics-low" class="settings-radio"/><p>Для слабых устройств</p></div>
+                        <div class="columns"><input type="checkbox" id="settings-animations" class="settings-checkbox" checked="checked"/><p>Анимация обстановки</p></div>
+                        <div class="columns"><input type="checkbox" id="settings-parallax" class="settings-checkbox" checked="checked"/><p>Эффект параллакса</p></div>
+                        <div class="columns"><input type="checkbox" id="settings-effects" class="settings-checkbox" checked="checked"/><p>Анимация дополнительных эффектов</p></div>
+                    <div class="columns"><h3>Уведомления</h3><img src="" alt=""/></div>
+                    <p>Выбор количества уведомлений, одновременно отображаемых на экране </p>
+                        <div class="columns"><input type="radio" name="settings-notifcount"  id="settings-notifcount-0" class="settings-radio"/><p>Не отображать уведомления</p></div>
+                        <div class="columns"><input type="radio" name="settings-notifcount"  id="settings-notifcount-1" class="settings-radio"/><p>1 уведомление</p></div>
+                        <div class="columns"><input type="radio" name="settings-notifcount"  id="settings-notifcount-2" class="settings-radio" checked="checked"/><p>2 уведомления</p></div>
+                        <div class="columns"><input type="radio" name="settings-notifcount"  id="settings-notifcount-3" class="settings-radio"/><p>3 уведомления</p></div>
+                    <div id="profile-settings-reset" class="columns">
+                        <button id="button-settings-reset"></button>
+                        <div><h3>Сброс настроек</h3>
+                        <p>Вернуть приложение в начальное состояние</p></div>
+                    </div>
+                </div>
+            </details>
+            <div id="profile-footer"><p>Starfallz, 2026г.</p></div>
         </div>
 
-        <!-- Ежедневник (левая боковая панель) -->
         <div id="daily" class="panel_bottom">
             <div class="columns"><h1>Ежедневник</h1><img src="images/ui-calendar.png" width="50px" height="50px" alt="Изображение календаря"></div>
             <div id="daily-desc" class="columns">
                 <div>
                     <p>Смотрите по 2 рекламных видео каждый день, чтобы получить большую награду к концу недели!</p>
-                    <button id="button-daily">Смотреть рекламу</button>
+                    <button id="daily-button-ad">Смотреть рекламу</button>
                     <p>Сегодня доступно к просмотру: <span id="daily-enabled">0</span>/2</p>
                 </div>
                 <img id="daily-nika" src="images/daily-nika.png" alt="Ника с плюшевым мишкой в руках сидит на большом красном подарке с желтой лентой"/>
             </div>
             <p><i>* Не забывайте каждый день открывать карточки - иначе накопленные рекламные ролики сгорят!</i></p>
-            <div id="daily-gallery" class="columns">
+            
+            <div id="daily-gallery">
                 <div id="daily-day-1" class="daily-gallery-element"><p>День 1</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-1">Закрыто</button></div>
                 <div id="daily-day-2" class="daily-gallery-element"><p>День 2</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-2">Закрыто</button></div>
                 <div id="daily-day-3" class="daily-gallery-element"><p>День 3</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-3">Закрыто</button></div>
@@ -94,84 +155,133 @@
                 <div id="daily-day-6" class="daily-gallery-element"><p>День 6</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-6">Закрыто</button></div>
                 <div id="daily-day-7" class="daily-gallery-element"><p>День 7</p><img src="images/daily-gift.png" alt="Изображение накопленного подарка" /><button id="daily-button-7">Закрыто</button></div>
             </div>
+
+            <details id="daily-guide" class="daily-details">
+                <summary><div class="columns">
+                    <div><h2>Гайд по использованию</h2>
+                    <p>Если остался вопрос как это работает</p></div>
+                    <img src="images/ui/ui-daily-guide.png" alt="Изображение на кнопке открытия помощи в использовании ежедневника"/>
+                </div></summary>
+                <div class="daily-details-container">
+
+                </div>
+            </details>
         </div>
 
-        <!-- Основное информационное окно -->
         <div id="background"></div>
         <div id="scenery">
             <div id="scenery-stars" class="scenery-element">
                 <div id="scenery-stars-parallax"><img src="images/decorations/scenery_stars_parallax.png" alt="Город на заднем фоне (Просмотр с вершины)" /></div>
-                <div id="scenery-stars-scenery"><img src="images/decorations/scenery_stars.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" /></div>
-                <button id="scenery-stars-button" class="scenery-button"></button>
-                <div id="scenery-stars-container" class="scenery-element-container">
-                    <button id="button-ad">Смотреть рекламу</button>
-                    <div id="generator-info"><!--
-                        <h1>Генератор звездопада</h1>
-                        <p>Заполните шкалу заряда генератора до конца, чтобы запустить звездопад и получить жетоны!</p>
-                        <div id="generator-info-container">
-                            <div class="generator-info-side">
-                                <div id="generator-bar-fuel" class="generator-bar"></div>
-                                <p id="advertise-fuel">0/0</p>
-                                <h2>Топливо</h2>
-                                <p>Сколько рекламных видеороликов можно посмотреть</p>
-                            </div>
-                            <div class="generator-info-side">
-                                <div id="generator-bar-charge" class="generator-bar"></div>
-                                <p id="advertise-charge">0/0</p>
-                                <h2>Заряд генератора</h2>
-                                <p>Оставшиеся просмотры рекламы до запуска звездопада</p>
-                            </div>
+                <div id="scenery-stars-scenery">
+                    <img src="images/decorations/scenery_stars.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
+                    <button id="scenery-stars-button" class="scenery-button"></button>
+                    <button id="scenery-button-ad">Смотреть рекламу</button>
+                    <div id="scenery-stars-nika"><img src="animations/nika_stars_sitdown.gif" alt="Изображение Ники"/></div>
+                </div>
+                <div id="scenery-stars-container" class="scenery-container">
+                    <h1>Генератор звездопада</h1>
+                    <p>Заполните шкалу заряда генератора до конца, чтобы запустить звездопад и получить жетоны!</p>
+                    <div class="columns">
+                        <div class="scenery-stars-container-side">
+                            <div id="stars-bar-fuel" class="bar"></div>
+                            <p><span id="stars-advertise-fuel">0/0</span></p>
+                            <h2>Топливо</h2>
+                            <p>Сколько рекламных видеороликов можно посмотреть</p>
+                            <p><span id="stars-bar-fuel-lasttime"></span></p>
                         </div>
-                        <p id="advertise-lasttime"></p>
-                        <button id="button-close-generator">Закрыть</button>-->
+                        <div class="scenery-stars-container-side">
+                            <div id="stars-bar-charge" class="bar"></div>
+                            <p><span id="stars-advertise-charge">0/0</span></p>
+                            <h2>Заряд генератора</h2>
+                            <p>Оставшиеся просмотры рекламы до запуска звездопада</p>
+                        </div>
                     </div>
+                    <button id="scenery-stars-container-close" class="scenery-container-button-close">Закрыть</button>
                 </div>
             </div>
-            <div id="scenery-stars-postlayer" class="scenery-postlayer"><img id="scenery-postlayer-image" src="images/decorations/scenery_stars_postlayer.png" alt="" /></div>
+            
+            <div id="scenery-stars-postlayer" class="scenery-postlayer"><img src="images/decorations/scenery_stars_postlayer.png" alt="" /></div>
+            
             <div id="scenery-home" class="scenery-element">
                 <div id="scenery-home-parallax"><img src="images/decorations/scenery_home_parallax.png" alt="Город на заднем фоне (Просмотр из долины)" /></div>
                 <div id="scenery-home-prelayer"><img src="images/decorations/scenery_home_prelayer.png"/></div>
-                <div id="scenery-home-scenery"><img src="images/decorations/scenery_home.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" /></div>
-                <button id="scenery-home-button" class="scenery-button"></button>
-                <div id="scenery-home-container" class="scenery-element-container">
+                <div id="scenery-home-scenery">
+                    <img src="images/decorations/scenery_home.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
+                    <button id="scenery-home-button" class="scenery-button"></button>
+                </div>
+                <div id="scenery-home-container" class="scenery-container">
+                    <div>
+                        <h1>Улучшения</h1>
+                        <p>Получайте достижения, проходите испытания событий и получайте уникальные темы приложения!</p>
+                        <div id="scenery-home-container-updates"></div>
+                    </div>
+                    <button id="scenery-home-container-close" class="scenery-container-button-close">Закрыть</button>
                 </div>
             </div>
+
+            <div id="scenery-home-postlayer" class="scenery-postlayer"><img src="images/decorations/scenery_home_postlayer.png" alt="" /></div>
+
             <div id="scenery-income" class="scenery-element">
-                <img src="#" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
-                <button id="scenery-income-button" class="scenery-button"></button>
-                <div id="scenery-income-container" class="scenery-element-container">    
+                <div id="scenery-income-scenery">
+                    <img src="images/decorations/scenery_income.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
+                    <button id="scenery-income-button" class="scenery-button"></button>
+                </div>
+                <div id="scenery-income-container-main" class="scenery-container scenery-income-container">  
+                    <h1>Кошелек</h1>
+                    <p>Выводите накопленные жетоны в реальные телеграмм-звезды и уникальные NFT-подарки!</p>
+                    <p><b>Текущий балланс</b>: <span id="income-balance">0</span> жетонов</p>
+                    <p><b>Курс обмена</b>: 1 жетон = <span id="income-cost">1</span> телеграмм звезда</p>
+                    <div id="income-button-stars" class="income-button">
+                        <div>
+                            <h2>Телеграмм-звезды</h2>
+                            <p>Вывести жетоны в самую распространенную валюту в телеграмме</p>
+                        </div>
+                        <img src="" alt="Изображение телеграмм-звезды"/>
+                    </div>
+                    <div id="income-button-gifts" class="income-button">
+                        <div>
+                            <h2>Подарки (Рекомендуется)</h2>
+                            <p>Получить или подарить уникальный подарок за жетоны</p>
+                        </div>
+                        <img src="" alt="Изображение телеграмм-подарка"/>
+                    </div>
+                    <button id="scenery-income-container-close" class="scenery-container-button-close">Закрыть</button>
+
+                </div>
+                <div id="scenery-income-container-stars" class="scenery-container">
+
+                    <button id="scenery-income-container-stars-close" class="scenery-container-button-close">Назад</button>
+                </div>
+                <div id="scenery-income-container-giftslist" class="scenery-container">
+
+                    <button id="scenery-income-container-giftslist-close" class="scenery-container-button-close">Назад</button>
+                </div>
+                <div id="scenery-income-container-giftsout" class="scenery-container">
+
+                    <button id="scenery-income-container-giftsout-close" class="scenery-container-button-close">Назад</button>
                 </div>
             </div>
-            <div id="footer" class="scenery-element">
-                <div><img src="images/decorations/footer.png" alt="Starfallz, 2026г."/></div>
-            </div>
+            <div id="scenery-footer" class="scenery-element"><img src="images/decorations/footer.png" alt="Starfallz, 2026г."/></div>
         </div>
 
-            <!-- Элементы postlayer параллакса
-            <div id="scenery-home-postlayer" class="scenery-postlayer"><img src="#" alt="" /></div>-->
-
-        <!-- Уведомления -->
-        <div id="notification"></div>
-
-        <!-- Пользовательские интерфейсы -->
         <div id="top-ui" class="ui-background">
-            <p id="released-count">0</p>
-            <img src="images/ui-star.png"/>
-            <p id="tokens-count">0</p>
-            <img src="images/ui-token.png"/>
+            <p><span id="top-ui-stars">0</span></p>
+            <img id="top-ui-star" src="images/ui/ui-star.png"/>
+            <p><span id="top-ui-tokens"> 0</span></p>
+            <img id="top-ui-token" src="images/ui/ui-token.png"/>
         </div>
+
         <div id="bottom-ui" class="ui-background">
-            <img id="bottom-ui-daily" src="images/bottom-ui-daily.png" />
-            <img id="bottom-ui-home" src="images/botton-ui-home.png"/>
-            <img id="bottom-ui-star" src="images/bottom-ui-star.png" />
-            <img id="bottom-ui-income" src="images/bottom-ui-income.png"/>
-            <img id="bottom-ui-user" src="images/botton-ui-user.png"/>
+            <img id="bottom-ui-daily" src="images/ui/bottom-ui-daily.png" />
+            <img id="bottom-ui-home" src="images/ui/botton-ui-home.png"/>
+            <img id="bottom-ui-star" src="images/ui/bottom-ui-star.png" />
+            <img id="bottom-ui-income" src="images/ui/bottom-ui-income.png"/>
+            <img id="bottom-ui-user" src="images/ui/botton-ui-user.png"/>
         </div>
     </div>
 
-    <!-- Режим маленького окна приложения -->
     <div id="toosmall">
-        <img src="images/NikaCalm.png" width="180px" height="180px"/>
+        <img src="images/NikaCalm.png" width="180px" height="180px" alt="Изображение девушки Ники, символа приложения starfallz"/>
         <div>
             <h1>У-упс!</h1>
             <p>Похоже, что окно приложения <b>слишком маленькое</b>.</p>
@@ -180,25 +290,22 @@
         </div>
     </div>
 
-    <!-- Окно загрузки контента страницы -->
     <div id="load">
         <img id="load-image" src="images/load.png" alt="Изображение загрузки страницы" />
         <div id="load-message">Загрузка приложения...</div>
     </div>
+    
+    <script defer src="scripts/daily.js"></script>
+    <script defer src="scripts/ui.js"></script>
+    <script defer src="scripts/ads.js"></script>
 
-    <!-- Скрипты внешнего объявления -->
-    <script src="scripts/daily.js"></script> <!-- Скрипт для поддержки просмотра рекламы -->
-    <script src="scripts/ui.js"></script>  <!-- Скрипт для работы пользовательского интерфейса и декораций-->
-    <script src="scripts/ads.js"></script> <!-- Скрипт для поддержки просмотра рекламы -->
-
-    <!-- Скрипты внутреннего объявления -->
-    <script> /* ✓ Скрипт запрета исследования страницы*/
+    <script async>
         // console.log = () => {};
-        document.onselectstart = function() { return false; }; // Запрет выделения
-        document.oncontextmenu = function() { return false; }; // Запрет правого клика
-        document.ondragstart = function() { return false; };   // Запрет перетаскивания
+        document.onselectstart = function() { return false; };
+        document.oncontextmenu = function() { return false; };
+        document.ondragstart = function() { return false; };
     </script>
-    <script> /* ✓ Скрипт загрузки страницы */
+    <script async>
         (function () {
             // ✓ Настройки загрузки страницы
             const messages = [
@@ -209,7 +316,7 @@
                 "Полируем жетоны и звезды...",
                 "Запаковываем подарки...",
                 "Включаем фонари в городе на фоне...",
-                "Сгоняем с неба облака...",
+                "Сгоняем с неба облака..."
             ];
             const changeInterval = 2500;
             const overlay = document.getElementById('load');

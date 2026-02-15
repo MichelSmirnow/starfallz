@@ -1,129 +1,96 @@
-/* ✓ Верхний пользовательский интерфейс (Балланс) */
-#top-ui { z-index: 1000; position: fixed; top: 47px; left: 50%; transform: translateX(-50%); z-index: 100; max-width: 200px; height: 29px; padding: 0 15px; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.23); border-radius: 100px; backdrop-filter: blur(10px); }
-#top-ui p { color: #FFFFFF; font-family: 'FindSansPro-Light'; font-size: small; font-weight: bold; padding: 0 5px; }
-#top-ui img { width: 16px; height: 16px; margin: 1px 0px; transition: width 0.5s ease, height 0.5s ease; }
-#top-ui img:hover { width: 20px; height: 20px; margin: 1px 0px; transition: width 0.35s ease, height 0.35s ease; }
+/* ========================================= Интерфейс окна приложения ========================================= */
+html { width: 100%; margin: 0; padding: 0; }
+body { z-index: 1; position: relative; display: block; align-items: center; justify-content: center; background-color: #171717; width: 100%; margin: 0; padding: 0; }
+#daily { z-index: 2; transform: translateX(0); text-align: left; } #profile { z-index: 2; transform: translateX(0); text-align: right; }
 
-/* ✓ Нижний пользовательский интерфейс (Навигационное меню)*/
-#bottom-ui { z-index: 1001; position: fixed; bottom: 35px; left: 50%; transform: translateX(-50%); z-index: 100; max-width: 90%; max-height: 50px; padding: 5px 90px; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.23); border-radius: 100px; backdrop-filter: blur(10px); }
-#bottom-ui img { width: 35px; height: 35px; margin: 1px 10%; filter: drop-shadow(0); opacity: 0.7; transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease, box-shadow 0.5s ease; }
-#bottom-ui img:hover { width: 40px; height: 40px; filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5)); cursor: pointer; transition: width 0.35s ease, height 0.35s ease, opacity 0.35s ease, box-shadow 0.35s ease; opacity: 0.9; }
-#bottom-ui img:active { width: 37px; height: 37px; transition: width 0.25s ease, height 0.25s ease; }
+/* ✓ Элементы страниц scenery */
+#background { z-index: 3; position: fixed; top: 0; left: 50%; transform: translateX(-50%); opacity: 1; visibility: visible; height: 100vh; width: 100%; margin: 0; padding: 0; background-size: 100%; background-image: url('../animations/background.gif'); background-repeat: no-repeat; background-position: top; background-attachment: fixed; transition: width 1s ease, background-size 1s ease, opacity 0.5s ease; }
+#scenery { z-index: 4; position: absolute; top: 0; left: 50%; transform: translateX(-50%); display: block; align-items: center; justify-content: center; margin: 0; padding: 0; transition: top 1s ease, width 1s ease, opacity 0.5s ease; }
+.scenery-element { position: relative; display: block; align-items: center; justify-content: center; width: 100%; padding: 0; margin: 0; }
+.scenery-element div { position: absolute; left: 50%; transform: translateX(-50%); width: 100%; padding: 0; margin: 0; transition: width 1s ease; }
+.scenery-element div img, .scenery-postlayer img { width: 100%; padding: 0; margin: 0;}
 
-/* ✓ Кнопки просмотра рекламы (#scenery-stars и #daily)*/
-#button-ad {z-index: 100; position: absolute; left: 52%; transform: translateX(-50%); min-width: 45%;}
-#button-daily {z-index: 900; position: static; min-width: 70%;}
-#button-ad, #button-daily { max-width: 250px; padding: 10px 20px; margin: 0; color: #2e0606; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; border: 0; border-radius: 25px; background-size: 150% auto; background-position: left center; background-image: linear-gradient(to right, #eb9b23 0%, #e5c319 50%, #eea928 100%); box-shadow: 0 5px 15px 0 rgba(246, 152, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; }
-#button-ad:hover, #button-daily:hover { background-position: right center; box-shadow: 0 5px 40px 0 rgba(246, 136, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; padding: 12px 20px; cursor: pointer; }
-#button-ad:active, #button-daily:active { background-position: left center; padding: 6px 20px; transition: background-position 0.5s ease, padding 0.5s ease, top 1s ease; }
-
-/* ✓ Режим отключенной кнопки */
-#button-ad.disabled, #button-daily.disabled { color: #333; background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #cfcfcf 100%) !important; box-shadow: 0 5px 15px 0 rgba(102, 102, 102, 0.7) !important; }
-#button-ad.disabled:hover, #button-daily.disabled:hover { box-shadow: 0 5px 40px 0 rgba(102, 102, 102, 0.7) !important; }
-
-/* ✓ Режим кнопки при заполненной шкале генератора звездопада */
-#button-ad.starfall, #button-daily.starfall { color: #e2e2e2 !important; background-image: linear-gradient(to right, #803bc0 0%, #de19e5 50%, #1a25c4 100%) !important; box-shadow: 0 5px 15px 0 rgba(113, 32, 189, 0.7) !important; }
-#button-ad.starfall:hover, #button-daily.starfall:hover { box-shadow: 0 5px 40px 0 rgba(189, 57, 250, 1) !important; }
-
-/* ✓ Шкалы (Топливо и заряд генератора) */
-.generator-bar {
-    background-color:rgba(0, 0, 0, 0.5);
-    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.5);
-    min-width: 50px;
-    width: 40%;
-    height: 25vh;
-    margin: 10px auto;
-    border-radius: 100px;
-    overflow: hidden;
-
-    position: relative;
-    display: inline-block;
-    vertical-align: bottom;
-}
-.generator-bar .fill {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 0%;
-    transition: height 0.5s ease;
-}
-#generator-bar-charge.fill {
-    background: linear-gradient(0deg, #b1277c 0%, #6948c4 50%, #59a1ff 100%);
-}
-#generator-bar-fuel.fill {
-    background: linear-gradient(0deg, #b12727 0%, #e0904e 50%, #cbce34 100%);
-}
-.generator-bar.label {
-    position: absolute;
-    left: 50%;
-    top: 8px;
-    transform: translateX(-50%);
-    color: #CACACA;
-    font-family: 'StarfallVAGRounded-Regular';
-    font-size: medium;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
-    pointer-events: none;
-    white-space: nowrap;
-}
-
-
-
-
-/* Информационное окно #scenery-stars */
-.scenery-button { z-index: 5000; position: absolute; border: 0; cursor: pointer; opacity: 0.1; border-radius: 20px; transition: opacity 0.5s ease;}
-.scenery-button:hover { cursor: pointer; opacity: 0.3; transition: opacity 0.35s ease; }
+/* ✓ Кнопки открытия информационных окон */
+.scenery-button { z-index: 999; position: absolute; border: 0; cursor: pointer; opacity: 0.1; border-radius: 20px; transition: opacity 0.5s ease;}
+.scenery-button:hover { cursor: pointer; opacity: 0.3; transition: opacity 0.25s ease; }
 .scenery-button:active { opacity: 0.2; transition: opacity 0.5s ease; }
+#scenery-stars-button { bottom: 35%; left: 22%; width: 22%; height: 22%; }
+#scenery-home-button { bottom: 18%; right: 8%; width: 22%; height: 14%; }
+#scenery-income-button { bottom: 36%; left: 41%; width: 22%; height: 33%; }
 
-#scenery-stars-button { bottom: 40%; left: 22%; width: 22%; height: 15%; }
-#scenery-home-button { bottom: 40%; left: 22%; width: 22%; height: 15%; }
-#scenery-income-button { bottom: 40%; left: 22%; width: 22%; height: 15%; }
+/* Изображение Ники на страницах scenery */
+#scenery-stars-nika { z-index: 22; position: absolute; padding: 0; margin: 0; width: 30%; bottom: 19%; right: 5%; left: auto; transform: translateX(0); }
+/*#scenery-home-nika { z-index: 21; position: absolute; padding: 0; margin: 0; }
+#scenery-income-nika { z-index: 20; position: absolute; padding: 0; margin: 0; }*/
+
+/* Элементы параллакса */
+#scenery-stars-parallax { z-index: 7; bottom: 0; pointer-events: none; }
+#scenery-home-parallax  { z-index: 6; bottom: 0; pointer-events: none; }
+
+/* Элементы среднего уровня параллакса*/
+#scenery-stars-scenery { z-index: 13; bottom: 0;}
+#scenery-home-prelayer { z-index: 8; top: 0;}
+#scenery-home-scenery { z-index: 12; bottom: 0;}
+#scenery-income-scenery { z-index: 11; bottom: 0;}
+#scenery-footer { z-index: 10; width: 100% !important; height: 100% !important; margin: -5px 0; padding: 0;}
+#scenery-footer img { width: 100% !important; height: 100% !important; margin: 0; padding: 0;}
+
+/* Элементы postlayer параллакса */
+.scenery-postlayer { position: relative; width: 100%; margin: 0 0; padding: 0; pointer-events: none; }
+.scenery-postlayer img { position: absolute; width: 100%; margin: 0; padding: 0; top: -33% !important; transform: translateY(-32%) !important; pointer-events: none; }
+#scenery-stars-postlayer { z-index: 100; pointer-events: none; }
+#scenery-home-postlayer { z-index: 101; pointer-events: none; }
+
+
+/* ========================================= Кнопки, переключатели, шкалы ========================================= */
+/* ✓ Кнопки просмотра рекламы (#scenery-stars и #daily)*/
+#scenery-button-ad, #daily-button-ad { z-index: 998; max-width: 250px; padding: 10px 20px; margin: 0; color: #2e0606; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; border: 0; border-radius: 25px; background-size: 150% auto; background-position: left center; background-image: linear-gradient(to right, #eb9b23 0%, #e5c319 50%, #eea928 100%); box-shadow: 0 5px 15px 0 rgba(246, 152, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; }
+#scenery-button-ad { position: absolute; left: 50%; top: 7%; transform: translateX(-50%); min-width: 45%;}
+#daily-button-ad { position: static; min-width: 70%;}
+#scenery-button-ad:hover, #daily-button-ad:hover { background-position: right center; box-shadow: 0 5px 40px 0 rgba(246, 136, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; padding: 12px 20px; cursor: pointer; }
+#scenery-button-ad:active, #daily-button-ad:active { background-position: left center; padding: 6px 20px; transition: background-position 0.5s ease, padding 0.5s ease, top 1s ease; }
+
+/* ✓ Режим отключенной кнопки просмотра рекламы */
+#scenery-button-ad.disabled, #daily-button-ad.disabled { color: #333; background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #cfcfcf 100%) !important; box-shadow: 0 5px 15px 0 rgba(102, 102, 102, 0.7) !important; }
+#scenery-button-ad.disabled:hover, #daily-button-ad.disabled:hover { box-shadow: 0 5px 40px 0 rgba(102, 102, 102, 0.7) !important; }
+
+/* ✓ Режим кнопки просмотра рекламы при заполненной шкале генератора звездопада */
+#scenery-button-ad.starfall { color: #e2e2e2 !important; background-image: linear-gradient(to right, #803bc0 0%, #de19e5 50%, #1a25c4 100%) !important; box-shadow: 0 5px 15px 0 rgba(113, 32, 189, 0.7) !important; }
+#scenery-button-ad.starfall:hover { box-shadow: 0 5px 40px 0 rgba(189, 57, 250, 1) !important; }
 
 
 
-#generator-info {
-    z-index: 0;
-    display: none;
-    opacity: 0;
-    visibility: hidden;
+
+
+
+
+/* Шкалы (Топливо и заряд генератора) */
+.bar { overflow: hidden; position: relative; display: inline-block; vertical-align: bottom; margin: 10px auto; min-width: 50px; width: 40%; height: 25vh; border-radius: 100px; background-color:rgba(0, 0, 0, 0.5); box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.5); }
+.bar .label { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); color: #CACACA; font-family: 'StarfallVAGRounded-Regular'; font-size: medium; text-shadow: 0 0 10px rgba(0, 0, 0, 0.9); pointer-events: none; white-space: nowrap; }
+.bar .fill { position: absolute; left: 0; bottom: 0; width: 100%; height: 0%; transition: height 0.5s ease; }
+#stars-bar-charge.fill { background: linear-gradient(0deg, #b1277c 0%, #6948c4 50%, #59a1ff 100%); }
+#stars-bar-fuel.fill { background: linear-gradient(0deg, #b12727 0%, #e0904e 50%, #cbce34 100%); }
+
+/*input[type=checkbox]{
+}*/
+
+/* ========================================= Информационные окна ========================================= */
+.scenery-container { z-index: 200; display: none; opacity: 0; visibility: hidden;
+    -ms-overflow-style: none; scrollbar-width: none;
+    bottom: 50%; transform: translate(-50%, 50%) !important;
+    width: 70% !important; height: 65vh; min-height: 400px; max-height: 150vw; padding: 10px 20px !important; margin: 0;
+    text-align: center; border-radius: 30px; background-color: rgba(17, 17, 17, 0.5); backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: opacity 0.5s ease, visibility 0.5s ease;
-    
-    background-color: rgba(17, 17, 17, 0.5);
-    border-radius: 30px;
-    padding: 1px 20px;
-    margin: 20px 0;
-    max-width: 100%;
-    width: auto;
-    /*max-height: 700px;*/
+}
+.scenery-container::-webkit-scrollbar { display: none; }
+.scenery-container h1 { font-size: 30px; }
+.scenery-stars-container-side { position: static; width: 50%; max-width: 150px; margin: 0 10px; padding: 5px; }
+#stars-bar-fuel, #stars-bar-charge { font-size: x-large; margin: 0; margin-top: 5px; }
 
-    text-align: center;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    transition: opacity 0.5s ease, visible 0.5s ease;
-}
-#generator-info>h1 {
-    font-size: x-large;
-}
-#generator-info-container {
-    position: static;
-    display: flex;
-    justify-content: center;
-}
-.generator-info-side {
-    position: static;
-    width: 50%;
-    max-width: 150px;
-    margin: 0 10px;
-}
-#advertise-fuel, #advertise-charge {
-    font-size: x-large;
-    margin: 0;
-    margin-top: 5px;
-}
-#generator-info-container h1, h2, h3 {
+/* h1, h2, h3 {
     font-size: small;
-}
-#advertise-lasttime {
+}*/
+#stars-bar-fuel-lasttime {
     width: auto;
     background-color: rgba(30, 30, 30, 0.75);
     border-radius: 10px;
@@ -132,114 +99,104 @@
     margin: 0;
 }
 
-/* ✓ Кнопка закрытия окна генератора */
-#button-close-generator {
-    position: static;
-    padding: 7px 30px;
-    margin: 10px;
-    border-radius: 10px;
-    border: 0;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 1);
-    color: #d1d1d1;
-    background-color: rgba(0, 0, 0, 0.23);
-    text-shadow: 0;
-    text-align: center;
-    font-family: 'FindSansPro-Regular';
-    font-size: large;
-    transition: padding 0.5s ease, text-shadow 0.5s ease;
-}
-#button-close-generator:hover {
-    padding: 10px 33px;
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
-    cursor: pointer;
-    transition: padding 0.5s ease, text-shadow 0.5s ease;
-}
-#button-close-generator:active {
-    padding: 3px 20px;
-    cursor: pointer;
-    transition: padding 0.5s ease;
-}
+
+/* ✓ Кнопка закрытия информационного окна */
+.scenery-container-button-close { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); padding: 7px 30px; margin: 10px; border-radius: 10px; border: 0; box-shadow: inset 0 0 10px rgba(0, 0, 0, 1); color: #d1d1d1; background-color: rgba(0, 0, 0, 0.23); text-shadow: 0; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; transition: padding 0.5s ease, text-shadow 0.5s ease; }
+.scenery-container-button-close:hover { padding: 10px 33px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.9); cursor: pointer; transition: padding 0.5s ease, text-shadow 0.5s ease; }
+.scenery-container-button-close:active { padding: 3px 20px; cursor: pointer; transition: padding 0.5s ease; }
+
+/* ========================================= ✓ Закрепленный интерфейс ========================================= */
+/* ✓ Верхний пользовательский интерфейс (Балланс жетонов и выведенных звезд) */
+#top-ui { z-index: 1000; position: fixed; top: 47px; left: 50%; transform: translateX(-50%); max-width: 200px; height: 29px; padding: 0 15px; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.23); border-radius: 100px; backdrop-filter: blur(10px); }
+#top-ui p { color: #FFFFFF; font-family: 'FindSansPro-Light'; font-size: small; font-weight: bold; padding: 0 5px; }
+#top-ui img { width: 16px; height: 16px; margin: 1px 0px; transition: width 0.5s ease, height 0.5s ease; }
+#top-ui img:hover { width: 20px; height: 20px; margin: 1px 0px; transition: width 0.35s ease, height 0.35s ease; }
+
+/* ✓ Нижний пользовательский интерфейс (Навигационное меню)*/
+#bottom-ui { z-index: 1000; position: fixed; bottom: 45px; left: 50%; transform: translateX(-50%);  max-width: 90%; max-height: 50px; padding: 5px 90px; display: flex; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.23); border-radius: 100px; backdrop-filter: blur(10px); }
+#bottom-ui img { width: 35px; height: 35px; margin: 1px 10%; filter: drop-shadow(0); opacity: 0.7; transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease, box-shadow 0.5s ease; }
+#bottom-ui img:hover { width: 40px; height: 40px; filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5)); cursor: pointer; transition: width 0.35s ease, height 0.35s ease, opacity 0.35s ease, box-shadow 0.35s ease; opacity: 0.9; }
+#bottom-ui img:active { width: 37px; height: 37px; transition: width 0.25s ease, height 0.25s ease; }
 
 /* ========================================= Уведомления ========================================= */
-
-.notification { /* Основной стиль уведомления*/
-    visibility: hidden;
-    opacity: 0;
-
-    position: fixed;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: auto;
-    max-width: 500px;
-    padding: 0;
-    margin: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-    border-radius: 30px;
-
-    color: #FAFAFA;
-    font-family: 'StarfallVAGRounded-Regular';
-    letter-spacing: 1px;
-    text-shadow: 0px 0px 7px #000000;
-
-    transition: opacity 0.5s ease, visibility 0.5s ease, top 0.4s ease;
+#notifications { position: fixed; top: 86px; left: 50%; transform: translateX(-50%);
+    width: 60%; max-width: 300px;
+    padding: 0; margin: 0;
 }
-.notification.show { /* Включенное уведомление */
-    opacity: 1 !important;
-    visibility: visible !important;
-    top: 50px !important;
-    transition: opacity 0.5s ease, visibility 0.5s ease, top 0.4s ease;
-}
-.notification img { /* Изображение на уведомлении */
-    width: 100%;
-    height: 100%;
-}
-#notif_success, #notif_decline, #notif_question { /* Общие свойства всех типов уведомлений */
-    box-shadow: 0 0 10px #000;
-}
-#notif_success { /* Уведомление об успешном просмотре рекламы */
-    background-image: linear-gradient(to right, #0D5700, #43E802);
-}
-#notif_decline { /* Уведомление о прерванном просмотре рекламы */
-    background-image: linear-gradient(to right, #57001C, #E80023);
-}
-#notif_question { /* Уведомление с ошибкой при загрузке рекламы */
-    background-image: linear-gradient(to right, #AD9100, #E8D500);
+.notification-dom-container { position: static;
+    margin: 0; padding: 0
 }
 
-/* ==================================== Свойства боковых панелей ==================================== */
-.panel_bottom {
-    z-index: 0;
-    position: fixed;
-    overflow-y: scroll;
-    top: 30px;
-    background-color: rgba(0, 0, 0, 0.9);
-    border-radius: 30px;
-    padding: 25px 50px;
-    padding-top: 50px;
-    opacity: 0.05;
-    height: 77%;
-    transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s, opacity 0.5s ease, width 1s ease;
+
+/* ==================================== Боковые панели ==================================== */
+/* Боковые панели интерфейса */
+.panel_bottom { position: fixed; top: 30px; overflow-y: scroll; height: 77%; margin: 0; padding: 50px 50px 25px 50px; border-radius: 30px; background-color: rgba(0, 0, 0, 0.8); opacity: 0.05; backdrop-filter: blur(10px); transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s ease, opacity 0.5s ease, width 1s ease; }
+.panel_bottom_shown { z-index: 900; left: 50% !important; right: auto !important; transform: translateX(-50%) !important; 
+    opacity: 1 !important; transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s ease, opacity 0.5s ease, width 1s ease;
 }
-.panel_bottom_shown {
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) !important;
-    opacity: 1 !important;
-    z-index: 99;
-    transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s, opacity 0.5s ease, width 1s ease;
-}
+
 .page_moved {
     opacity: 0.1;
     transition: opacity 0.5s ease;
 }
 
-#daily { left: 30px; text-align: left; transform: translateX(0);}
+.profile-details {
+    width: 100%;
+    margin: 10px;
+    padding: 10px;
+    background-color: rgba(20, 20, 20, 0.25);
+    border: 0;
+    border-radius: 20px;
+}
+.profile-details summary {
+    position: relative;
+    box-shadow: 0 0 20px rgba(78, 78, 78, 0.5), inset 0 0 30px rgba(125, 125, 125, 0.5);
+    border: 2px solid rgba(125, 125, 125, 0.5);
+    border-radius: 60px;
+    padding: 10px;
+    margin: 0;
+    margin-bottom: 15px;
+    height: 100px;
+    width: 100%;
+    overflow: hidden;
+
+    transition: box-shadow 0.5s ease;
+}
+.profile-details summary:hover {
+    box-shadow: 0 0 20px rgba(125, 125, 125, 1), inset 0 0 30px rgba(255, 255, 255, 0.75);
+    transition: box-shadow 0.5s ease;
+}
+
+.profile-details summary div {
+    position: absolute;
+    right: 50px; top: 50%;
+    transform: translateY(-50%);
+}
+.profile-details summary h2 {
+    font-size: x-large;
+    text-align: right;
+    line-height: 10px;
+    margin: 0;
+    padding: 0;
+}
+.profile-details summary p {
+    opacity: 0.9;
+    width: 25vw;
+    text-align: right;
+}
+
+
+.profile-details summary img {
+    position: absolute;
+    left: 70px; top: 50%;
+    transform: translateY(-50%);
+    width: 100px; height: 100px;
+}
+
+
+
+
+
 #daily-desc {
     justify-content: center;
     align-items: center;
@@ -330,28 +287,3 @@
 .daily-gallery-element button.disabled {
     background-image: linear-gradient(to left, #754f08 0%, #c49d1f 60%, #64340c 100%) !important;
 }
-
-#profile { right: 30px; text-align: right; transform: translateX(0);}
-/*input[type=checkbox]{
-}*/
-
-/* Свойства переключателя (switch)*/
-
-
-
-
-.scenery-element-container {
-    z-index: 1002; position: absolute;
-    top: 0;
-    left: 50%; transform: translateX(-50%);
-    display: block;
-    width: 70%;
-    height: 100%;
-}
-
-
-
-
-
-
-/* ============================================ Переключатель ============================================ */
