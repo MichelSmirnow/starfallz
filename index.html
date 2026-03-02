@@ -23,6 +23,8 @@
     <div id="int-20619"></div>
 
     <div id="notifications"></div>
+    <audio id="splashAudio" src="ambient.mp3" preload="auto"></audio>
+
 
     <!--
     <div id="site">
@@ -142,7 +144,7 @@
                     <button id="daily-button-ad">Смотреть рекламу</button>
                     <p>Сегодня доступно к просмотру: <span id="daily-enabled">0</span>/2</p>
                 </div>
-                <img id="daily-nika" src="images/daily-nika.png" alt="Ника с плюшевым мишкой в руках сидит на большом красном подарке с желтой лентой"/>
+                <img id="daily-nika" src="images/nika/nika_daily_classic.png" alt="Ника с плюшевым мишкой в руках сидит на большом красном подарке с желтой лентой"/>
             </div>
             <p><i>* Не забывайте каждый день открывать карточки - иначе накопленные рекламные ролики сгорят!</i></p>
             
@@ -176,24 +178,27 @@
                     <img src="images/decorations/scenery_stars.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
                     <button id="scenery-stars-button" class="scenery-button"></button>
                     <button id="scenery-button-ad">Смотреть рекламу</button>
-                    <div id="scenery-stars-nika"><img src="animations/nika_stars_sitdown.gif" alt="Изображение Ники"/></div>
+                    <div id="scenery-stars-nika" class="scenery-nika stated"><img id="scenery-stars-nika-img" src="images/nika/nika_stars_classic_sit.png" alt="Изображение Ники"/></div>
                 </div>
                 <div id="scenery-stars-container" class="scenery-container">
-                    <h1>Генератор звездопада</h1>
-                    <p>Заполните шкалу заряда генератора до конца, чтобы запустить звездопад и получить жетоны!</p>
-                    <div class="columns">
-                        <div class="scenery-stars-container-side">
-                            <div id="stars-bar-fuel" class="bar"></div>
-                            <p><span id="stars-advertise-fuel">0/0</span></p>
-                            <h2>Топливо</h2>
-                            <p>Сколько рекламных видеороликов можно посмотреть</p>
-                            <p><span id="stars-bar-fuel-lasttime"></span></p>
-                        </div>
-                        <div class="scenery-stars-container-side">
-                            <div id="stars-bar-charge" class="bar"></div>
-                            <p><span id="stars-advertise-charge">0/0</span></p>
-                            <h2>Заряд генератора</h2>
-                            <p>Оставшиеся просмотры рекламы до запуска звездопада</p>
+                    <div>
+                        <h1>Генератор звездопада</h1>
+                        <p>Заполните шкалу заряда генератора до конца, чтобы запустить звездопад и получить жетоны!</p>
+                        <hr />
+                        <div class="scenery-container-inset" id="scenery-container-inset-stars">
+                            <div class="scenery-stars-container-side">
+                                <div id="stars-bar-fuel" class="bar"></div>
+                                <p><span id="stars-advertise-fuel">0/0</span></p>
+                                <h2>Топливо</h2>
+                                <p>Сколько рекламных видеороликов можно посмотреть</p>
+                                <p><span id="stars-bar-fuel-lasttime"></span></p>
+                            </div>
+                            <div class="scenery-stars-container-side">
+                                <div id="stars-bar-charge" class="bar"></div>
+                                <p><span id="stars-advertise-charge">0/0</span></p>
+                                <h2>Заряд генератора</h2>
+                                <p>Оставшиеся просмотры рекламы до запуска звездопада</p>
+                            </div>
                         </div>
                     </div>
                     <button id="scenery-stars-container-close" class="scenery-container-button-close">Закрыть</button>
@@ -208,12 +213,197 @@
                 <div id="scenery-home-scenery">
                     <img src="images/decorations/scenery_home.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
                     <button id="scenery-home-button" class="scenery-button"></button>
+                    <div id="scenery-home-nika" class="scenery-nika stated"><img id="scenery-home-nika-img" src="images/nika/nika_home_classic.png" alt="Изображение Ники"/></div>
                 </div>
                 <div id="scenery-home-container" class="scenery-container">
                     <div>
-                        <h1>Улучшения</h1>
+                        <h1>Темы приложения</h1>
                         <p>Получайте достижения, проходите испытания событий и получайте уникальные темы приложения!</p>
-                        <div id="scenery-home-container-updates"></div>
+                        <hr />
+                        <div id="scenery-container-inset-home" class="scenery-container-inset">
+                            <h2>Стандратная тема</h2>
+                            <button class="home-theme-button" id="home-theme-basic">Включить тему</button>
+                            <div class="home-button">
+                                <img src="images/updates/basic-theme.png" alt="" />
+                                <div>
+                                    <h3>Нагорье</h3>
+                                    <p>Фиолетово-синий стиль, действие происходит на высокой горе, на плато рядом с домом Ники и в городе, лежащем в долине</p>
+                                </div>
+                                <input type="radio" name="update-theme" id="update-basic-theme" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/basic-nika.png" alt="Девушка в черном, с необычными волосами сине-фиолетового градиента"/>
+                                <div>
+                                    <h3>Ника</h3>
+                                    <p>Девушка в черном топе и шортах, с необычными волосами сине-фиолетового градиента</p>
+                                </div>
+                                <input type="radio" name="update-nika" id="update-basic-nika" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/basic-sound.png" alt="Саундтрек стандартной темы" />
+                                <div>
+                                    <h3>Горный амбиент</h3>
+                                    <p>Саундтрек стандартной темы</p>
+                                </div>
+                                <input type="radio" name="update-sound" id="update-basic-sound" class="update-theme-input"/>
+                            </div>
+                            <hr />
+
+                            <h2>Новогодняя тема</h2>
+                            <button class="home-theme-button" id="home-theme-winter">Включить тему</button>
+                            <div class="home-button">
+                                <img src="images/updates/winter-theme.png" alt=""/>
+                                <div>
+                                    <h3>Зимнее поместье</h3>
+                                    <p></p>
+                                </div>
+                                <input type="radio" name="update-theme" id="update-winter-theme" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/winter-nika.png" alt="Ника с бело-красным градиентом волос, в красном купальнике с белым мехом, с леденцом в руках"/>
+                                <div>
+                                    <h3>Новогодняя Ника</h3>
+                                    <p>Ника с бело-красным градиентом волос, в красном купальнике с белым мехом, с леденцом в руках</p>
+                                </div>
+                                <input type="radio" name="update-nika" id="update-winter-nika" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/christmas-nika.png" alt="Секретный костюм Ники">
+                                <div>
+                                    <h3>Рождественская Ника</h3>
+                                    <p>Секретный костюм Ники ;)<br/><i>Не рекомендуется к просмотру лицами младше 16 лет</i></p>
+                                </div>
+                                <input type="radio" name="update-nika" id="update-christmas-nika" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/winter-sound.png" alt=""/>
+                                <div>
+                                    <h3>Соната бубенцов</h3>
+                                    <p>Музыка новогодней и рождественской темы</p>
+                                </div>
+                                <input type="radio" name="update-sound" id="update-winter-sound" class="update-theme-input"/>
+                            </div>
+                            <hr />
+
+                            <h2>Тема Дня святого Валентина</h2>
+                            <button class="home-theme-button" id="home-theme-angel">Включить тему</button>
+                            <div class="home-button">
+                                <img src="images/updates/angel-theme.png" alt=""/>
+                                <div>
+                                    <h3></h3>
+                                    <p></p>
+                                </div>
+                                <input type="radio" name="update-theme" id="update-angel-theme" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/angel-nika.png" alt="Ника с белыми крыльями и нимбом над головой"/>
+                                <div>
+                                    <h3>Ангелочек Ника</h3>
+                                    <p>Ника с белыми крыльями и нимбом над головой</p>
+                                </div>
+                                <input type="radio" name="update-nika" id="update-angel-nika" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/angel-sound.png" alt=""/>
+                                <div>
+                                    <h3>Райское фортепиано</h3>
+                                    <p>Саундтрек темы Дня святого Валентина</p>
+                                </div>
+                                <input type="radio" name="update-sound" id="update-angel-sound" class="update-theme-input"/>
+                            </div>
+                            <hr />
+
+                            <h2>Летняя тема</h2>
+                            <button class="home-theme-button" id="home-theme-summer">Включить тему</button>
+                            <div class="home-button">
+                                <img src="images/updates/summer-theme.png" alt=""/>
+                                <div>
+                                    <h3>Морской пляж</h3>
+                                    <p></p>
+                                </div>
+                                <input type="radio" name="update-theme" id="update-summer-theme" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/summer-nika.png" alt="Желтые волосы, солнцезащитные очки, желтый купальник и белая сетка"/>
+                                <div>
+                                    <h3>Ника в купальнике</h3>
+                                    <p>Ника с огненно-желтыми волосами, в солнцезащитных очках, желтом купальнике и белой сетке</p>
+                                </div>
+                                <input type="radio" name="update-nika" id="update-summer-nika" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/summer-sound.png" alt=""/>
+                                <div>
+                                    <h3>Маями хаус</h3>
+                                    <p>Саундтрек летней темы</p>
+                                </div>
+                                <input type="radio" name="update-sound" id="update-summer-sound" class="update-theme-input"/>
+                            </div>
+                            <hr />
+
+                            <h2>Тема Хэллоуина</h2>
+                            <button class="home-theme-button" id="home-theme-halloween">Включить тему</button>
+                            <div class="home-button">
+                                <img src="images/updates/halloween-theme.png" alt=""/>
+                                <div>
+                                    <h3>Бал Сатаны</h3>
+                                    <p></p>
+                                </div>
+                                <input type="radio" name="update-theme" id="update-halloween-theme" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/halloween-nika.png" alt=""/>
+                                <div>
+                                    <h3>Вампирша Ника</h3>
+                                    <p>Ника с короткими белыми клыками, в красно-синем платье с пышным воротником и высоких черных сапогах на завязках</p>
+                                </div>
+                                <input type="radio" name="update-nika" id="update-halloween-nika" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/sexy-nika.png" alt=""/>
+                                <div>
+                                    <h3></h3>
+                                    <p>Секретный костюм Ники ;)<br/><i>Не рекомендуется к просмотру лицами младше 16 лет</i></p>
+                                </div>
+                                <input type="radio" name="update-nika" id="update-sexy-nika" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/halloween-sound.png" alt=""/>
+                                <div>
+                                    <h3></h3>
+                                    <p></p>
+                                </div>
+                                <input type="radio" name="update-sound" id="update-halloween-sound" class="update-theme-input"/>
+                            </div>
+                            <hr />
+
+                            <h2>Тема дня Рождения Starfallz</h2>
+                            <button class="home-theme-button" id="home-theme-birth">Включить тему</button>
+                            <div class="home-button">
+                                <img src="images/updates/birth-theme.png" alt=""/>
+                                <div>
+                                    <h3>Столичная мостовая</h3>
+                                    <p></p>
+                                </div>
+                                <input type="radio" name="update-theme" id="update-birth-theme" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/birth-nika.png" alt=""/>
+                                <div>
+                                    <h3>Городская Ника</h3>
+                                    <p>Брюнетка в черной кожаной куртке, короткой юбке и туфлях, с самым модным телефоном во всем городе</p>
+                                </div>
+                                <input type="radio" name="update-nika" id="update-birth-nika" class="update-theme-input"/>
+                            </div>
+                            <div class="home-button">
+                                <img src="images/updates/birth-sound.png" alt=""/>
+                                <div>
+                                    <h3>Популярный трек</h3>
+                                    <p>Саундтрек темы Дня Рождения Starfallz (Но по большей части это просто городская музыка)</p>
+                                </div>
+                                <input type="radio" name="update-sound" id="update-birth-sound" class="update-theme-input"/>
+                            </div>
+                        </div>
                     </div>
                     <button id="scenery-home-container-close" class="scenery-container-button-close">Закрыть</button>
                 </div>
@@ -226,41 +416,78 @@
                     <img src="images/decorations/scenery_income.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
                     <button id="scenery-income-button" class="scenery-button"></button>
                 </div>
-                <div id="scenery-income-container-main" class="scenery-container scenery-income-container">  
-                    <h1>Кошелек</h1>
-                    <p>Выводите накопленные жетоны в реальные телеграмм-звезды и уникальные NFT-подарки!</p>
-                    <p><b>Текущий балланс</b>: <span id="income-balance">0</span> жетонов</p>
-                    <p><b>Курс обмена</b>: 1 жетон = <span id="income-cost">1</span> телеграмм звезда</p>
-                    <div id="income-button-stars" class="income-button">
-                        <div>
-                            <h2>Телеграмм-звезды</h2>
-                            <p>Вывести жетоны в самую распространенную валюту в телеграмме</p>
+                <div id="scenery-income-container-main" class="scenery-container scenery-income-container">
+                    <div>  
+                        <h1>Кошелек</h1>
+                        <p>Выводите накопленные жетоны в реальные телеграмм-звезды и уникальные NFT-подарки!</p>
+                        <p class="text-bigger"><b>Текущий балланс</b>: <span id="income-balance">0</span> жетонов</p>
+                        <p class="text-bigger"><b>Курс обмена</b>: 1 жетон = <span id="income-cost">1</span> телеграмм звезда</p>
+                        <hr />
+                        <div class="scenery-container-inset">
+                        <div id="income-button-stars" class="income-button">
+                            <div>
+                                <h2>Телеграмм-звезды</h2>
+                                <p>Вывести жетоны в самую распространенную валюту в телеграмме</p>
+                            </div>
+                            <img src="animations/income-stars.gif" alt="Изображение телеграмм-звезды"/>
                         </div>
-                        <img src="" alt="Изображение телеграмм-звезды"/>
-                    </div>
-                    <div id="income-button-gifts" class="income-button">
-                        <div>
-                            <h2>Подарки (Рекомендуется)</h2>
-                            <p>Получить или подарить уникальный подарок за жетоны</p>
+                        <div id="income-button-gifts" class="income-button">
+                            <div>
+                                <h2>NFT-подарки</h2>
+                                <p><b>(Рекомендуется)</b> Получить или подарить уникальный подарок за жетоны</p>
+                            </div>
+                            <img src="animations/income-gift.gif" alt="Изображение телеграмм-подарка"/>
                         </div>
-                        <img src="" alt="Изображение телеграмм-подарка"/>
+                        </div>
                     </div>
                     <button id="scenery-income-container-close" class="scenery-container-button-close">Закрыть</button>
-
                 </div>
+                
                 <div id="scenery-income-container-stars" class="scenery-container">
-
+                    <div>
+                        <h1>Вывод телеграмм-звезд</h1>
+                        <p>Вывести жетоны в самую распространенную валюту в телеграмме</p>
+                        <hr />
+                        <div class="scenery-container-inset">
+                            <img id="scenery-income-img-star" src="animations/income-stars-star.gif" alt="Парящая в воздухе телеграмм-звезда, окруженная маленькими звездочками"/>
+                            <div>
+                                <p class="text-bigger"><b>Текущий балланс</b>: <span id="income-balance-stars">0</span> жетонов</p>
+                                <p class="text-bigger"><b>Курс обмена</b>: 1 жетон = <span id="income-cost-stars">1</span> телеграмм звезда</p>
+                                <label for="income-stars-input-number">Число звезд для вывода</label>
+                                <p>Не должно превышать количество жетонов на баллансе. Стандартное ограничение на вывод: 50 звезд.</p>
+                                <input id="income-stars-input-number" type="number" min="1" max="50"/>
+                                <button>Вывести</button>
+                                <p>Нажимая на кнопку выше, Вы соглашаетесь с <a href="https://starfallz.netlify.app/policy#reward" target="_blank">Правилами вознаграждения</a> приложения Starfallz.</p>
+                            </div>
+                        </div>
+                    </div>
                     <button id="scenery-income-container-stars-close" class="scenery-container-button-close">Назад</button>
                 </div>
+                
                 <div id="scenery-income-container-giftslist" class="scenery-container">
+                    <div>
+                        <h1>Список NFT-подарков</h1>
+                        <p>Выберите подходящий подарок из списка, а затем нажмите на него для подтверждения транзакции</p>
+                        <hr />
+                        <div class="scenery-container-inset">
 
+                        </div>
+                    </div>
                     <button id="scenery-income-container-giftslist-close" class="scenery-container-button-close">Назад</button>
                 </div>
+                
                 <div id="scenery-income-container-giftsout" class="scenery-container">
-
+                    <div>
+                        <h2>Вывод NFT-подарков</h2>
+                        <p>Получить или подарить уникальный подарок за жетоны</p>
+                        <div class="scenery-container-inset">
+                            
+                        </div>
+                    </div>
                     <button id="scenery-income-container-giftsout-close" class="scenery-container-button-close">Назад</button>
                 </div>
             </div>
+            
             <div id="scenery-footer" class="scenery-element"><img src="images/decorations/footer.png" alt="Starfallz, 2026г."/></div>
         </div>
 
@@ -299,12 +526,7 @@
     <script defer src="scripts/ui.js"></script>
     <script defer src="scripts/ads.js"></script>
 
-    <script async>
-        // console.log = () => {};
-        document.onselectstart = function() { return false; };
-        document.oncontextmenu = function() { return false; };
-        document.ondragstart = function() { return false; };
-    </script>
+    <script async> document.onselectstart = function() { return false; }; document.oncontextmenu = function() { return false; }; document.ondragstart = function() { return false; }; </script>
     <script async>
         (function () {
             // ✓ Настройки загрузки страницы
@@ -351,6 +573,74 @@
             setRandomMessage();
             const msgTimer = setInterval(setRandomMessage, changeInterval);
 
+            const audio = document.getElementById('splashAudio');
+            audio.volume = 1;               // начальная громкость
+            let playTimeout, fadeInterval;
+
+            // Запуск воспроизведения с задержкой 1 секунда (чтобы начать с 2-й секунды)
+            function startAudio() {
+                // Попытка воспроизведения с пропуском первых 1 секунды
+                // (некоторые браузеры не позволяют устанавливать currentTime до загрузки метаданных)
+                const tryStart = () => {
+                    if (audio.readyState >= 1) { // HAVE_METADATA или лучше
+                    // безопасно ставим позицию и воспроизводим
+                    try { audio.currentTime = 1; } catch (e) { /* игнор при ошибке */ }
+                    const p = audio.play();
+                    if (p && p.catch) p.catch(() => { /* автозапуск заблокирован — без звука */ });
+                    } else {
+                    // ждем метаданных
+                    audio.addEventListener('loadedmetadata', function onmd() {
+                        audio.removeEventListener('loadedmetadata', onmd);
+                        try { audio.currentTime = 1; } catch (e) {}
+                        const p = audio.play();
+                        if (p && p.catch) p.catch(() => {});
+                    }, { once: true });
+                    }
+                };
+
+                // Запуск через 1 секунду после вызова startAudio
+                clearTimeout(playTimeout);
+                playTimeout = setTimeout(tryStart, 1000);
+            }
+
+            // Плавное затухание и остановка
+            function fadeOutAndStop(duration = 500) { // duration в мс
+                clearInterval(fadeInterval);
+                const steps = 20;
+                const stepTime = Math.max(10, duration / steps);
+                const startVol = audio.volume;
+                let step = 0;
+                fadeInterval = setInterval(() => {
+                    step++;
+                    const t = step / steps;
+                    audio.volume = Math.max(0, startVol * (1 - t));
+                    if (step >= steps) {
+                    clearInterval(fadeInterval);
+                    try { audio.pause(); audio.currentTime = 0; } catch (e) {}
+                    audio.volume = startVol; // восстановим на случай повторного воспроизведения
+                    }
+                }, stepTime);
+            }
+
+                // Интеграция с вашим hideOverlay
+            const originalHide = window.hideOnloadOverlay || null;
+            function hideOverlayWithAudio() {
+                // вызов original логики (если есть)
+                if (typeof originalHide === 'function') originalHide();
+
+                // плавно убрать звук при скрытии оверлея (сделать 500–800ms)
+                fadeOutAndStop(600);
+            }
+
+            // Если вы используете свой hideOverlay (в вашем коде), замените вызов hideOverlay на:
+            function myHideOverlayWrapper() {
+                hideOverlay();            // ваша существующая функция
+                fadeOutAndStop(600);      // затухание при закрытии
+            }
+
+            // Запуск звука при показе оверлея/загрузке страницы
+            startAudio();
+
             // ✓ Функция скрытия загрузочного окна
             function hideOverlay() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -365,13 +655,13 @@
                     if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
                 }, 400);
             }
-
-            // ✓ Проверка на завершение загрузки
-            if (document.readyState === 'complete') { // Проверка на завершение
-                setTimeout(hideOverlay, 250);
+            
+            // Связывание со событием load (как в вашем коде)
+            if (document.readyState === 'complete') {
+                setTimeout(() => { myHideOverlayWrapper(); }, 250);
             } else {
-                window.addEventListener('load', hideOverlay, { once: true }); // Проверка на истечение максимального времени ожидания
-                setTimeout(hideOverlay, 60000);
+                window.addEventListener('load', () => { myHideOverlayWrapper(); }, { once: true });
+                setTimeout(() => { hideOverlay(); }, 60000);
             }
             window.hideOnloadOverlay = hideOverlay;
             })();

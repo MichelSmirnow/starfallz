@@ -7,7 +7,6 @@
     #scenery-home { height: 120vh !important; min-height: 150vw !important; max-height: 190vw !important; }
     #scenery-income { height: 140vw !important; }
     .scenery-postlayer { height: 15vw; }
-
     #scenery-stars-container, #scenery-home-container { bottom: 45% !important;}
 
 
@@ -28,7 +27,6 @@
     #scenery-home { height: 140vh !important; min-height: 110vw !important; max-height: 130vw !important; }
     #scenery-income { height: 100vw !important; }
     .scenery-postlayer { height: 10vw; }
-
     #scenery-home-container { bottom: 35% !important;}
    
 
@@ -47,7 +45,6 @@
     #scenery-home { height: 170vh !important; min-height: 70vw !important; max-height: 90vw !important;}
     #scenery-income { height: 72vw !important; }
     .scenery-postlayer { height: 7vw; }
-
     #scenery-stars-container { bottom: 55% !important;}
     #scenery-home-container { bottom: 35% !important;}
 

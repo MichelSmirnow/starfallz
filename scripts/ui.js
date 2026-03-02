@@ -5,7 +5,6 @@ const perfomance_main = document.getElementById('main');
 const perfomance_load = document.getElementById('load');
 
 // ✓ Боковая страница профиля
-const profile = document.getElementById('profile');
 const profile_info_avatar = document.getElementById('profile-info-avatar');
 const profile_info_name = document.getElementById('profile-info-name');
 const profile_info_id = document.getElementById('profile-info-id');
@@ -19,27 +18,8 @@ const profile_stats_events = document.getElementById('profile-stats-events');
 const profile_stats_days = document.getElementById('profile-stats-days');
 const profile_achiv_container = document.getElementById('profile-achiv-container');
 
-// ✓ Настройки приложения
-const settings_audio = document.getElementById('settings-audio');
-const settings_music = document.getElementById('settings-music');
-const settings_notif = document.getElementById('settings-notif');
-const settings_nika = document.getElementById('settings-nika');
-const settings_graphics_best = document.getElementById('settings-graphics-best');
-const settings_graphics_economy = document.getElementById('settings-graphics-economy');
-const settings_graphics_low = document.getElementById('settings-graphics-low');
-const settings_animations = document.getElementById('settings-animations');
-const settings_parallax = document.getElementById('settings-parallax');
-const settings_effects = document.getElementById('settings-effects');
-const settings_notifcount_0 = document.getElementById('settings-notifcount-0');
-const settings_notifcount_1 = document.getElementById('settings-notifcount-1');
-const settings_notifcount_2 = document.getElementById('settings-notifcount-2');
-const settings_notifcount_3 = document.getElementById('settings-notifcount-3');
-const settings_reset = document.getElementById('button-settings-reset');
-
 // Боковая страница ежедневника
-const daily = document.getElementById('daily');
 const daily_button_ad = document.getElementById('daily-button-ad');
-const daily_nika = document.getElementById('daily-nika');
 const daily_enabled = document.getElementById('daily-enabled');
 const daily_button_1 = document.getElementById('daily-button-1');
 const daily_button_2 = document.getElementById('daily-button-2');
@@ -49,16 +29,8 @@ const daily_button_5 = document.getElementById('daily-button-5');
 const daily_button_6 = document.getElementById('daily-button-6');
 const daily_button_7 = document.getElementById('daily-button-7');
 
-// Элементы интерфейса #scenery-stars
-const scenery_stars = document.getElementById('scenery-stars');
+
 const scenery_button_ad = document.getElementById('scenery-button-ad');
-
-// Элементы интерфейса #scenery-home
-const scenery_home = document.getElementById('scenery-home');
-
-// Элементы интерфейса #scenery-income
-const scenery_income = document.getElementById('scenery-income');
-
 
 // ✓ Верхний пользовательский интерфейс
 const top_ui_star = document.getElementById('top-ui-star');
@@ -137,49 +109,6 @@ function showNotification(notification_name) {
 }
 
 
-/*const achivement = {
-    // Достижения звездопадов
-    : {url: "images/achivements/", title: "Запускаем генератор", desc: "С чего-то же нужно начинать?", spoiler: "Первый раз начать звездопад"},
-    mania: {url: "images/achivements/achiv_mania.png", title: "Звездная мания", desc: "Цикл получения бесплатных звезд запущен - теперь меня не остановить!", spoiler: "Запустить звездопад 5 раз"},
-    factory: {url: "images/achivements/achiv_factory.png", title: "Фабрика звезд", desc: "Промышленное производство звезд в масштабах страны", spoiler: "Запустить звездопад 25 раз"},
-    : {url: "images/achivements/", title: "Звездопад", desc: "", spoiler: "Запустить звездопад 50 раз"},
-    stargazes: {url: "images/achivements/", title: "Звездные грезы", desc: "", spoiler: "Запустить звездопад 100 раз"},
-
-    // Достижения вывода звезд
-    : {url: "images/achivements/", title: "Малый бизнес", desc: "", spoiler: "Вывести из приложения первую звезду"},
-    business: {url: "images/achivements/achiv_business.png", title: "Предприниматель", desc: "", spoiler: "Вывести из приложения 25 звезд"},
-    : {url: "images/achivements/", title: "Звездная мануфактура", desc: "", spoiler: "Вывести из приложения 100 звезд"},
-
-    // Достижения вывода подарков
-    firstgift: {url: "images/achivements/achiv_firstgift.png", title: "Первый подарок", desc: "", spoiler: "Вывести из приложения первый подарок"},
-    collector: {url: "images/achivements/achiv_collector.png", title: "Коллекционер", desc: "", spoiler: "Вывести из приложения 5 подарков"},
-    : {url: "images/achivements/", title: "NFT-Провайдер", desc: "", spoiler: "Вывести из приложения 25 подарков"},
-
-    // Достижения ежедневника
-    : {url: "images/achivements/", title: "", desc: "", spoiler: "Забрать первую ежедневную награду в ежедневнике"},
-    : {url: "images/achivements/", title: "", desc: "", spoiler: "Забрать награду за серию из трех дней в ежедневнике"},
-    : {url: "images/achivements/", title: "Недельное испытание", desc: "", spoiler: "Забрать недельную награду в ежедневнике"},
-    : {url: "images/achivements/", title: "Ни дня без звезд", desc: "", spoiler: "Получать ежедневные награды в течении 30 дней"},
-
-    // Достижения событий
-    event_year: {url: "images/achivements/achiv_event_year.png", title: "С Новым Годом!", desc: "Вы приняли участие в Новогоднем событии и добились в нем высоких результатов!", spoiler: "Принять участие в Новогоднем событии"},
-    event_love: {url: "images/achivements/achiv_event_love.png", title: "Вместо тысячи слов...", desc: "Вы приняли участие в событии Дня всех влюбленных и добились в нем высоких результатов!", spoiler: "Принять участие в событии Дня всех влюбленных"},
-    event_beach: {url: "images/achivements/achiv_event_beach.png", title: "Пляжный переполох", desc: "Вы приняли участие в Пляжном событии и добились в нем высоких результатов!", spoiler: "Принять участие в Пляжном событии"},
-    event_hallo: {url: "images/achivements/achiv_event_hallo.png", title: "Темная ночь", desc: "Вы приняли участие в Хэллоунском событии и добились в нем высоких результатов!", spoiler: "Принять участие в Хэллоунском событии"},
-    event_birth: {url: "images/achivements/achiv_event_birth.png", title: "День Рождения Starfallz", desc: "Вы приняли участие в событии Дня Рождения Starfallz!", spoiler: "Принять участие в событии Дня Рождения Starfallz"},
-
-    // Секретные достижения
-    nikafun: {url: "images/achivements/achiv_nikafun.png", title: "Фанат Ники", desc: "Нажать на Нику на всех страницах приложения", spoiler: "Секретное достижение. Продолжайте играть, чтобы получить его!"},
-    zcount: {url: "images/achivements/", title: "Звездочет", desc: "Нажать на все звезды на всех страницах приложения", spoiler: "Секретное достижение. Продолжайте играть, чтобы получить его!"},
-    subscriber: {url: "images/achivements/achiv_subscriber.png", title: "Подписчик", desc:"Подписаться на официальный телеграмм-канал приложения", spoiler: "Секретное достижение. Продолжайте играть, чтобы получить его!"}
-
-    // Достижения тестрования
-    alpha: {url: "images/achivements/achiv_alpha.png", title: "Альфа-тестировщик", desc: "Спасибо за альфа-тестирование приложения starfallz! (Лимитированный период получения с 22 декабря 2025г. по 1 марта 2026г.)", spoiler: "Невыполнимое достижение (Период получения истек)"},
-    beta: {url: "images/achivements/achiv_beta.png", title: "Бета-тестировщик", desc: "Спасибо за бета-тестирование приложения starfallz! (Лимитированный период получения)", spoiler: "Невыполнимое достижение (Период получения истек)"},
-    wellcome: {url: "images/achivements/achiv_wellcome.png", title: "Добро пожаловать!", desc: "Спасибо за использование приложения starfallz! Приятной игры!", spoiler: "Это достижение автоматически присваивается пользователю при первом посещении приложения"}
-};*/
-
-
 // Функция рассчета параллакса (отклик на прокрутку)
 window.addEventListener('scroll', function() {
     const scroll_parallax_stars = document.getElementById('scenery-stars-parallax');
@@ -204,105 +133,256 @@ window.addEventListener('scroll', function() {
 });
 
 
-// Функции обработки нажатий на нижний пользовательский интерфейс
+// ✓ Функции обработки нажатий на нижний пользовательский интерфейс
 const bottom_ui_star = document.getElementById('bottom-ui-star');
 const bottom_ui_home = document.getElementById('bottom-ui-home');
 const bottom_ui_income = document.getElementById('bottom-ui-income');
 const bottom_ui_daily = document.getElementById('bottom-ui-daily');
 const bottom_ui_user = document.getElementById('bottom-ui-user');
+const profile = document.getElementById('profile');
+const daily = document.getElementById('daily');
+const background = document.getElementById('background');
+const scenery = document.getElementById('scenery');
 bottom_ui_star.addEventListener('click', function() {
     returnOnPage();
     window.scroll({ top: 0, behavior: 'smooth' });
 });
 bottom_ui_home.addEventListener('click', function() {
+    const scenery_home = document.getElementById('scenery-home');
     returnOnPage();
-    setTimeout(() => { scenery_home.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 200);
     scenery_home.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    setTimeout(() => { scenery_home.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 400);
 });
 bottom_ui_income.addEventListener('click', function() {
+    const scenery_income = document.getElementById('scenery-income');
     returnOnPage();
-    setTimeout(() => { scenery_income.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 200);
     scenery_income.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    setTimeout(() => { scenery_income.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, 400);
 });
 bottom_ui_daily.addEventListener('click', function() {
-    right_panel.classList.remove('panel_bottom_shown');
-    left_panel.classList.add('panel_bottom_shown');
-    panel_background.classList.add('page_moved');
-    panel_scenery.classList.add('page_moved');
+    profile.classList.remove('panel_bottom_shown');
+    daily.classList.add('panel_bottom_shown');
+    background.classList.add('page_moved');
+    scenery.classList.add('page_moved');
 });
 bottom_ui_user.addEventListener('click', function() {
-    left_panel.classList.remove('panel_bottom_shown');
-    right_panel.classList.add('panel_bottom_shown');
-    panel_background.classList.add('page_moved');
-    panel_scenery.classList.add('page_moved');
+    daily.classList.remove('panel_bottom_shown');
+    profile.classList.add('panel_bottom_shown');
+    background.classList.add('page_moved');
+    scenery.classList.add('page_moved');
 });
-function returnOnPage() {/*
-    if (left_panel.classList.contains('panel_bottom_shown')) {left_panel.classList.remove('panel_bottom_shown');}
-    if (right_panel.classList.contains('panel_bottom_shown')) {right_panel.classList.remove('panel_bottom_shown');}
-    if (background.classList.contains('page_moved')) {
-        panel_background.classList.remove('page_moved');
-        panel_scenery.classList.remove('page_moved');
-    }*/
+function returnOnPage() {
+    if (daily.classList.contains('panel_bottom_shown')) daily.classList.remove('panel_bottom_shown');
+    if (profile.classList.contains('panel_bottom_shown')) profile.classList.remove('panel_bottom_shown');
+    if (background.classList.contains('page_moved') || scenery.classList.contains('page_moved')) {
+        background.classList.remove('page_moved');
+        scenery.classList.remove('page_moved');
+    }
 }
 
 
-// Функции обработки нажатий на кнопки открытия и закрытия окон scenery
+// ✓ Функции обработки нажатий на кнопки открытия и закрытия окон scenery
 const scenery_stars_button = document.getElementById('scenery-stars-button');
 const scenery_stars_container = document.getElementById('scenery-stars-container');
 const scenery_stars_container_close = document.getElementById('scenery-stars-container-close');
 scenery_stars_button.addEventListener('click', () => {
     if (scenery_stars_container.classList.contains('visible')) {
         //scenery_button_ad.style.top = "7%";
-        scenery_stars_container.classList.remove('visible_block');
-        setTimeout(() => { scenery_stars_container.classList.remove('visible'); }, 500);
+        scenery_stars_container.classList.add('hidden');
+        scenery_stars_container.classList.remove('visible');
     } else {
         //scenery_button_ad.style.top = `-40vh`;
-        setTimeout(() => { scenery_stars_container.classList.add('visible_block'); }, 10);
+        scenery_stars_container.classList.remove('hidden');
         scenery_stars_container.classList.add('visible');
     }
 });
 scenery_stars_container_close.addEventListener('click', () => {
     //scenery_button_ad.style.top = "7%";
-    scenery_stars_container.classList.remove('visible_block');
-    setTimeout(() => { scenery_stars_container.classList.remove('visible'); }, 500);
+    scenery_stars_container.classList.add('hidden');
+    scenery_stars_container.classList.remove('visible');
 });
-
 const scenery_home_button = document.getElementById('scenery-home-button');
 const scenery_home_container = document.getElementById('scenery-home-container');
 const scenery_home_container_close = document.getElementById('scenery-home-container-close');
 scenery_home_button.addEventListener('click', () => {
     if (scenery_home_container.classList.contains('visible')) {
-        scenery_home_container.classList.remove('visible_block');
-        setTimeout(() => { scenery_home_container.classList.remove('visible'); }, 500);
+        scenery_home_container.classList.remove('visible'); 
+        scenery_home_container.classList.add('hidden');
     } else {
-        setTimeout(() => { scenery_home_container.classList.add('visible_block'); }, 10);
+        scenery_home_container.classList.remove('hidden');
         scenery_home_container.classList.add('visible');
     }
 });
 scenery_home_container_close.addEventListener('click', () => {
-    scenery_home_container.classList.remove('visible_block');
-    setTimeout(() => { scenery_home_container.classList.remove('visible'); }, 500);
+    scenery_home_container.classList.remove('visible');
+    scenery_home_container.classList.add('hidden');
 });
-
 const scenery_income_button = document.getElementById('scenery-income-button');
+const income_button_stars = document.getElementById('income-button-stars');
+const income_button_gifts = document.getElementById('income-button-gifts');
 const scenery_income_container_main = document.getElementById('scenery-income-container-main');
 const scenery_income_container_stars = document.getElementById('scenery-income-container-stars');
 const scenery_income_container_giftslist = document.getElementById('scenery-income-container-giftslist');
 const scenery_income_container_giftsout = document.getElementById('scenery-income-container-giftsout');
 const scenery_income_container_close = document.getElementById('scenery-income-container-close');
+const scenery_income_container_stars_close = document.getElementById('scenery-income-container-stars-close');
+const scenery_income_container_giftslist_close = document.getElementById('scenery-income-container-giftslist-close');
+const scenery_income_container_giftsout_close = document.getElementById('scenery-income-container-giftsout-close');
 scenery_income_button.addEventListener('click', () => {
     if (scenery_income_container_main.classList.contains('visible')) {
-        scenery_income_container_main.classList.remove('visible_block');
-        setTimeout(() => { scenery_income_container_main.classList.remove('visible'); }, 500);
+        scenery_income_container_main.classList.add('hidden');
+        scenery_income_container_main.classList.remove('visible');
     } else {
-        setTimeout(() => { scenery_income_container_main.classList.add('visible_block'); }, 10);
         scenery_income_container_main.classList.add('visible');
+        scenery_income_container_main.classList.remove('hidden');
     }
 });
-scenery_income_container_close.addEventListener('click', () => {
-    scenery_income_container_main.classList.remove('visible_block');
-    setTimeout(() => { scenery_income_container_main.classList.remove('visible'); }, 500);
+income_button_stars.addEventListener('click', () => {
+    scenery_income_container_main.classList.add('hidden');
+    scenery_income_container_main.classList.remove('visible');
+    setTimeout(() => { scenery_income_container_stars.classList.remove('hidden'); 
+        scenery_income_container_stars.classList.add('visible'); }, 150);
 });
+income_button_gifts.addEventListener('click', () => {
+    scenery_income_container_main.classList.add('hidden');
+    scenery_income_container_main.classList.remove('visible');
+    setTimeout(() => { scenery_income_container_giftslist.classList.remove('hidden'); 
+        scenery_income_container_giftslist.classList.add('visible'); }, 150);
+});
+
+scenery_income_container_close.addEventListener('click', () => {
+    scenery_income_container_main.classList.add('hidden');
+    scenery_income_container_main.classList.remove('visible');
+});
+scenery_income_container_stars_close.addEventListener('click', () => {
+    scenery_income_container_stars.classList.add('hidden');
+    scenery_income_container_stars.classList.remove('visible');
+    setTimeout(() => { scenery_income_container_main.classList.remove('hidden'); 
+        scenery_income_container_main.classList.add('visible'); }, 150);
+});
+scenery_income_container_giftslist_close.addEventListener('click', () => {
+    scenery_income_container_giftslist.classList.add('hidden');
+    scenery_income_container_giftslist.classList.remove('visible');
+    setTimeout(() => { scenery_income_container_main.classList.remove('hidden'); 
+        scenery_income_container_main.classList.add('visible'); }, 150);
+});
+scenery_income_container_giftsout_close.addEventListener('click', () => {
+    scenery_income_container_giftsout.classList.add('hidden');
+    scenery_income_container_giftsout.classList.remove('visible');
+    setTimeout(() => { scenery_income_container_giftslist.classList.remove('hidden'); 
+        scenery_income_container_giftslist.classList.add('visible'); }, 150);
+});
+
+
+// Функция применения тем приложения
+const update_basic_nika = document.getElementById('update-basic-nika');
+const update_winter_nika = document.getElementById('update-winter-nika');
+const update_christmas_nika = document.getElementById('update-christmas-nika');
+const update_angel_nika = document.getElementById('update-angel-nika');
+const update_summer_nika = document.getElementById('update-summer-nika');
+const update_halloween_nika = document.getElementById('update-halloween-nika');
+const update_sexy_nika = document.getElementById('update-sexy-nika');
+const update_birth_nika = document.getElementById('update-birth-nika');
+
+
+
+
+
+// Функция однократного показа gif анимации
+function showAnimation(id, src, lengh) {
+  const img = document.getElementById(id); if (!img) return;
+  const cacheBuster = Date.now() + Math.random().toString(36).slice(2);
+  const sep = src.includes('?') ? '&' : '?';
+  const newSrc = src + sep + 'cb=' + cacheBuster;
+  img.src = newSrc;
+
+  if (img._gifTimeout) clearTimeout(img._gifTimeout);
+  img._gifTimeout = setTimeout(() => {
+    img.style.display = 'none';
+    img.removeAttribute('src');
+    delete img._gifTimeout;
+  }, lengh);
+}
+
+// Функции фокусирования на блоках scenery
+const anim_lengh_comein = 5280;
+const anim_lengh_sitdown = 4920;
+function onEnterStars(from) { 
+    console.log('Entered stars', {from}); 
+    showAnimation("scenery-stars-nika", "animations/nika_stars_comein.gif", anim_lengh_comein);
+    setTimeout(() => { showAnimation("scenery-stars-nika", "animations/nika_stars_sitdown.gif", anim_lengh_sitdown); }, anim_lengh_comein);
+}
+function onEnterHome(from) { 
+    console.log('Entered home', {from}); 
+}
+function onEnterIncome(from) { 
+    console.log('Entered income', {from}); 
+}
+
+const BLOCK_SELECTOR = '.scenery-container';
+const CENTER_OFFSET_VH = 10;
+const THROTTLE_MS = 100;
+
+function throttle(fn, wait) {
+  let last = 0, timeout = null, lastArgs = null;
+  return function(...args) {
+    const now = Date.now();
+    const remaining = wait - (now - last);
+    lastArgs = args;
+    if (remaining <= 0) {
+      clearTimeout(timeout);
+      timeout = null;
+      last = now;
+      fn.apply(this, lastArgs);
+      lastArgs = null;
+    } else if (!timeout) {
+      timeout = setTimeout(() => {
+        last = Date.now();
+        timeout = null;
+        fn.apply(this, lastArgs);
+        lastArgs = null;
+      }, remaining);
+    }
+  };
+}
+
+function updateVH() { vh = window.innerHeight / 100; }
+
+function checkFocus() {
+updateVH();
+const list = getBlocks();
+if (list.length === 0) return;
+
+const centerY = window.scrollY + window.innerHeight / 2;
+const offsetPx = CENTER_OFFSET_VH * vh;
+const zoneTop = centerY - offsetPx;
+const zoneBottom = centerY + offsetPx;
+
+let foundIndex = -1;
+for (let i = 0; i < list.length; i++) {
+    const el = list[i];
+    const rect = el.getBoundingClientRect();
+    const top = rect.top + window.scrollY;
+    const bottom = rect.bottom + window.scrollY;
+    if (!(bottom < zoneTop || top > zoneBottom)) {
+    foundIndex = i;
+    break;
+    }
+}
+
+if (foundIndex !== currentIndex) {
+    const prev = currentIndex;
+    currentIndex = foundIndex;
+    if (foundIndex === 0) onEnterBlock1(prev, foundIndex);
+    else if (foundIndex === 1) onEnterBlock2(prev, foundIndex);
+    else if (foundIndex === 2) onEnterBlock3(prev, foundIndex);
+}
+}
+
+
+
+
+
 
 
 // ✓ Функция изменения уровня шкалы
@@ -331,21 +411,291 @@ function setBar(percent, bar_id) {
   label.style.top = '12px';
 }
 
-/*
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Применение настроек
-    const settings_animations = document.getElementById('settings-animations');
-    const settings_animations_daily = document.getElementById('daily-nika');
-    const settings_animations_daily_original = 'images/daily-nika.png';
-    const settings_animations_daily_animated = 'animations/daily-nika.gif';
-    function updateAnimations() {
-        if (settings_animations.checked) { settings_animations_daily.setAttribute('src', settings_animations_daily_animated); } else { settings_animations_daily.setAttribute('src', settings_animations_daily_original); } 
+// Настройки приложения
+const setting = {
+    audio: document.getElementById('settings-audio'),
+    music: document.getElementById('settings-music'),
+    notif: document.getElementById('settings-notif'),
+    nika: document.getElementById('settings-nika'),
+    graphics_best: document.getElementById('settings-graphics-best'),
+    graphics_economy: document.getElementById('settings-graphics-economy'),
+    graphics_low: document.getElementById('settings-graphics-low'),
+    animations: document.getElementById('settings-animations'),
+    parallax: document.getElementById('settings-parallax'),
+    effects: document.getElementById('settings-effects'),
+    notifcount_0: document.getElementById('settings-notifcount-0'),
+    notifcount_1: document.getElementById('settings-notifcount-1'),
+    notifcount_2: document.getElementById('settings-notifcount-2'),
+    notifcount_3: document.getElementById('settings-notifcount-3'),
+    reset: document.getElementById('button-settings-reset'),
+    update: {
+        basic_theme: document.getElementById('update-basic-theme'),
+        basic_nika: document.getElementById('update-basic-nika'),
+        basic_sound: document.getElementById('update-basic-sound'),
+        winter_theme: document.getElementById('update-winter-theme'),
+        winter_nika: document.getElementById('update-winter-nika'),
+        christmas_nika: document.getElementById('update-christmas-nika'),
+        winter_sound: document.getElementById('update-winter-sound'),
+        angel_theme: document.getElementById('update-angel-theme'),
+        angel_nika: document.getElementById('update-angel-nika'),
+        angel_sound: document.getElementById('update-angel-sound'),
+        summer_theme: document.getElementById('update-summer-theme'),
+        summer_nika: document.getElementById('update-summer-nika'),
+        summer_sound: document.getElementById('update-summer-sound'),
+        halloween_theme: document.getElementById('update-halloween-theme'),
+        halloween_nika: document.getElementById('update-halloween-nika'),
+        sexy_nika: document.getElementById('update-sexy-nika'),
+        halloween_sound: document.getElementById('update-halloween-sound'),
+        birth_theme: document.getElementById('update-birth-theme'),
+        birth_nika: document.getElementById('update-birth-nika'),
+        birth_sound: document.getElementById('update-birth-sound') 
     }
-    updateAnimations();
-    settings_animations.addEventListener('change', updateAnimations);
+};
+const daily_nika = document.getElementById('daily-nika');
+const scenery_stars_nika = document.getElementById('scenery-stars-nika');
+const scenery_home_nika = document.getElementById('scenery-home-nika');
+const scenery_stars_nika_img = document.getElementById('scenery-stars-nika-img');
+const scenery_home_nika_img = document.getElementById('scenery-home-nika-img');
+// const scenery_income_nika = document.getElementById('scenery-income-nika-img');
+document.addEventListener('DOMContentLoaded', function() {
+    const image = {
+        nika: {
+            basic: {
+                stars: {
+                    sit: "images/nika/nika_stars_classic_sit.png",
+                    stand: "images/nika/nika_stars_classic_stand.png",
+                    comein: "animations/basic-nika/nika_stars_comein.gif",
+                    sitdown: "animations/basic-nika/nika_stars_sitdown.gif",
+                    state: "animations/basic-nika/nika_stars_state.gif",
+                    comeout: "animations/basic-nika/nika_stars_comeout.gif"
+                }, home: {
+                    stand: "images/nika/nika_home_classic.png",
+                    comein: "animations/basic-nika/",
+                    state: "animations/basic-nika/",
+                    comeout: "animations/basic-nika/"
+                }, income: {
+                    stand: "images/nika/",
+                    comein: "animations/basic-nika/",
+                    state: "animations/basic-nika/",
+                    comeout: "animations/basic-nika/"
+                }, daily: {
+                    stand: "images/nika/nika_daily_classic.png",
+                    state: "animations/basic-nika/nika_daily.gif"
+                }
+            }, winter: {
+                stars: {
+                    sit: "images/nika/nika_stars_year_sit.png",
+                    stand: "images/nika/nika_stars_year_stand.png",
+                    comein: "animations/winter-nika/",
+                    state: "animations/winter-nika/",
+                    comeout: "animations/winter-nika/"
+                }, home: {
+                    stand: "images/nika/nika_home_year.png",
+                    comein: "animations/winter-nika/",
+                    state: "animations/winter-nika/",
+                    comeout: "animations/winter-nika/"
+                }, income: {
+                    stand: "images/nika/",
+                    comein: "animations/winter-nika/",
+                    state: "animations/winter-nika/",
+                    comeout: "animations/winter-nika/"
+                }, daily: {
+                    stand: "images/nika/nika_daily_winter.png",
+                    state: "animations/winter-nika/nika_daily.gif"
+                }
+            }, christmas: {
+                stars: {
+                    sit: "images/nika/nika_stars_christmas_sit.png",
+                    stand: "images/nika/nika_stars_christmas_stand.png",
+                    comein: "animations/christmas-nika/",
+                    state: "animations/christmas-nika/",
+                    comeout: "animations/christmas-nika/"
+                }, home: {
+                    stand: "images/nika/nika_home_christmas.png",
+                    comein: "animations/christmas-nika/",
+                    state: "animations/christmas-nika/",
+                    comeout: "animations/christmas-nika/"
+                }, income: {
+                    stand: "images/nika/",
+                    comein: "animations/christmas-nika/",
+                    state: "animations/christmas-nika/",
+                    comeout: "animations/christmas-nika/"
+                }, daily: {
+                    stand: "images/nika/nika_daily_christmas.png",
+                    state: "animations/christmas-nika/nika_daily.gif"
+                }
+            }, angel: {
+                stars: {
+                    sit: "images/nika/nika_stars_angel_sit.png",
+                    stand: "images/nika/nika_stars_angel_stand.png",
+                    comein: "animations/angel-nika/",
+                    state: "animations/angel-nika/",
+                    comeout: "animations/angel-nika/"
+                }, home: {
+                    stand: "images/nika/nika_home_angel.png",
+                    comein: "animations/angel-nika/",
+                    state: "animations/angel-nika/",
+                    comeout: "animations/angel-nika/"
+                }, income: {
+                    stand: "images/nika/",
+                    comein: "animations/angel-nika/",
+                    state: "animations/angel-nika/",
+                    comeout: "animations/angel-nika/"
+                }, daily: {
+                    stand: "images/nika/nika_daily_angel.png",
+                    state: "animations/angel-nika/nika_daily.gif"
+                }
+            }, summer: {
+                stars: {
+                    sit: "images/nika/nika_stars_summer_sit.png",
+                    stand: "images/nika/nika_stars_summer_stand.png",
+                    comein: "animations/summer-nika/",
+                    state: "animations/summer-nika/",
+                    comeout: "animations/summer-nika/"
+                }, home: {
+                    stand: "images/nika/nika_home_summer.png",
+                    comein: "animations/summer-nika/",
+                    state: "animations/summer-nika/",
+                    comeout: "animations/summer-nika/"
+                }, income: {
+                    stand: "images/nika/",
+                    comein: "animations/summer-nika/",
+                    state: "animations/summer-nika/",
+                    comeout: "animations/summer-nika/"
+                }, daily: {
+                    stand: "images/nika/nika_daily_summer.png",
+                    state: "animations/summer-nika/nika_daily.gif"
+                }
+            }, halloween: {
+                stars: {
+                    sit: "images/nika/nika_stars_halloween_sit.png",
+                    stand: "images/nika/nika_stars_halloween_stand.png",
+                    comein: "animations/halloween-nika/",
+                    state: "animations/halloween-nika/",
+                    comeout: "animations/halloween-nika/"
+                }, home: {
+                    stand: "images/nika/nika_home_halloween.png",
+                    comein: "animations/halloween-nika/",
+                    state: "animations/halloween-nika/",
+                    comeout: "animations/halloween-nika/"
+                }, income: {
+                    stand: "images/nika/",
+                    comein: "animations/halloween-nika/",
+                    state: "animations/halloween-nika/",
+                    comeout: "animations/halloween-nika/"
+                }, daily: {
+                    stand: "images/nika/nika_daily_halloween.png",
+                    state: "animations/halloween-nika/nika_daily.gif"
+                }
+            }, sexy: {
+                stars: {
+                    sit: "images/nika/nika_stars_sexy_sit.png",
+                    stand: "images/nika/nika_stars_sexy_stand.png",
+                    comein: "animations/sexy-nika/",
+                    state: "animations/sexy-nika/",
+                    comeout: "animations/sexy-nika/"
+                }, home: {
+                    stand: "images/nika/nika_home_sexy.png",
+                    comein: "animations/sexy-nika/",
+                    state: "animations/sexy-nika/",
+                    comeout: "animations/sexy-nika/"
+                }, income: {
+                    stand: "images/nika/",
+                    comein: "animations/sexy-nika/",
+                    state: "animations/sexy-nika/",
+                    comeout: "animations/sexy-nika/"
+                }, daily: {
+                    stand: "images/nika/nika_daily_sexy.png",
+                    state: "animations/sexy-nika/nika_daily.gif"
+                }
+            }, birth: {
+                stars: {
+                    sit: "images/nika/nika_stars_birth_sit.png",
+                    stand: "images/nika/nika_stars_birth_stand.png",
+                    comein: "animations/birth-nika/",
+                    state: "animations/birth-nika/",
+                    comeout: "animations/birth-nika/"
+                }, home: {
+                    stand: "images/nika/nika_home_birth.png",
+                    comein: "animations/birth-nika/",
+                    state: "animations/birth-nika/",
+                    comeout: "animations/birth-nika/"
+                }, income: {
+                    stand: "images/nika/",
+                    comein: "animations/birth-nika/",
+                    state: "animations/birth-nika/",
+                    comeout: "animations/birth-nika/"
+                }, daily: {
+                    stand: "images/nika/nika_daily_birth.png",
+                    state: "animations/birth-nika/nika_daily.gif"
+                }
+            }
+        }
+    };
+    function getThemeTheme() {
+        if (setting.update.basic_theme.checked == true) return "basic";
+        if (setting.update.winter_theme.checked == true) return "winter";
+        if (setting.update.angel_theme.checked == true) return "angel";
+        if (setting.update.summer_theme.checked == true) return "summer";
+        if (setting.update.halloween_theme.checked == true) return "halloween";
+        if (setting.update.birth_theme.checked == true) return "birth";
+        return "basic";
+    }
+    function getThemeNika() {
+        if (setting.update.basic_nika.checked == true) return "basic";
+        if (setting.update.winter_nika.checked == true) return "winter";
+        if (setting.update.christmas_nika.checked == true) return "christmas";
+        if (setting.update.angel_nika.checked == true) return "angel";
+        if (setting.update.summer_nika.checked == true) return "summer";
+        if (setting.update.halloween_nika.checked == true) return "halloween";
+        if (setting.update.sexy_nika.checked == true) return "sexy";
+        if (setting.update.birth_nika.checked == true) return "birth";
+        return "basic";
+    }
+    function getThemeSound() {
+        if (setting.update.basic_sound.checked == true) return "basic";
+        if (setting.update.winter_sound.checked == true) return "winter";
+        if (setting.update.angel_sound.checked == true) return "angel";
+        if (setting.update.summer_sound.checked == true) return "summer";
+        if (setting.update.halloween_sound.checked == true) return "halloween";
+        if (setting.update.birth_sound.checked == true) return "birth";
+        return "basic";
+    }
+    function updateImages(t_theme, t_nika, t_sound) {
+        /*if (!setting.nika.checked) {
+            daily_nika.setAttribute('src', ""); 
+            scenery_stars_nika.setAttribute('src', ""); 
+            scenery_home_nika.setAttribute('src', "");
+            return; 
+        }*/
+        if (setting.animations.checked) {
+            scenery_stars_nika.classList.remove('stated');
+            scenery_home_nika.classList.remove('stated');
+            scenery_stars_nika.classList.add('animated');
+            scenery_home_nika.classList.add('animated');
+            daily_nika.setAttribute('src', image.nika[t_nika].daily.state); 
+            scenery_stars_nika_img.setAttribute('src', image.nika[t_nika].stars.state); 
+            scenery_home_nika_img.setAttribute('src', image.nika[t_nika].home.state);
+            return;
+        } else {
+            scenery_stars_nika.classList.remove('animated');
+            scenery_home_nika.classList.remove('animated');
+            scenery_stars_nika.classList.add('stated');
+            scenery_home_nika.classList.add('stated');
+            daily_nika.setAttribute('src', image.nika[t_nika].daily.stand); 
+            scenery_stars_nika_img.setAttribute('src', image.nika[t_nika].stars.stand); 
+            scenery_home_nika_img.setAttribute('src', image.nika[t_nika].home.stand);
+            return;
+        }
+    }
+    updateImages(getThemeTheme(), getThemeNika(), getThemeSound());
+    setting.animations.addEventListener('change', updateImages(getThemeTheme(), getThemeNika(), getThemeSound()));
+    document.querySelectorAll('.update-theme-input').forEach(element => { element.addEventListener('change', (event) => { updateImages(getThemeTheme(), getThemeNika(), getThemeSound()); }); });
+
 });
 
+/*
 
 // Обновление пользовательского интерфейса (данными из струкруры state)
 function updateUI(state) {

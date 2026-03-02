@@ -4,10 +4,10 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 #daily { z-index: 2; transform: translateX(0); text-align: left; } #profile { z-index: 2; transform: translateX(0); text-align: right; }
 
 /* ✓ Элементы страниц scenery */
-#background { z-index: 3; position: fixed; top: 0; left: 50%; transform: translateX(-50%); opacity: 1; visibility: visible; height: 100vh; width: 100%; margin: 0; padding: 0; background-size: 100%; background-image: url('../animations/background.gif'); background-repeat: no-repeat; background-position: top; background-attachment: fixed; transition: width 1s ease, background-size 1s ease, opacity 0.5s ease; }
-#scenery { z-index: 4; position: absolute; top: 0; left: 50%; transform: translateX(-50%); display: block; align-items: center; justify-content: center; margin: 0; padding: 0; transition: top 1s ease, width 1s ease, opacity 0.5s ease; }
+#background { z-index: 4; position: fixed; top: 0; left: 50%; transform: translateX(-50%); opacity: 1; visibility: visible; height: 100vh; width: 100%; margin: 0; padding: 0; background-size: 100%; background-image: url('../animations/background.gif'); background-repeat: no-repeat; background-position: top; background-attachment: fixed; transition: width 1s ease, background-size 1s ease, opacity 0.5s ease; }
+#scenery { z-index: 5; position: absolute; top: 0; left: 50%; transform: translateX(-50%); display: block; align-items: center; justify-content: center; margin: 0; padding: 0; transition: top 1s ease, width 1s ease, opacity 0.5s ease; }
 .scenery-element { position: relative; display: block; align-items: center; justify-content: center; width: 100%; padding: 0; margin: 0; }
-.scenery-element div { position: absolute; left: 50%; transform: translateX(-50%); width: 100%; padding: 0; margin: 0; transition: width 1s ease; }
+.scenery-element > div { position: absolute; left: 50%; transform: translateX(-50%); width: 100%; padding: 0; margin: 0; transition: width 1s ease; }
 .scenery-element div img, .scenery-postlayer img { width: 100%; padding: 0; margin: 0;}
 
 /* ✓ Кнопки открытия информационных окон */
@@ -19,9 +19,11 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 #scenery-income-button { bottom: 36%; left: 41%; width: 22%; height: 33%; }
 
 /* Изображение Ники на страницах scenery */
-#scenery-stars-nika { z-index: 22; position: absolute; padding: 0; margin: 0; width: 30%; bottom: 19%; right: 5%; left: auto; transform: translateX(0); }
-/*#scenery-home-nika { z-index: 21; position: absolute; padding: 0; margin: 0; }
-#scenery-income-nika { z-index: 20; position: absolute; padding: 0; margin: 0; }*/
+.scenery-nika { position: absolute; padding: 0; margin: 0;}
+#scenery-stars-nika.stated { z-index: 22; width: 29.5% !important; bottom: 18.5%; right: 6%; left: auto; transform: translateX(0);}
+#scenery-stars-nika.animated { z-index: 22; width: 35% !important; bottom: 20%; right: 0; left: auto; transform: translateX(0); }
+#scenery-home-nika.stated { z-index: 21; width: 30% !important; bottom: 17%; left: 6%; right: auto; transform: translateX(0);}
+/*#scenery-income-nika { z-index: 20; }*/
 
 /* Элементы параллакса */
 #scenery-stars-parallax { z-index: 7; bottom: 0; pointer-events: none; }
@@ -71,37 +73,57 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 #stars-bar-charge.fill { background: linear-gradient(0deg, #b1277c 0%, #6948c4 50%, #59a1ff 100%); }
 #stars-bar-fuel.fill { background: linear-gradient(0deg, #b12727 0%, #e0904e 50%, #cbce34 100%); }
 
-/*input[type=checkbox]{
-}*/
+/* Единый стиль переключателей */
+input[type=checkbox]{
+
+}
+input[type=radio]{
+
+}
 
 /* ========================================= Информационные окна ========================================= */
-.scenery-container { z-index: 200; display: none; opacity: 0; visibility: hidden;
-    -ms-overflow-style: none; scrollbar-width: none;
-    bottom: 50%; transform: translate(-50%, 50%) !important;
-    width: 70% !important; height: 65vh; min-height: 400px; max-height: 150vw; padding: 10px 20px !important; margin: 0;
-    text-align: center; border-radius: 30px; background-color: rgba(17, 17, 17, 0.5); backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
+.scenery-container { z-index: 200; display: block; opacity: 0; visibility: hidden; bottom: 50%; transform: translate(-50%, 50%) !important; width: 70% !important; height: 65vh; min-height: 400px; max-height: 150vw; padding: 10px 20px !important; margin: 0; text-align: center; border-radius: 30px; background-color: rgba(17, 17, 17, 0.5); backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); transition: opacity 0.5s ease, visibility 0.5s ease; }
+.scenery-container hr { background-color: #FFF; opacity: 0.25; height: 1px; width: 90%; box-shadow: 0 0 10px rgba(0, 0, 0, 1); }
+.scenery-container > div { display: flex; flex-direction: column; position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); width: 90%; height: 85%; padding: 0; margin: 0; }
+.scenery-container-inset { border-radius: 15px; flex-grow: 1; position: relative !important; overflow-y: scroll; overflow-x: hidden; align-items: center; justify-content: center; }
+.scenery-container-inset::-webkit-scrollbar { width: 5px; }
+.scenery-container-inset::-webkit-scrollbar-track { opacity: 0; }
+.scenery-container-inset::-webkit-scrollbar-thumb { box-shadow: 0 0 10px rgba(255, 255, 255 0.3); background-color: rgba(220, 220, 220, 0.75); border-radius: 20px;}
 .scenery-container::-webkit-scrollbar { display: none; }
 .scenery-container h1 { font-size: 30px; }
-.scenery-stars-container-side { position: static; width: 50%; max-width: 150px; margin: 0 10px; padding: 5px; }
-#stars-bar-fuel, #stars-bar-charge { font-size: x-large; margin: 0; margin-top: 5px; }
 
-/* h1, h2, h3 {
-    font-size: small;
-}*/
-#stars-bar-fuel-lasttime {
+/* Scenery stars container*/
+#scenery-container-inset-stars { display: flex; overflow: unset !important;}
+.scenery-stars-container-side { position: static; width: 50%; max-width: 150px; margin: 0 10px; padding: 5px;}
+#stars-bar-fuel, #stars-bar-charge { font-size: large; margin: 0; margin-top: 5px; }
+
+/* Scenery home container */
+#scenery-container-inset-home { padding-right: 50px; }
+.home-button { background-color: rgba(0, 0, 0, 0.5); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); display: flex; border: 0; border-radius: 40px; width: 100%; min-height: 80px; margin: 0; margin-bottom: 20px; padding: 10px; text-align: left;}
+.home-button img { width: 80px !important; height: 80px !important; filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5)); margin: 0 15px !important; border-radius: 15px;}
+.home-button div { display: block !important; width: 70% !important; }
+
+/* Scenery income container */
+#scenery-income-container-main div { overflow: unset !important;}
+.income-button { position: relative; display: flex; justify-content: center; align-items: center; width: 100%; height: 40%; margin: 0; margin-bottom: 15px; padding: 10px; background-size: 200% auto; box-shadow: 0 0 15px rgba(0, 0, 0, 0.8); background-position: right center; background-image: linear-gradient(to left, rgba(0, 0, 0, 0.4) 0%, rgba(30, 30, 30, 0.4) 25%, rgba(0, 0, 0, 0.5) 50%, rgba(125, 125, 125, 0.5) 75%, rgba(30, 30, 30, 0.3) 100%); border: 0; border-radius: 40px; transition: background-image 0.5s ease, background-position 0.5s ease, box-shadow 0.5s ease; }
+.income-button:hover { box-shadow: 0 0 15px rgba(40, 40, 40, 0.8); background-position: center center; transition: background-position 0.5s ease, box-shadow 0.5s ease; }
+.income-button:active { box-shadow: inset 0 0 15px rgba(65, 65, 65, 0.8); box-shadow: 0 0 15px rgba(80, 80, 80, 0.8); background-position: left center; transition: background-position 0.5s ease, box-shadow 0.5s ease; }
+.income-button div { position: absolute; left: 30px; width: 58%; text-align: left; }
+.income-button img { position: absolute !important; right: 15px !important; width: auto !important; height: 90% !important; filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));}
+#scenery-income-container-stars div img { height: 50% !important; width: auto !important;}
+
+/*#stars-bar-fuel-lasttime {
     width: auto;
     background-color: rgba(30, 30, 30, 0.75);
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 0 20px rgba(200, 200, 200, 0.25);
     margin: 0;
-}
+}*/
 
 
 /* ✓ Кнопка закрытия информационного окна */
-.scenery-container-button-close { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); padding: 7px 30px; margin: 10px; border-radius: 10px; border: 0; box-shadow: inset 0 0 10px rgba(0, 0, 0, 1); color: #d1d1d1; background-color: rgba(0, 0, 0, 0.23); text-shadow: 0; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; transition: padding 0.5s ease, text-shadow 0.5s ease; }
+.scenery-container-button-close { position: absolute; bottom: 15px; left: 48%; transform: translateX(-50%); padding: 7px 30px; margin: 10px; border-radius: 10px; border: 0; box-shadow: inset 0 0 10px rgba(0, 0, 0, 1); color: #d1d1d1; background-color: rgba(0, 0, 0, 0.23); text-shadow: 0; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; transition: padding 0.5s ease, text-shadow 0.5s ease; }
 .scenery-container-button-close:hover { padding: 10px 33px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.9); cursor: pointer; transition: padding 0.5s ease, text-shadow 0.5s ease; }
 .scenery-container-button-close:active { padding: 3px 20px; cursor: pointer; transition: padding 0.5s ease; }
 
@@ -119,7 +141,8 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 #bottom-ui img:active { width: 37px; height: 37px; transition: width 0.25s ease, height 0.25s ease; }
 
 /* ========================================= Уведомления ========================================= */
-#notifications { position: fixed; top: 86px; left: 50%; transform: translateX(-50%);
+#notifications { 
+    position: fixed; top: 86px; left: 50%; transform: translateX(-50%);
     width: 60%; max-width: 300px;
     padding: 0; margin: 0;
 }
@@ -129,15 +152,30 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 
 
 /* ==================================== Боковые панели ==================================== */
-/* Боковые панели интерфейса */
-.panel_bottom { position: fixed; top: 30px; overflow-y: scroll; height: 77%; margin: 0; padding: 50px 50px 25px 50px; border-radius: 30px; background-color: rgba(0, 0, 0, 0.8); opacity: 0.05; backdrop-filter: blur(10px); transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s ease, opacity 0.5s ease, width 1s ease; }
-.panel_bottom_shown { z-index: 900; left: 50% !important; right: auto !important; transform: translateX(-50%) !important; 
-    opacity: 1 !important; transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s ease, opacity 0.5s ease, width 1s ease;
-}
+.panel_bottom { 
+    position: fixed; top: 30px; 
+    overflow-y: scroll; 
+    height: 77%; 
+    margin: 0; 
+    padding: 50px 50px 25px 50px; 
+    border-radius: 30px; 
+    background-color: rgba(0, 0, 0, 0.8); 
+    opacity: 0.05;
+    backdrop-filter: blur(10px); 
+    transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s ease, opacity 0.5s ease, width 1s ease; }
+
+.panel_bottom_shown { 
+    z-index: 1001; 
+    left: 50% !important; 
+    right: auto !important; 
+    transform: translateX(-50%) !important; 
+    opacity: 1 !important;
+    transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s ease, opacity 0.5s ease, width 1s ease; }
 
 .page_moved {
-    opacity: 0.1;
-    transition: opacity 0.5s ease;
+    z-index: 3 !important;
+    opacity: 0.1 !important;
+    transition: opacity 0.5s ease, z-index 0.5s ease;
 }
 
 .profile-details {
