@@ -77,6 +77,9 @@
 #load-message { color: #CACACA; font-family: 'StarfallVAGRounded-Regular'; font-size: large; text-align: center; line-height: 1.2; max-width: 60%; opacity: 1; transition: opacity 0.5s ease; }
 #load.hidden { z-index: 0; opacity: 0; pointer-events: none; transition: z-index 0.5s ease, opacity 0.5s ease; }
 
+
+
+
 /* Окно приложения, открытого вне telegram */
 #site {
     display: none;

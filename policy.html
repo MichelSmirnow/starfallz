@@ -5,13 +5,11 @@
     <link type="Image/x-icon" href="policy.ico" rel="icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <style>
-        /* Элементы интерфейса */
         html { width: 100vw; margin: 0; padding: 0; scroll-behavior: smooth; overflow-x: hidden; }
         body { background-color: #FFF; margin: 0; padding: 0; width: 100vw; scroll-behavior: smooth; }
         #main { min-width: 200px; max-width: 800px; padding: 20px; margin: 0 auto; padding-top: 70px; scroll-behavior: smooth; }
         #footer { text-align: center; font-size: medium; margin: 30px; }
 
-        /* Кнопка возврата в начало страницы */
         #start { z-index: 99; position: fixed; width: 50px; height: 50px; bottom: 50px; right: 50px; background-color: #7a16b4; opacity: 0.7; border-radius: 100px; box-shadow: 0 0 10px rgba(83, 6, 128, 0.75); backdrop-filter: blur(10px); transition: width 0.5s ease, height 0.5s ease, bottom 0.5s ease, right 0.5s ease; }
         #start:hover { width: 60px; height: 60px; bottom: 45px; right: 45px; transition: width 0.5s ease, height 0.5s ease, bottom 0.5s ease, right 0.5s ease; }
         #start:active { width: 40px; height: 40px; bottom: 55px; right: 55px; transition: width 0.5s ease, height 0.5s ease, bottom 0.5s ease, right 0.5s ease; }
@@ -19,7 +17,6 @@
         #start:hover img { width: 30px !important; height: 30px !important; transition: width 0.75s ease, height 0.75s ease; }
         #start:active img { width: 20px !important; height: 20px !important; transition: width 0.75s ease, height 0.75s ease; }
 
-        /* Свойства заголовков и основного текста */
         label, p, li, a { font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'; color: #000; font-size: 16px; }
         h1, h2, h3 { font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: #000; scroll-margin-top: 100px; }
         h1 { font-size: 32px; }
@@ -32,7 +29,6 @@
         dd { margin-left: 0; padding-left: 20px; }
         .float-image { float: right; }
         
-        /* Навигационная панель */
         #header { z-index: 100; position: fixed; display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 50px; width: 100%; margin: 0; padding: 5px 50px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); background-color: #FFF; }
         #header-left, #header-right { position: absolute; display: flex; gap: 30px; align-items: center; justify-content: center; padding: 0; }
         #header-left { top: 0; left: 0; } #header-right { top: 0; right: 0; }
@@ -41,7 +37,6 @@
         a:hover { border: 0; color: #8c1bce; text-decoration: underline; transition: color 0.5s ease, font-size 0.5s ease; }
         #header a:hover { font-size: 18px; }
 
-        /* Узкий и широкий режимы просмотра */
         @media (max-width: 950px) or (max-aspect-ratio: 1) { 
             .overflow-hidden { display: none; }  
             #main { width: 90%; } 
@@ -76,7 +71,7 @@
 
     <div id="main">
         <h1>Политика использования телеграмм мини-приложения "Starfallz"</h1>
-        <p>Телеграмм мини-приложение "Starfallz" размещено по официальному интернет-адресу: <a href="https://starfallz.xyz">https://starfallz.xyz</a>. Официальными источниками информации о мини-приложении "Starfallz" являются публичный телеграмм-канал <a href="https://t.me/starfallz_chan">@starfallz_chan</a>, публичная телеграмм-беседа <a href="https://t.me/starfallz_chat">@starfallz_chat</a> (в неактивном статусе по техническим причинам) и публичный телеграмм-бот <a href="https://t.me/starfallz_bot">@starfallz_bot</a>. Другие адреса не являются официальными, не имеют никакого физического и юридического отношения к данному мини-приложению.</p>
+        <p>Телеграмм мини-приложение "Starfallz" размещено по официальному интернет-адресу: <a href="https://starfallz.netlify.app/">https://starfallz.netlify.app/</a>. Официальными источниками информации о мини-приложении "Starfallz" являются публичный телеграмм-канал <a href="https://t.me/starfallz_chan">@starfallz_chan</a>, публичная телеграмм-беседа <a href="https://t.me/starfallz_chat">@starfallz_chat</a> (в неактивном статусе по техническим причинам) и публичный телеграмм-бот <a href="https://t.me/starfallz_bot">@starfallz_bot</a>. Другие адреса не являются официальными, не имеют никакого физического и юридического отношения к данному мини-приложению.</p>
         <p>Когда Вы впервые заходите в мини-приложение "Starfallz", размещенное в указанных ранее источниках, то соглашаетесь с политикой использования телеграмм мини-приложения "Starfallz" в полном объеме.</p>
         <p>Политика использования телеграмм мини-приложения "Starfallz" может изменяться в соответствии с требованиями мини-приложения при его обновлении. Все изменения сопровождаются оповещением пользователей в официальных источниках информации.</p>
         <hr />
@@ -116,6 +111,7 @@
             <dt><p></p></dt>
             <dd><p></p></dd>
         </dl>
+        <p></p>
         <hr />
 
         <h2 id="confidentials">Конфиденциальность и обработка персональных данных</h2>

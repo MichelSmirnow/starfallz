@@ -1,32 +1,31 @@
 <!doctype html> 
 <html lang="ru"> 
-<head> 
+<head>
+    <!-- ✓ Настройки окна -->
     <meta charset="utf-8">
     <meta name="language" content="ru">
     <title>StarFallz - Бесплатные звезды Телеграмм</title> 
     <link type="image/x-icon" href="favicon.ico" rel="shortcut icon">
     <link type="Image/x-icon" href="favicon.ico" rel="icon">
-    <meta name="version" content="alpha 1.0.4">
+    <meta name="version" content="alpha 2.0">
     <meta name="description" content="✨💸 Зарабатывайте бесплатные ТГ звёзды на просмотре рекламы! 📱💰🌟 Телеграм-канал: https://t.me/starfallz_chan 📢">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+    <!-- ✓ Импорты -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <link rel="stylesheet" href="styles/fonts.css">   <!-- Шрифты приложения -->
     <link rel="stylesheet" href="styles/general.css"> <!-- Общие классы отображения и анимации -->
     <link rel="stylesheet" href="styles/mode.css">    <!-- Режимы отображения окна приложения -->
     <link rel="stylesheet" href="styles/ui.css">      <!-- Стиль пользовательского интерфейса -->
-</head> 
+</head>
 <body>
     <!-- Контейнеры для рекламы -->
-    <div id="20435"></div>
-    <div id="int-20487"></div>
-    <div id="int-20619"></div>
+    <div id="int-35719"></div>
 
+    <!-- ✓ Контейнер уведослений -->
     <div id="notifications"></div>
-    <audio id="splashAudio" src="ambient.mp3" preload="auto"></audio>
 
-
-    <!--
+    <!--    
     <div id="site">
         <div id="site-container">
             <img src="" width="200px" height="200px" alt="" />
@@ -35,16 +34,18 @@
             <p>Чтобы играть в starfallz, необходимо:</p>
             <ol>
                 <li>Скачать telegram с официального сайта или из магазина приложений</li>
-                <li>Найти бота @starfallz_bot или перейти в него через канал @starfallz_chan</li>
+                <li>Найти бота @starfallzbot или перейти в него через канал @starfallz_chan</li>
             </ol>
-            <p>Чтобы ускорить нахождение приложения, можно перейти по <a href="https://t.me">ссылке здесь</a> или навести камеру телефона на QR-код:</p>
+            <p>Чтобы быстро перейти в приложение, перейдите по <a href="https://t.me">ссылке</a> или навести камеру телефона на QR-код:</p>
             <img src="images/qr.png" width="300" height="300" alt="QR-код для перехода в бота приложения" />
             <p><i>Открывая данное приложение, Вы соглашаетесь с <a href="policy.html">политикой использования приложения Starfallz</a> в полном ее объеме.</i></p>
         </div>
         <div id="site-footer"><p>Starfallz, 2026</p></div>
     </div>-->
 
+    <!-- Главный контейнер -->
     <div id="main" class="position-relative">
+        <!-- Правое открывающееся окно (профиль) -->
         <div id="profile" class="panel_bottom">
             <div class="columns"><img src="" alt=""/><h1>Профиль</h1></div>
             <div id="profile-info" class="columns">
@@ -117,7 +118,7 @@
                         <div class="columns"><input type="radio" name="settings-graphics" id="settings-graphics-best" class="settings-radio" checked="checked"/><p>Наилучшее качество</p></div>
                         <div class="columns"><input type="radio" name="settings-graphics" id="settings-graphics-economy" class="settings-radio"/><p>Экономия ресурсов</p></div>
                         <div class="columns"><input type="radio" name="settings-graphics" id="settings-graphics-low" class="settings-radio"/><p>Для слабых устройств</p></div>
-                        <div class="columns"><input type="checkbox" id="settings-animations" class="settings-checkbox" checked="checked"/><p>Анимация обстановки</p></div>
+                        <div class="columns"><input type="checkbox" id="settings-animations" class="settings-checkbox"/><p>Анимация обстановки</p></div>
                         <div class="columns"><input type="checkbox" id="settings-parallax" class="settings-checkbox" checked="checked"/><p>Эффект параллакса</p></div>
                         <div class="columns"><input type="checkbox" id="settings-effects" class="settings-checkbox" checked="checked"/><p>Анимация дополнительных эффектов</p></div>
                     <div class="columns"><h3>Уведомления</h3><img src="" alt=""/></div>
@@ -136,6 +137,7 @@
             <div id="profile-footer"><p>Starfallz, 2026г.</p></div>
         </div>
 
+        <!-- Левое открывающееся окно (ежедневник) -->
         <div id="daily" class="panel_bottom">
             <div class="columns"><h1>Ежедневник</h1><img src="images/ui-calendar.png" width="50px" height="50px" alt="Изображение календаря"></div>
             <div id="daily-desc" class="columns">
@@ -170,8 +172,11 @@
             </details>
         </div>
 
+        <!-- Главный интерфейс приложения -->
         <div id="background"></div>
         <div id="scenery">
+
+            <!-- Нагорье -->
             <div id="scenery-stars" class="scenery-element">
                 <div id="scenery-stars-parallax"><img src="images/decorations/scenery_stars_parallax.png" alt="Город на заднем фоне (Просмотр с вершины)" /></div>
                 <div id="scenery-stars-scenery">
@@ -205,8 +210,10 @@
                 </div>
             </div>
             
+            <!-- Связка нагорья и дома -->
             <div id="scenery-stars-postlayer" class="scenery-postlayer"><img src="images/decorations/scenery_stars_postlayer.png" alt="" /></div>
             
+            <!-- Дом -->
             <div id="scenery-home" class="scenery-element">
                 <div id="scenery-home-parallax"><img src="images/decorations/scenery_home_parallax.png" alt="Город на заднем фоне (Просмотр из долины)" /></div>
                 <div id="scenery-home-prelayer"><img src="images/decorations/scenery_home_prelayer.png"/></div>
@@ -409,8 +416,10 @@
                 </div>
             </div>
 
+            <!-- Связка дома и кошелька -->
             <div id="scenery-home-postlayer" class="scenery-postlayer"><img src="images/decorations/scenery_home_postlayer.png" alt="" /></div>
 
+            <!-- Кошелек -->
             <div id="scenery-income" class="scenery-element">
                 <div id="scenery-income-scenery">
                     <img src="images/decorations/scenery_income.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
@@ -488,9 +497,12 @@
                 </div>
             </div>
             
+            <!-- ✓ Конец страницы -->
             <div id="scenery-footer" class="scenery-element"><img src="images/decorations/footer.png" alt="Starfallz, 2026г."/></div>
+        
         </div>
 
+        <!-- ✓ Верхний пользовательский интерфейс (балланс) -->
         <div id="top-ui" class="ui-background">
             <p><span id="top-ui-stars">0</span></p>
             <img id="top-ui-star" src="images/ui/ui-star.png"/>
@@ -498,6 +510,7 @@
             <img id="top-ui-token" src="images/ui/ui-token.png"/>
         </div>
 
+        <!-- ✓ Нижний пользовательский интерфейс (навигация) -->
         <div id="bottom-ui" class="ui-background">
             <img id="bottom-ui-daily" src="images/ui/bottom-ui-daily.png" />
             <img id="bottom-ui-home" src="images/ui/botton-ui-home.png"/>
@@ -507,6 +520,7 @@
         </div>
     </div>
 
+    <!-- ✓ Предупреждение о малом размере окна -->
     <div id="toosmall">
         <img src="images/NikaCalm.png" width="180px" height="180px" alt="Изображение девушки Ники, символа приложения starfallz"/>
         <div>
@@ -517,16 +531,23 @@
         </div>
     </div>
 
+    <!-- ✓ Окно загрузки приложения -->
     <div id="load">
         <img id="load-image" src="images/load.png" alt="Изображение загрузки страницы" />
         <div id="load-message">Загрузка приложения...</div>
     </div>
     
-    <script defer src="scripts/daily.js"></script>
+    <!-- ✓ Подключение скриптов -->
+    <!-- <script defer src="scripts/daily.js"></script> -->
     <script defer src="scripts/ui.js"></script>
-    <script defer src="scripts/ads.js"></script>
+    <!-- <script defer src="scripts/ads.js"></script> -->
 
-    <script async> document.onselectstart = function() { return false; }; document.oncontextmenu = function() { return false; }; document.ondragstart = function() { return false; }; </script>
+    <!-- ✓ Скрипты загрузки страницы -->
+    <script async> 
+        document.onselectstart = function() { return false; }; 
+        document.oncontextmenu = function() { return false; }; 
+        document.ondragstart = function() { return false; }; 
+    </script>
     <script async>
         (function () {
             // ✓ Настройки загрузки страницы
@@ -544,10 +565,9 @@
             const overlay = document.getElementById('load');
             const load_message = document.getElementById('load-message');
             const load_image = document.getElementById('load-image');
-
             load_image.style.transition = 'opacity 0.5s ease';
             load_image.style.opacity = '1';
-            if (!overlay || !load_message) return; // Если страница уже загружена, то выходим
+            if (!overlay || !load_message) return;
 
             // ✓ Функция случайного выбора индекса
             let currentIndex = -1;
@@ -569,77 +589,9 @@
                 }, 500);
             }
 
-            // Выбор сообщения сразу при загрузке страницы
+            // ✓ Выбор сообщения сразу при загрузке страницы
             setRandomMessage();
             const msgTimer = setInterval(setRandomMessage, changeInterval);
-
-            const audio = document.getElementById('splashAudio');
-            audio.volume = 1;               // начальная громкость
-            let playTimeout, fadeInterval;
-
-            // Запуск воспроизведения с задержкой 1 секунда (чтобы начать с 2-й секунды)
-            function startAudio() {
-                // Попытка воспроизведения с пропуском первых 1 секунды
-                // (некоторые браузеры не позволяют устанавливать currentTime до загрузки метаданных)
-                const tryStart = () => {
-                    if (audio.readyState >= 1) { // HAVE_METADATA или лучше
-                    // безопасно ставим позицию и воспроизводим
-                    try { audio.currentTime = 1; } catch (e) { /* игнор при ошибке */ }
-                    const p = audio.play();
-                    if (p && p.catch) p.catch(() => { /* автозапуск заблокирован — без звука */ });
-                    } else {
-                    // ждем метаданных
-                    audio.addEventListener('loadedmetadata', function onmd() {
-                        audio.removeEventListener('loadedmetadata', onmd);
-                        try { audio.currentTime = 1; } catch (e) {}
-                        const p = audio.play();
-                        if (p && p.catch) p.catch(() => {});
-                    }, { once: true });
-                    }
-                };
-
-                // Запуск через 1 секунду после вызова startAudio
-                clearTimeout(playTimeout);
-                playTimeout = setTimeout(tryStart, 1000);
-            }
-
-            // Плавное затухание и остановка
-            function fadeOutAndStop(duration = 500) { // duration в мс
-                clearInterval(fadeInterval);
-                const steps = 20;
-                const stepTime = Math.max(10, duration / steps);
-                const startVol = audio.volume;
-                let step = 0;
-                fadeInterval = setInterval(() => {
-                    step++;
-                    const t = step / steps;
-                    audio.volume = Math.max(0, startVol * (1 - t));
-                    if (step >= steps) {
-                    clearInterval(fadeInterval);
-                    try { audio.pause(); audio.currentTime = 0; } catch (e) {}
-                    audio.volume = startVol; // восстановим на случай повторного воспроизведения
-                    }
-                }, stepTime);
-            }
-
-                // Интеграция с вашим hideOverlay
-            const originalHide = window.hideOnloadOverlay || null;
-            function hideOverlayWithAudio() {
-                // вызов original логики (если есть)
-                if (typeof originalHide === 'function') originalHide();
-
-                // плавно убрать звук при скрытии оверлея (сделать 500–800ms)
-                fadeOutAndStop(600);
-            }
-
-            // Если вы используете свой hideOverlay (в вашем коде), замените вызов hideOverlay на:
-            function myHideOverlayWrapper() {
-                hideOverlay();            // ваша существующая функция
-                fadeOutAndStop(600);      // затухание при закрытии
-            }
-
-            // Запуск звука при показе оверлея/загрузке страницы
-            startAudio();
 
             // ✓ Функция скрытия загрузочного окна
             function hideOverlay() {
@@ -656,11 +608,11 @@
                 }, 400);
             }
             
-            // Связывание со событием load (как в вашем коде)
+            // ✓ Связывание со событием load (как в вашем коде)
             if (document.readyState === 'complete') {
-                setTimeout(() => { myHideOverlayWrapper(); }, 250);
+                setTimeout(() => { hideOverlay(); }, 250);
             } else {
-                window.addEventListener('load', () => { myHideOverlayWrapper(); }, { once: true });
+                window.addEventListener('load', () => { hideOverlay(); }, { once: true });
                 setTimeout(() => { hideOverlay(); }, 60000);
             }
             window.hideOnloadOverlay = hideOverlay;

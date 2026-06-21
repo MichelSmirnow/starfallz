@@ -19,27 +19,32 @@ const advertise_fuel = document.getElementById('advertise-fuel');
 const advertise_charge = document.getElementById('advertise-charge');
 const advertise_status = document.getElementById('status');
 const advertise_lasttime = document.getElementById('advertise-lasttime');
-const advertise_button = document.getElementById('button-ad');
 
-const RewarderAdButton = window.Adsgram.init({ blockId: "20435" }); // Для adsgram_ai
 const InitAdButton = window.Adsgram.init({ blockId: "int-20487" }); // Для adsgram_ai
 const InitAdDaily = window.Adsgram.init({ blockId: "int-20619" });  // Для adsgram_ai
 
+
 // ✓ Обработка нажатия кнопок просмотра рекламы
+const advertise_button = document.getElementById('scenery-button-ad');
+const ad_main_int = window.Adsgram.init({ blockId: "int-35719" });
 advertise_button.addEventListener('click', () => {
-  if (state.fuel <= 0) {
+  if (state.fuel <= 0) {                                    // Если не хватает топлива, блокируем показ
     showNotification('notif-question');
     return;
-  } else if (state.charge >= MAX_CHARGE) {
+  } else if (state.charge >= MAX_CHARGE) {                  // Если набрана шкала генератора, запускаем генератор
     generatorStart(state); return;
-  } else if (state.fuel > 0 && state.charge < MAX_CHARGE) {
+  } else if (state.fuel > 0 && state.charge < MAX_CHARGE) { // Если топлива хватает и шкала генератора не собрана, показываем рекламный ролик
+    ad_main_int.show();
+    /*
     switch (state.fuel % 2) {
       case 1: InitAdButton.show().then((result) => { 
         giveReward(state); 
-      }).catch((result) => { alert('Произошла ошибка во время просмотра рекламного видеоролика: ', result); }); 
-      break;
+      }).catch((result) => { 
+        alert('Произошла ошибка во время просмотра рекламного видеоролика: ', result); 
+      }); break;
       default: RewarderAdButton.show();
     } return;
+    */
   }
 });
 

@@ -1,4 +1,4 @@
-/* Объявление шрифтов */
+/* ✓ Объявление шрифтов */
 @font-face { font-family: 'FindSansPro-Regular'; src: url('fonts/FindSansPro-Regular.ttf') format('truetype'); font-weight: normal; font-style: normal; }
 @font-face { font-family: 'FindSansPro-Light'; src: url('fonts/FindSansPro-Light.ttf') format('truetype'); font-weight: lighter; font-style: normal; }
 @font-face { font-family: 'FindSansPro-Medium'; src: url('fonts/FindSansPro-Medium.ttf') format('truetype'); font-weight: bold; font-style: normal; }
@@ -8,11 +8,9 @@
 
 /* Применение шрифтов */
 h1, h2, h3, label, summary { color: #D7D7D7; font-family: 'FindSansPro-Medium'; }
+h1, h2, h3 { margin-top: 0.5em; margin-bottom: 0.4em; }
+
 p, li { color: #CACACA; font-family: 'StarfallVAGRounded-Regular'; font-size: small; }
 p { margin-top: 0.5em; margin-bottom: 0.2em; }
-p.text-bigger {font-size: medium;}
-/*a { color: #710bac; font-family: 'StarfallVAGRounded-Regular'; font-size: small; text-decoration: none; font-style: normal; background-color: rgba(255, 255, 255, 0.75); box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.35), 0 0 10px rgba(0, 0, 0, 0.5); border-radius: 20px; padding: 7px; margin: 5px; transition: padding 0.5s ease; }
-a:hover { padding: 4px; transition: padding 0.5s ease; }
-a:active { padding: 6px; transition: padding 0.25s ease;}*/
-
-h1, h2, h3 { margin-top: 0.5em; margin-bottom: 0.4em; }
+p.text-bigger { font-size: medium; }
+a { color: #710bac; font-family: 'StarfallVAGRounded-Regular'; font-size: small; text-decoration: none; font-style: normal; }
