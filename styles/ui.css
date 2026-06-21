@@ -68,10 +68,10 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 
 /* Шкалы (Топливо и заряд генератора) */
 .bar { overflow: hidden; position: relative; display: inline-block; vertical-align: bottom; margin: 10px auto; min-width: 50px; width: 40%; height: 25vh; border-radius: 100px; background-color:rgba(0, 0, 0, 0.5); box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.5); }
-.bar .label { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); color: #CACACA; font-family: 'StarfallVAGRounded-Regular'; font-size: medium; text-shadow: 0 0 10px rgba(0, 0, 0, 0.9); pointer-events: none; white-space: nowrap; }
-.bar .fill { position: absolute; left: 0; bottom: 0; width: 100%; height: 0; transition: height 0.5s ease; }
-#stars-bar-charge.fill { background: linear-gradient(0deg, #b1277c 0%, #6948c4 50%, #59a1ff 100%); }
-#stars-bar-fuel.fill { background: linear-gradient(0deg, #b12727 0%, #e0904e 50%, #cbce34 100%); }
+.label { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); color: #CACACA; font-family: 'StarfallVAGRounded-Regular'; font-size: medium; text-shadow: 0 0 10px rgba(0, 0, 0, 0.9); pointer-events: none; white-space: nowrap; }
+.fill { position: absolute; left: 0; bottom: 0; width: 100%; transition: height 0.5s ease; }
+#stars-bar-charge div.fill { background: linear-gradient(0deg, #b1277c 0%, #6948c4 50%, #59a1ff 100%); }
+#stars-bar-fuel div.fill { background: linear-gradient(0deg, #b12727 0%, #e0904e 50%, #cbce34 100%); }
 
 /* Единый стиль переключателей */
 input[type=checkbox]{
@@ -82,7 +82,7 @@ input[type=radio]{
 }
 
 /* ========================================= Информационные окна ========================================= */
-.scenery-container { z-index: 200; display: block; opacity: 0; visibility: hidden; bottom: 50%; transform: translate(-50%, 50%) !important; width: 70% !important; height: 65vh; min-height: 400px; max-height: 150vw; padding: 10px 20px !important; margin: 0; text-align: center; border-radius: 30px; background-color: rgba(17, 17, 17, 0.5); backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); transition: opacity 0.5s ease, visibility 0.5s ease; }
+.scenery-container { z-index: 200; display: block; opacity: 0; visibility: hidden; bottom: 50%; transform: translate(-50%, 50%) !important; width: 70% !important; height: 65vh; min-height: 400px; max-height: 150vw; max-width: 500px; padding: 10px 20px !important; margin: 0; text-align: center; border-radius: 30px; background-color: rgba(17, 17, 17, 0.5); backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); transition: opacity 0.5s ease, visibility 0.5s ease; }
 .scenery-container hr { background-color: #FFF; opacity: 0.25; height: 1px; width: 90%; box-shadow: 0 0 10px rgba(0, 0, 0, 1); }
 .scenery-container > div { display: flex; flex-direction: column; position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); width: 90%; height: 85%; padding: 0; margin: 0; }
 .scenery-container-inset { border-radius: 15px; flex-grow: 1; position: relative !important; overflow-y: scroll; overflow-x: hidden; align-items: center; justify-content: center; }
