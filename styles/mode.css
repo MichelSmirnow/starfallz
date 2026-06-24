@@ -59,6 +59,12 @@
 }
 
 
+/* ТОЛЬКО ДЛЯ ПОДПИСИ К КНОПКЕ РЕКЛАМЫ!!!!! ДОДЕЛАТЬ!!!!!! */
+@media (max-width: 470px) {
+    #scenery-button-ad-status { top: 21% !important; }
+}
+
+
 
 
 

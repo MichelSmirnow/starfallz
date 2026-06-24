@@ -46,9 +46,44 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 
 /* ========================================= Кнопки, переключатели, шкалы ========================================= */
 /* ✓ Кнопки просмотра рекламы (#scenery-stars и #daily)*/
-#scenery-button-ad, #daily-button-ad { z-index: 998; max-width: 250px; padding: 10px 20px; margin: 0; color: #2e0606; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; border: 0; border-radius: 25px; background-size: 150% auto; background-position: left center; background-image: linear-gradient(to right, #eb9b23 0%, #e5c319 50%, #eea928 100%); box-shadow: 0 5px 15px 0 rgba(246, 152, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; }
-#scenery-button-ad { position: absolute; left: 50%; top: 7%; transform: translateX(-50%); min-width: 45%;}
-#daily-button-ad { position: static; min-width: 70%;}
+#scenery-button-ad, #daily-button-ad { 
+    z-index: 998; 
+    /* max-width: 250px; */
+    padding: 10px 20px; 
+    margin: 0; 
+    color: #2e0606; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; border: 0; border-radius: 25px; background-size: 150% auto; background-position: left center; background-image: linear-gradient(to right, #eb9b23 0%, #e5c319 50%, #eea928 100%); box-shadow: 0 5px 15px 0 rgba(246, 152, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; }
+
+#scenery-stars-button-container { 
+    position: absolute; 
+    left: 50%; top: -5%; transform: translateX(-50%); 
+    min-width: 45%; 
+    margin: 0; padding: 0;
+}
+#scenery-stars-button-container div { 
+    width: 100%; 
+    margin: 0; padding: 0; 
+    align-items: center; justify-content: center;
+}
+#scenery-button-ad { 
+    position: static !important; 
+    width: 100% !important; 
+}
+#daily-button-ad { 
+    position: static; 
+    min-width: 70%; 
+}
+#scenery-stars-button-container p { 
+    position: static; 
+    z-index: 998;
+    width: 70%;
+    min-width: 200px;
+    margin: 5px auto !important;
+    padding: 5px 10px; margin: 0; 
+    text-align: center !important; color: #ffffff; font-family: 'StarfallVAGRounded-Regular'; font-size: 15px; 
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+}
+
 #scenery-button-ad:hover, #daily-button-ad:hover { background-position: right center; box-shadow: 0 5px 40px 0 rgba(246, 136, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; padding: 12px 20px; cursor: pointer; }
 #scenery-button-ad:active, #daily-button-ad:active { background-position: left center; padding: 6px 20px; transition: background-position 0.5s ease, padding 0.5s ease, top 1s ease; }
 
@@ -64,25 +99,19 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 
 
 
-
-
 /* Шкалы (Топливо и заряд генератора) */
-.bar { overflow: hidden; position: relative; display: inline-block; vertical-align: bottom; margin: 10px auto; min-width: 50px; width: 40%; height: 25vh; border-radius: 100px; background-color:rgba(0, 0, 0, 0.5); box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.5); }
+.bar { overflow: hidden; position: relative; display: inline-block; vertical-align: bottom; margin: 10px auto; width: 60px; height: 25vh; min-height: 200px; border-radius: 100px; background-color:rgba(0, 0, 0, 0.5); box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.5); }
+.scenery-stars-container-side h2 { font-size: 20px; }
 .label { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); color: #CACACA; font-family: 'StarfallVAGRounded-Regular'; font-size: medium; text-shadow: 0 0 10px rgba(0, 0, 0, 0.9); pointer-events: none; white-space: nowrap; }
 .fill { position: absolute; left: 0; bottom: 0; width: 100%; transition: height 0.5s ease; }
 #stars-bar-charge div.fill { background: linear-gradient(0deg, #b1277c 0%, #6948c4 50%, #59a1ff 100%); }
 #stars-bar-fuel div.fill { background: linear-gradient(0deg, #b12727 0%, #e0904e 50%, #cbce34 100%); }
-
-/* Единый стиль переключателей */
-input[type=checkbox]{
-
-}
-input[type=radio]{
-
-}
+/* Единый стиль переключателей
+input[type=checkbox]{}
+input[type=radio]{} */
 
 /* ========================================= Информационные окна ========================================= */
-.scenery-container { z-index: 200; display: block; opacity: 0; visibility: hidden; bottom: 50%; transform: translate(-50%, 50%) !important; width: 70% !important; height: 65vh; min-height: 400px; max-height: 150vw; max-width: 500px; padding: 10px 20px !important; margin: 0; text-align: center; border-radius: 30px; background-color: rgba(17, 17, 17, 0.5); backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); transition: opacity 0.5s ease, visibility 0.5s ease; }
+.scenery-container { z-index: 200; display: block; opacity: 0; visibility: hidden; bottom: 50%; transform: translate(-50%, 50%) !important; width: 70% !important; height: 65vh; min-height: 570px; max-height: 150vw; max-width: 500px; padding: 10px 20px !important; margin: 0; text-align: center; border-radius: 30px; background-color: rgba(17, 17, 17, 0.5); backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); transition: opacity 0.5s ease, visibility 0.5s ease; }
 .scenery-container hr { background-color: #FFF; opacity: 0.25; height: 1px; width: 90%; box-shadow: 0 0 10px rgba(0, 0, 0, 1); }
 .scenery-container > div { display: flex; flex-direction: column; position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); width: 90%; height: 85%; padding: 0; margin: 0; }
 .scenery-container-inset { border-radius: 15px; flex-grow: 1; position: relative !important; overflow-y: scroll; overflow-x: hidden; align-items: center; justify-content: center; }
@@ -123,7 +152,7 @@ input[type=radio]{
 
 
 /* ✓ Кнопка закрытия информационного окна */
-.scenery-container-button-close { position: absolute; bottom: 15px; left: 48%; transform: translateX(-50%); padding: 7px 30px; margin: 10px; border-radius: 10px; border: 0; box-shadow: inset 0 0 10px rgba(0, 0, 0, 1); color: #d1d1d1; background-color: rgba(0, 0, 0, 0.23); text-shadow: 0; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; transition: padding 0.5s ease, text-shadow 0.5s ease; }
+.scenery-container-button-close { position: absolute; bottom: 10px; left: 48%; transform: translateX(-50%); padding: 7px 30px; margin: 10px; border-radius: 10px; border: 0; box-shadow: inset 0 0 10px rgba(0, 0, 0, 1); color: #d1d1d1; background-color: rgba(0, 0, 0, 0.23); text-shadow: 0; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; transition: padding 0.5s ease, text-shadow 0.5s ease; }
 .scenery-container-button-close:hover { padding: 10px 33px; text-shadow: 0 0 15px rgba(255, 255, 255, 0.9); cursor: pointer; transition: padding 0.5s ease, text-shadow 0.5s ease; }
 .scenery-container-button-close:active { padding: 3px 20px; cursor: pointer; transition: padding 0.5s ease; }
 
@@ -140,16 +169,12 @@ input[type=radio]{
 #bottom-ui img:hover { width: 40px; height: 40px; filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5)); cursor: pointer; transition: width 0.35s ease, height 0.35s ease, opacity 0.35s ease, box-shadow 0.35s ease; opacity: 0.9; }
 #bottom-ui img:active { width: 37px; height: 37px; transition: width 0.25s ease, height 0.25s ease; }
 
-/* ========================================= Уведомления ========================================= */
-#notifications { 
-    position: fixed; top: 86px; left: 50%; transform: translateX(-50%);
-    width: 60%; max-width: 300px;
-    padding: 0; margin: 0;
-}
-.notification-dom-container { position: static;
-    margin: 0; padding: 0
-}
-
+/* ✓ Уведомления */
+#notifications { position: fixed; z-index: 9999; top: 86px; left: 50%; transform: translateX(-50%); width: 70%; min-width: 400px; max-width: 500px; padding: 0; margin: 0; pointer-events: none; }
+.notification-dom-container { position: relative; margin: 0; padding: 0; min-height: 0; max-height: 120px; height: 0; width: 100%; }
+.notification-dom-image { position: absolute; left: 50%; bottom: 50%; transform: translate(-50%, 50%); width: 100%; }
+.notification-hidden { opacity: 0 !important; visibility: hidden !important; height: 0 !important; min-height: 0 !important; transition: height 0.5s ease, min-height 0.5s ease, opacity 0.5s ease, visibility 0.5s ease !important; }
+.notification-visible { opacity: 1 !important; visibility: visible !important; height: 10vh !important; min-height: 80px !important; transition: height 0.5s ease, min-height 0.5s ease, opacity 0.5s ease, visibility 0.5s ease !important;}
 
 /* ==================================== Боковые панели ==================================== */
 .panel_bottom { 

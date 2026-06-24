@@ -16,7 +16,7 @@ const STORAGE_KEY = "starfall";
 // ✓ Функция загрузки пользовательских данных (реализовано на локальном уровне)
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, dailyDay: 0, recoverStart: null };
+  if (!raw) return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, dailyDay: 0, recoverStart: Date.now() };
   try {
     const s = JSON.parse(raw);
     return {
@@ -28,10 +28,10 @@ function loadState() {
       dailyEnabled: Math.min(MAX_DAILY, Math.max(0, Math.floor(s.dailyEnabled || 0))),
       dailyDay: Math.min(7, Math.max(0, Math.floor(s.dailyDay || 0))),
       dailyUpdTime: s.dailyUpdTime || Date.now(),
-      recoverStart: s.recoverStart || null    // Время начала обновления, если количество зарядов меньше максимального
+      recoverStart: Math.max(s.recoverStart, 0)    // Время начала обновления, если количество зарядов меньше максимального
     };
   } catch {
-    return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, dailyDay: 0, recoverStart: null };
+    return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, dailyDay: 0, recoverStart: Date.now() };
   }
 }
 
@@ -60,15 +60,15 @@ function loadSettings() {
 const advertise_button = document.getElementById('scenery-button-ad');
 const ad_main_int = window.Adsgram.init({ blockId: "int-35719" });
 advertise_button.addEventListener('click', async(event) => {
-  if (state.fuel <= 0) {                                    // Если не хватает топлива, блокируем показ
-    // showNotification('notif-question');
-    return;
-  } else if (state.charge >= MAX_CHARGE) {                  // Если набрана шкала генератора, запускаем генератор
+  if (state.charge >= MAX_CHARGE) {  // Если набрана шкала генератора, запускаем генератор
     generatorStart(state); return;
+  } else if (state.fuel <= 0) {      // Если не хватает топлива, блокируем показ
+    showNotification('nofuel'); return;
   } else if (state.fuel > 0 && state.charge < MAX_CHARGE) { // Если топлива хватает и шкала генератора не собрана, показываем рекламный ролик
-    try { await ad_main_int.show(); giveReward(state); } catch(err) { /* showNotification(''); */}
+    try { await ad_main_int.show(); giveReward(state); } catch(err) { showNotification('question'); }
   }
 });
+
 
 /*
     switch (state.fuel % 2) {
@@ -80,15 +80,16 @@ advertise_button.addEventListener('click', async(event) => {
       default: RewarderAdButton.show();
     } return;
 
+*/
 
 // Функции награждения за просмотр рекламы (Только для type reward!)
-.addEventListener('onReward', () => { giveReward(state); }); */
+// .addEventListener('onReward', () => { giveReward(state); });
 function giveReward(state) {
   state.fuel = Math.max(0, Math.floor(state.fuel || 0) - 1);
   state.charge = Math.min(MAX_CHARGE, Math.floor(state.charge || 0) + 1);
-  // showNotification('notif-success');
+  if (state.recoverStart <= 0 || state.recoverStart == null) state.recoverStart = Date.now();
+  showNotification('success');
   alert('Рекламный видеоролик просмотрен успешно: ', result.description);
-  if (state.charges < MAX_CHARGES && !state.recoverStart) { state.recoverStart = Date.now(); }
   saveState(state);
   updateUI(state);
 }
@@ -97,7 +98,7 @@ function giveReward(state) {
 function generatorStart(state) {
   state.charge = 0;
   state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 1));
-  // showNotification('notif-starfall');
+  showNotification('starfall');
   saveState(state);
   updateUI(state);
 }
@@ -109,7 +110,7 @@ function applyRecovery(state) {
     return state;
   } else {
     const now = Date.now();
-    let start = state.recoverStart || state.lastUpdate || now;
+    let start = state.recoverStart;
     const elapsed = now - start;
     const recovered = Math.floor(elapsed / RECOVER_MS);
     if (recovered > 0) {
@@ -187,11 +188,13 @@ if (tg) {
 // ======================================== Пользовательский интерфейс ======================================== \\
 
 // Функция отображения уведомлений 
-/*
-let notifications_count, notifications_current = 0;
+let notifications_count = 0;
+let notifications_current = 0;
+const notification_container = document.getElementById('notifications');
 function showNotification(notification_name) {
     notifications_count += 1; 
     notifications_current += 1;
+    console.log({ notifications_count });
     const notification = {
         achivement: {url: "images/notifications/notif_achivement.png", desc: "Получено новое достижение! Нажмите для просмотра дополнительной информации"},
         dailyalready: {url: "images/notifications/notif_dailyalready.png", desc: "Награда за этот день уже взята"},
@@ -207,30 +210,37 @@ function showNotification(notification_name) {
         success: {url: "images/notifications/notif_success.png", desc: "Рекламный видеоролик просмотрен успешно!"},
     };
 
-    // Проверка на заполение шторки уведомлений
+    // Проверка на заполение шторки уведомлений 
+    /*
     if (notifications_count > setting.notifcount) {
-    const todelete = notifications_current - notifications_count;
-    notification_container.deleteChild(`notification-${todelete}`);
-    notifications_count -= 1; }
+        const todelete = notifications_current - notifications_count;
+        notification_container.deleteChild(`notification-${todelete}`);
+        notifications_count -= 1; 
+    } 
+    */
 
-    // Создаем уведомление из элементов
-    const notification_container = document.getElementById('notifications');
+    // ✓ Создаем уведомление из элементов
     const notification_dom_div = document.createElement('div');
-    notification_dom_div.setAttribute("class", "notification-dom-container"); notification_dom_div.setAttribute("id", `notification-${notifications_current}`);
+    notification_dom_div.setAttribute("class", "notification-dom-container notification-hidden "); 
+    notification_dom_div.setAttribute("id", `notification-${notifications_current}`);
     const notification_dom_img = document.createElement('img');
-    notification_dom_div.setAttribute("src", notification[notification_name].url); notification_dom_div.setAttribute("class", "notification-dom-image");
-    
-    // Строим уведомление в контейнере
+    notification_dom_img.setAttribute("src", notification[notification_name].url); 
+    notification_dom_img.setAttribute("class", "notification-dom-image");
     notification_container.appendChild(notification_dom_div);
     notification_dom_div.appendChild(notification_dom_img);
-    
-    // Удаляем старое уведомление
-    setTimeout(() => { 
-        notification_container.deleteChild(notification_dom_div);
-        notifications_count -= 1;
-    }, 2500);
-} */
+    setTimeout(() => {
+        notification_dom_div.classList.remove('notification-hidden');
+        notification_dom_div.classList.add('notification-visible');
+    }, 10);
 
+    // Удаляем устаревшее уведомление
+    setTimeout(() => {
+        notification_dom_div.classList.remove('notification-visible');
+        notification_dom_div.classList.add('notification-hidden');
+        setTimeout(() => { notification_container.removeChild(notification_dom_div); }, 500);
+        notifications_count -= 1;
+    }, 3000);
+}
 
 // ✓ Функция рассчета параллакса (отклик на прокрутку)
 window.addEventListener('scroll', function() {
@@ -810,6 +820,9 @@ document.addEventListener('DOMContentLoaded', function() {
 const advertise_fuel = document.getElementById('stars-advertise-fuel');
 const advertise_charge = document.getElementById('stars-advertise-charge');
 const advertise_lasttime = document.getElementById('stars-bar-fuel-lasttime');
+const advertise_status = document.getElementById('scenery-button-ad-status-span');
+const advertise_status_fuel = document.getElementById('scenery-button-ad-fuel-span');
+const advertise_status_fuel_container = document.getElementById('scenery-button-ad-status-container');
 const balance_tokens = document.getElementById('top-ui-tokens');
 const balance_stars= document.getElementById('top-ui-stars');
 function updateUI(state) {
@@ -824,28 +837,32 @@ function updateUI(state) {
   balance_stars.textContent = `${state.stars}`;
   advertise_fuel.textContent = `${state.fuel} / ${MAX_FUEL}`;
   advertise_charge.textContent = `${state.charge} / ${MAX_CHARGE}`;
-  advertise_button.disabled = state.fuel === 0; // Блокировка кнопки при недостаточном уровне топлива
 
   // ✓ Топливо и заряд генератора
   if (state.fuel >= MAX_FUEL) {
     advertise_lasttime.textContent = `Полный бак`;
+    advertise_status_fuel_container.classList.add('hidden');
+    advertise_status_fuel_container.classList.remove('visible');
   } else {
     const now = Date.now();
-    const start = state.recoverStart || state.lastUpdate || now;
-    const elapsed = now - start;
-    const remainder = RECOVER_MS - (elapsed % RECOVER_MS);
-    const totalSec = Math.floor(remainder / 1000);
+    let start = state.recoverStart;
+    const elapsed = RECOVER_MS - (now - start);
+    const totalSec = Math.floor(elapsed / 1000);
     const m = Math.floor(totalSec / 60);
     const s = totalSec % 60;
     advertise_lasttime.textContent = `До новой топливной единицы: ${m}мин ${s}сек`;
+    advertise_status.textContent = `До обновления лимита: ${m}мин ${s}сек`;
+    advertise_status_fuel_container.classList.add('visible');
+    advertise_status_fuel_container.classList.remove('hidden');
   }
+  advertise_status_fuel.textContent = `Доступно к просмотру: ${state.fuel}/${MAX_FUEL}`;
 
   // ✓ Режимы кнопки просмотра рекламы
   if (state.charge >= MAX_CHARGE) {
     advertise_button.classList.add('starfall');
     advertise_button.classList.remove('disabled'); 
     advertise_button.textContent = `Начать звездопад`; 
-  } else if ((state.fuel <= 0 || advertise_button.disabled === true) && state.charge < MAX_CHARGE) { 
+  } else if ((state.fuel <= 0) && state.charge < MAX_CHARGE) { 
     advertise_button.classList.add('disabled');
     advertise_button.classList.remove('starfall'); 
     advertise_button.textContent = `Нет топлива`; 
@@ -868,7 +885,7 @@ window.addEventListener('beforeunload', () => saveState(state));
 let uiTimer = setInterval(() => {
   state = applyRecovery(state);
   updateUI(state);
-}, 1000);
+}, 500);
 let saveTimer = setInterval(() => {
   saveState(state);
-}, 10000);
+}, 5000);
