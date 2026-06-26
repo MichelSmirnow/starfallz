@@ -227,13 +227,13 @@ input[type=radio]{} */
 /* ✓ Описания и заголовки ежедневника */
 #daily-title { display: flex; justify-content: center; align-items: center;}
 #daily-desc { justify-content: center; align-items: center; margin-bottom: 15px; text-align: center; }
-#daily-desc p { font-size: large; margin: 10px 0; background-color: rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 2px 0; }
+#daily-desc p { font-size: large; margin: 10px 0; background-color: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 2px 0; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); }
 #daily-nika { min-width: 200px; width: 40%; height: auto; margin-top: 15px; margin-left: 20px; }
 #button-daily { width: 100% !important; }
 
 /* ✓ Галерея карточек ежедневника */
 #daily-gallery { width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 16px; box-sizing: border-box; }
-.daily-gallery-element { margin: 5px; padding: 0px 10px 10px 10px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 0; background-image: linear-gradient(to bottom left, #3f1f1f 0%, #472323 50%, #500d0d 100%); border-radius: 20px; box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
+.daily-gallery-element { margin: 5px; padding: 0px 10px 10px 10px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 0; background-image: linear-gradient(to bottom left, #3f1f1f 0%, #472323 50%, #500d0d 100%); border-radius: 20px; box-shadow: 0 0 20px rgba(0, 0, 0, 1); }
 .daily-gallery-element p { font-size: medium; margin: 8px 0; filter: drop-shadow(0 0 5px rgba(0,0,0,0.2)); }
 .daily-gallery-element img { min-width: 55px; max-width: 100px; width: 80%; height: auto; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); }
 
