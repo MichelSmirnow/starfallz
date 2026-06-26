@@ -167,6 +167,9 @@ input[type=radio]{} */
     transition: opacity 0.5s ease, z-index 0.5s ease;
 }
 
+/* ✓ Описания и заголовки профиля */
+
+/* Кнопки профиля */
 .profile-details {
     width: 100%;
     margin: 10px;
@@ -211,18 +214,12 @@ input[type=radio]{} */
     width: 25vw;
     text-align: right;
 }
-
-
 .profile-details summary img {
     position: absolute;
     left: 70px; top: 50%;
     transform: translateY(-50%);
     width: 100px; height: 100px;
 }
-
-
-
-
 
 /* ✓ Описания и заголовки ежедневника */
 #daily-title { display: flex; justify-content: center; align-items: center;}

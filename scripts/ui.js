@@ -57,18 +57,25 @@ function loadSettings() {
 
 // ✓ Обработка нажатия кнопок просмотра рекламы
 const advertise_button = document.getElementById('scenery-button-ad');
-const ad_main_int = window.Adsgram.init({ blockId: "int-35719" });
+const MainVideoAd1 = window.Adsgram.init({ blockId: "int-36327" });
+const MainPostAd1 = window.Adsgram.init({ blockId: "int-36328" });
+const MainRewardAd1 = window.Adsgram.init({ blockId: "36333" });
 advertise_button.addEventListener('click', async() => {
   if (state.charge >= MAX_CHARGE) {  // Если набрана шкала генератора, запускаем генератор
     generatorStart(); return;
   } else if (state.fuel <= 0) {      // Если не хватает топлива, блокируем показ
     showNotification('nofuel'); return;
   } else if (state.fuel > 0 && state.charge < MAX_CHARGE) { // Если топлива хватает и шкала генератора не собрана, показываем рекламный ролик
-    // ad_main_int.show().then((result) => {
-    //   if (result.done === true && error !== true) { giveReward(); } else { showNotification('decline'); }
-    // }).catch((result) => { showNotification('question'); })
-    try { await ad_main_int.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
-    giveReward(); return;
+    if (state.fuel % 3 == 2) {
+      try { await MainVideoAd1.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
+       giveReward(); return;
+    } else if ((state.fuel % 3 == 1)) {
+      try { await MainPostAd1.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
+      giveReward(); return;
+    } else if ((state.fuel % 3 == 0)) {
+      try { await MainRewardAd1.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
+      giveReward(); return;
+    }
   }
 });
 /*
@@ -425,14 +432,17 @@ if (foundIndex !== currentIndex) {
 
 // ✓ Обработка нажатия на кнопку 
 const daily_button = document.getElementById('daily-button-ad');
-const ad_daily_int = window.Adsgram.init({ blockId: "int-36186" });
+const DailyVideoAd1 = window.Adsgram.init({ blockId: "int-36329" });
+const DailyVideoAd2 = window.Adsgram.init({ blockId: "int-36334" });
 daily_button.addEventListener('click', async(event) => {
   if (state.dailyEnabled > 0 && state.dailyEnabled <= 2) {
-    // ad_daily_int.show().then((result) => {
-    //   if (result.done === true && error !== true) { giveDailyReward(); } else { showNotification('decline'); }
-    // }).catch((result) => { showNotification('question'); })
-    try { await ad_daily_int.show(); } catch(err) { if (result.error == true) { showNotification('question'); return; } }
-    giveDailyReward();
+    if (state.dailyEnabled % 2 == 0) {
+      try { await DailyVideoAd1.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
+      giveDailyReward(); return;
+    } else if (state.dailyEnabled % 2 == 1) {
+      try { await DailyVideoAd2.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
+      giveDailyReward(); return;
+    }
   } else if (state.dailyEnabled <= 0) {
     showNotification('dailyno');
   }
