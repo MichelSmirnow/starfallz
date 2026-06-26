@@ -1,7 +1,6 @@
 /* ========================================= Интерфейс окна приложения ========================================= */
 html { width: 100%; margin: 0; padding: 0; }
 body { z-index: 1; position: relative; display: block; align-items: center; justify-content: center; background-color: #171717; width: 100%; margin: 0; padding: 0; }
-#daily { z-index: 2; transform: translateX(0); text-align: left; } #profile { z-index: 2; transform: translateX(0); text-align: right; }
 
 /* ✓ Элементы страниц scenery */
 #background { z-index: 4; position: fixed; top: 0; left: 50%; transform: translateX(-50%); opacity: 1; visibility: visible; height: 100vh; width: 100%; margin: 0; padding: 0; background-size: 100%; background-image: url('../images/decorations/background.png'); background-repeat: no-repeat; background-position: top; background-attachment: fixed; transition: width 1s ease, background-size 1s ease, opacity 0.5s ease; }
@@ -43,69 +42,37 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 #scenery-stars-postlayer { z-index: 100; pointer-events: none; }
 #scenery-home-postlayer { z-index: 101; pointer-events: none; }
 
+/* Бегунки пролистывания */
+.scenery-container-inset::-webkit-scrollbar, .panel_bottom::-webkit-scrollbar { width: 5px; }
+.scenery-container-inset::-webkit-scrollbar-track, .panel_bottom::-webkit-scrollbar-track { opacity: 0; }
+.scenery-container-inset::-webkit-scrollbar-thumb, .panel_bottom::-webkit-scrollbar-thumb { box-shadow: 0 0 10px rgba(255, 255, 255 0.3); background-color: rgba(220, 220, 220, 0.75); border-radius: 20px;}
+.scenery-container::-webkit-scrollbar, .panel_bottom::-webkit-scrollbar { display: none; }
 
 /* ========================================= Кнопки, переключатели, шкалы ========================================= */
 /* ✓ Кнопки просмотра рекламы (#scenery-stars и #daily)*/
-#scenery-button-ad, #daily-button-ad { 
-    z-index: 998; 
-    /* max-width: 250px; */
-    padding: 10px 20px; 
-    margin: 0; 
-    color: #2e0606; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; border: 0; border-radius: 25px; background-size: 150% auto; background-position: left center; background-image: linear-gradient(to right, #eb9b23 0%, #e5c319 50%, #eea928 100%); box-shadow: 0 5px 15px 0 rgba(246, 152, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; }
+#scenery-button-ad, #daily-button-ad { z-index: 998; padding: 10px 20px; margin: 0; color: #2e0606; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; border: 0; border-radius: 25px; background-size: 150% auto; background-position: left center; background-image: linear-gradient(to right, #eb9b23 0%, #e5c319 50%, #eea928 100%); box-shadow: 0 5px 15px 0 rgba(246, 152, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; }
+#scenery-stars-button-container { position: absolute; left: 50%; top: -5%; transform: translateX(-50%); min-width: 45%; margin: 0; padding: 0; }
+#scenery-stars-button-container div { width: 100%; margin: 0; padding: 0; align-items: center; justify-content: center; }
+#scenery-button-ad { position: static !important; width: 100% !important; }
+#daily-button-ad { position: static; min-width: 70%; }
+#scenery-stars-button-container p { position: static; z-index: 998; width: 70%; min-width: 200px; margin: 5px auto !important; padding: 5px 10px; margin: 0;  text-align: center !important; color: #ffffff; font-family: 'StarfallVAGRounded-Regular'; font-size: 15px; background-color: rgba(0, 0, 0, 0.1); border-radius: 20px; filter: drop-shadow(0 0 10px rgba(0,0,0,1)); }
 
-#scenery-stars-button-container { 
-    position: absolute; 
-    left: 50%; top: -5%; transform: translateX(-50%); 
-    min-width: 45%; 
-    margin: 0; padding: 0;
-}
-#scenery-stars-button-container div { 
-    width: 100%; 
-    margin: 0; padding: 0; 
-    align-items: center; justify-content: center;
-}
-#scenery-button-ad { 
-    position: static !important; 
-    width: 100% !important; 
-}
-#daily-button-ad { 
-    position: static; 
-    min-width: 70%; 
-}
-#scenery-stars-button-container p { 
-    position: static; 
-    z-index: 998;
-    width: 70%;
-    min-width: 200px;
-    margin: 5px auto !important;
-    padding: 5px 10px; margin: 0; 
-    text-align: center !important; color: #ffffff; font-family: 'StarfallVAGRounded-Regular'; font-size: 15px; 
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
-}
-
+/* ✓ Режимы наведения на кнопку прсомотра рекламы */
 #scenery-button-ad:hover, #daily-button-ad:hover { background-position: right center; box-shadow: 0 5px 40px 0 rgba(246, 136, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; padding: 12px 20px; cursor: pointer; }
 #scenery-button-ad:active, #daily-button-ad:active { background-position: left center; padding: 6px 20px; transition: background-position 0.5s ease, padding 0.5s ease, top 1s ease; }
-
-/* ✓ Режим отключенной кнопки просмотра рекламы */
 #scenery-button-ad.disabled, #daily-button-ad.disabled { color: #333; background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #cfcfcf 100%) !important; box-shadow: 0 5px 15px 0 rgba(102, 102, 102, 0.7) !important; }
 #scenery-button-ad.disabled:hover, #daily-button-ad.disabled:hover { box-shadow: 0 5px 40px 0 rgba(102, 102, 102, 0.7) !important; }
-
-/* ✓ Режим кнопки просмотра рекламы при заполненной шкале генератора звездопада */
 #scenery-button-ad.starfall { color: #e2e2e2 !important; background-image: linear-gradient(to right, #803bc0 0%, #de19e5 50%, #1a25c4 100%) !important; box-shadow: 0 5px 15px 0 rgba(113, 32, 189, 0.7) !important; }
 #scenery-button-ad.starfall:hover { box-shadow: 0 5px 40px 0 rgba(189, 57, 250, 1) !important; }
 
-
-
-
-
-/* Шкалы (Топливо и заряд генератора) */
+/* ✓ Шкалы (Топливо и заряд генератора) */
 .bar { overflow: hidden; position: relative; display: inline-block; vertical-align: bottom; margin: 10px auto; width: 60px; height: 25vh; min-height: 200px; border-radius: 100px; background-color:rgba(0, 0, 0, 0.5); box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.5); }
 .scenery-stars-container-side h2 { font-size: 20px; }
 .label { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); color: #CACACA; font-family: 'StarfallVAGRounded-Regular'; font-size: medium; text-shadow: 0 0 10px rgba(0, 0, 0, 0.9); pointer-events: none; white-space: nowrap; }
 .fill { position: absolute; left: 0; bottom: 0; width: 100%; transition: height 0.5s ease; }
 #stars-bar-charge div.fill { background: linear-gradient(0deg, #b1277c 0%, #6948c4 50%, #59a1ff 100%); }
 #stars-bar-fuel div.fill { background: linear-gradient(0deg, #b12727 0%, #e0904e 50%, #cbce34 100%); }
+
 /* Единый стиль переключателей
 input[type=checkbox]{}
 input[type=radio]{} */
@@ -115,10 +82,6 @@ input[type=radio]{} */
 .scenery-container hr { background-color: #FFF; opacity: 0.25; height: 1px; width: 90%; box-shadow: 0 0 10px rgba(0, 0, 0, 1); }
 .scenery-container > div { display: flex; flex-direction: column; position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); width: 90%; height: 85%; padding: 0; margin: 0; }
 .scenery-container-inset { border-radius: 15px; flex-grow: 1; position: relative !important; overflow-y: scroll; overflow-x: hidden; align-items: center; justify-content: center; }
-.scenery-container-inset::-webkit-scrollbar { width: 5px; }
-.scenery-container-inset::-webkit-scrollbar-track { opacity: 0; }
-.scenery-container-inset::-webkit-scrollbar-thumb { box-shadow: 0 0 10px rgba(255, 255, 255 0.3); background-color: rgba(220, 220, 220, 0.75); border-radius: 20px;}
-.scenery-container::-webkit-scrollbar { display: none; }
 .scenery-container h1 { font-size: 30px; }
 
 /* Scenery stars container*/
@@ -170,16 +133,17 @@ input[type=radio]{} */
 #bottom-ui img:active { width: 37px; height: 37px; transition: width 0.25s ease, height 0.25s ease; }
 
 /* ✓ Уведомления */
-#notifications { position: fixed; z-index: 9999; top: 86px; left: 50%; transform: translateX(-50%); width: 70%; min-width: 400px; max-width: 500px; padding: 0; margin: 0; pointer-events: none; }
+#notifications { position: fixed; z-index: 999999; top: 86px; left: 50%; transform: translateX(-50%); width: 70%; min-width: 400px; max-width: 500px; padding: 0; margin: 0; pointer-events: none; }
 .notification-dom-container { position: relative; margin: 0; padding: 0; min-height: 0; max-height: 120px; height: 0; width: 100%; }
 .notification-dom-image { position: absolute; left: 50%; bottom: 50%; transform: translate(-50%, 50%); width: 100%; }
 .notification-hidden { opacity: 0 !important; visibility: hidden !important; height: 0 !important; min-height: 0 !important; transition: height 0.5s ease, min-height 0.5s ease, opacity 0.5s ease, visibility 0.5s ease !important; }
 .notification-visible { opacity: 1 !important; visibility: visible !important; height: 10vh !important; min-height: 80px !important; transition: height 0.5s ease, min-height 0.5s ease, opacity 0.5s ease, visibility 0.5s ease !important;}
 
 /* ==================================== Боковые панели ==================================== */
-.panel_bottom { 
-    position: fixed; top: 30px; 
-    overflow-y: scroll; 
+/* Общие настройки боковых панелей */
+#daily { z-index: 2; transform: translateX(0); } 
+#profile { z-index: 2; transform: translateX(0); text-align: right; }
+.panel_bottom { position: fixed; top: 30px; overflow-y: scroll; overflow-x: hidden;
     height: 77%; 
     margin: 0; 
     padding: 50px 50px 25px 50px; 
@@ -190,7 +154,7 @@ input[type=radio]{} */
     transition: z-index 0.5s ease, top 0.5s ease, left 0.5s ease, right 0.5s ease, transform 0.5s ease, opacity 0.5s ease, width 1s ease; }
 
 .panel_bottom_shown { 
-    z-index: 999999; 
+    z-index: 9999 !important; 
     left: 50% !important; 
     right: auto !important; 
     transform: translateX(-50%) !important; 
@@ -260,93 +224,24 @@ input[type=radio]{} */
 
 
 
-#daily-desc {
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
-}
-#daily-desc p {font-size: large;}
-#daily-nika {
-    min-width: 200px;
-    width: 40%;
-    height: auto;
-    margin-top: 15px;
-    margin-left: 20px;
-}
-#button-daily {
-    width: 100% !important;
-}
+/* ✓ Описания и заголовки ежедневника */
+#daily-title { display: flex; justify-content: center; align-items: center;}
+#daily-desc { justify-content: center; align-items: center; margin-bottom: 15px; text-align: center; }
+#daily-desc p { font-size: large; margin: 10px 0; background-color: rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 2px 0; }
+#daily-nika { min-width: 200px; width: 40%; height: auto; margin-top: 15px; margin-left: 20px; }
+#button-daily { width: 100% !important; }
 
-/* Галерея карточек */
-#daily-gallery {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 16px;
-    box-sizing: border-box;
-}
-.daily-gallery-element {
-    margin: 5px;
-    padding: 0px 10px 10px 10px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-width: 0;
+/* ✓ Галерея карточек ежедневника */
+#daily-gallery { width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 16px; box-sizing: border-box; }
+.daily-gallery-element { margin: 5px; padding: 0px 10px 10px 10px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 0; background-image: linear-gradient(to bottom left, #3f1f1f 0%, #472323 50%, #500d0d 100%); border-radius: 20px; box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
+.daily-gallery-element p { font-size: medium; margin: 8px 0; filter: drop-shadow(0 0 5px rgba(0,0,0,0.2)); }
+.daily-gallery-element img { min-width: 55px; max-width: 100px; width: 80%; height: auto; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); }
 
-    background-image: linear-gradient(to bottom left, #3f1f1f 0%, #472323 50%, #500d0d 100%);
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-}
-.daily-gallery-element img {
-    min-width: 55px;
-    max-width: 100px;
-    width: 80%;
-    height: auto;
-    margin-bottom: 15px;
-}
-.daily-gallery-element button {
-    width: 100%;
-    padding: 5px;
-    border: 0;
-    background-size: 150% auto;
-    background-position: right center;
-    background-image: linear-gradient(to left, #5f1212 0%, #830d0d 60%, #640f0c 100%);
-    border-radius: 100px;
-    box-shadow: 0 0 15px #000;
-
-    font-family: 'FindSansPro-Light';
-    font-size: small;
-    text-align: center;
-    text-shadow: 0 0 10px #000;
-    color: #E5E5E5;
-
-    transition: background-position 0.5s ease, padding 0.5s ease;
-}
-.daily-gallery-element button:hover {
-    cursor: pointer;
-    background-position: left center;
-    padding: 7px;
-    transition: background-position 0.5s ease, padding 0.5s ease;
-}
-.daily-gallery-element button:active {
-    cursor: pointer;
-    background-position: right center;
-    padding: 3px;
-    transition: background-position 0.5s ease, padding 0.5s ease;
-}
-
-.daily-gallery-element.activated {
-    background-image: linear-gradient(to bottom left, #0b5e12 0%, #24c41f 60%, #095a14 100%) !important;
-}
-.daily-gallery-element button.activated {
-    background-image: linear-gradient(to left, #0b5e12 0%, #24c41f 60%, #095a14 100%) !important;
-}
-
-.daily-gallery-element.disabled {
-    background-image: linear-gradient(to bottom left, #754f08 0%, #c49d1f 60%, #64340c 100%) !important;
-}
-.daily-gallery-element button.disabled {
-    background-image: linear-gradient(to left, #754f08 0%, #c49d1f 60%, #64340c 100%) !important;
-}
+/* ✓ Кнопки дней в галерее ежедневника */
+.daily-gallery-element button { width: 100%; padding: 5px; border: 0; background-size: 150% auto; background-position: right center; background-image: linear-gradient(to left, #5f1212 0%, #830d0d 60%, #640f0c 100%); border-radius: 100px; box-shadow: 0 0 15px #000; font-family: 'FindSansPro-Light'; font-size: small; text-align: center; text-shadow: 0 0 10px #000; color: #E5E5E5; transition: background-position 0.5s ease, padding 0.5s ease; }
+.daily-gallery-element button:hover { cursor: pointer; background-position: left center; padding: 7px; transition: background-position 0.5s ease, padding 0.5s ease; }
+.daily-gallery-element button:active { cursor: pointer; background-position: right center; padding: 3px; transition: background-position 0.5s ease, padding 0.5s ease; }
+.daily-gallery-element.activated { background-image: linear-gradient(to bottom left, #0b5e12 0%, #24c41f 60%, #095a14 100%) !important; }
+.daily-gallery-element button.activated { background-image: linear-gradient(to left, #0b5e12 0%, #24c41f 60%, #095a14 100%) !important; }
+.daily-gallery-element.disabled { background-image: linear-gradient(to bottom left, #754f08 0%, #c49d1f 60%, #64340c 100%) !important; }
+.daily-gallery-element button.disabled { background-image: linear-gradient(to left, #754f08 0%, #c49d1f 60%, #64340c 100%) !important; }

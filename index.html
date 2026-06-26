@@ -9,7 +9,7 @@
     <link type="Image/x-icon" href="favicon.ico" rel="icon">
     <meta name="version" content="alpha 2.0">
     <meta name="description" content="✨💸 Зарабатывайте бесплатные ТГ звёзды на просмотре рекламы! 📱💰🌟 Телеграм-канал: https://t.me/starfallz_chan 📢">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     <!-- ✓ Импорты -->
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
@@ -20,7 +20,8 @@
 </head>
 <body>
     <!-- Контейнеры для рекламы -->
-    <div id="int-35719"></div>
+    <div id="int-35719"></div> <!-- ad_main_int -->
+    <div id="int-36186"></div> <!-- ad_daily_int -->
 
     <!-- ✓ Контейнер уведослений -->
     <div id="notifications"></div>
@@ -139,27 +140,37 @@
 
         <!-- Левое открывающееся окно (ежедневник) -->
         <div id="daily" class="panel_bottom">
-            <div class="columns"><h1>Ежедневник</h1><img src="images/ui-calendar.png" width="50px" height="50px" alt="Изображение календаря"></div>
+
+            <!-- ✓ Заголовок ежедневника -->
+            <div id="daily-title">
+                <h1>Ежедневник</h1>
+                <img src="images/ui-calendar.png" width="50px" height="50px" alt="Изображение календаря">
+            </div>
+
+            <!-- ✓ Кнопка просмотра рекламы и дополнительная информация -->
             <div id="daily-desc" class="columns">
                 <div>
                     <p>Смотрите по 2 рекламных видео каждый день, чтобы получить большую награду к концу недели!</p>
                     <button id="daily-button-ad">Смотреть рекламу</button>
                     <p>Сегодня доступно к просмотру: <span id="daily-enabled">0</span>/2</p>
+                    <p><span id="daily-button-ad-status"></span></p>
                 </div>
                 <img id="daily-nika" src="images/nika/nika_daily_classic.png" alt="Ника с плюшевым мишкой в руках сидит на большом красном подарке с желтой лентой"/>
+                <p><i>* Не забывайте каждый день открывать карточки - иначе накопленные рекламные ролики сгорят!</i></p>
             </div>
-            <p><i>* Не забывайте каждый день открывать карточки - иначе накопленные рекламные ролики сгорят!</i></p>
             
+            <!-- ✓ Галлерея с ежедневными наградами -->
             <div id="daily-gallery">
-                <div id="daily-day-1" class="daily-gallery-element"><p>День 1</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-1">Закрыто</button></div>
-                <div id="daily-day-2" class="daily-gallery-element"><p>День 2</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-2">Закрыто</button></div>
-                <div id="daily-day-3" class="daily-gallery-element"><p>День 3</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-3">Закрыто</button></div>
-                <div id="daily-day-4" class="daily-gallery-element"><p>День 4</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-4">Закрыто</button></div>
-                <div id="daily-day-5" class="daily-gallery-element"><p>День 5</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-5">Закрыто</button></div>
-                <div id="daily-day-6" class="daily-gallery-element"><p>День 6</p><img src="images/ui-star.png" alt="Изображение звезды" /><button id="daily-button-6">Закрыто</button></div>
-                <div id="daily-day-7" class="daily-gallery-element"><p>День 7</p><img src="images/daily-gift.png" alt="Изображение накопленного подарка" /><button id="daily-button-7">Закрыто</button></div>
+                <div id="daily-day-1" class="daily-gallery-element"><p><b>День 1</b></p><img src="images/ui/ui-star.png" alt="Изображение звезды" /><button id="daily-button-1">Закрыто</button></div>
+                <div id="daily-day-2" class="daily-gallery-element"><p><b>День 2</b></p><img src="images/ui/ui-star.png" alt="Изображение звезды" /><button id="daily-button-2">Закрыто</button></div>
+                <div id="daily-day-3" class="daily-gallery-element"><p><b>День 3</b></p><img src="images/ui/ui-star.png" alt="Изображение звезды" /><button id="daily-button-3">Закрыто</button></div>
+                <div id="daily-day-4" class="daily-gallery-element"><p><b>День 4</b></p><img src="images/ui/ui-star.png" alt="Изображение звезды" /><button id="daily-button-4">Закрыто</button></div>
+                <div id="daily-day-5" class="daily-gallery-element"><p><b>День 5</b></b></p><img src="images/ui/ui-star.png" alt="Изображение звезды" /><button id="daily-button-5">Закрыто</button></div>
+                <div id="daily-day-6" class="daily-gallery-element"><p><b>День 6</b></p><img src="images/ui/ui-star.png" alt="Изображение звезды" /><button id="daily-button-6">Закрыто</button></div>
+                <div id="daily-day-7" class="daily-gallery-element"><p><b>День 7</b></p><img src="images/ui/daily-gift.png" alt="Изображение накопленного подарка" /><button id="daily-button-7">Закрыто</button></div>
             </div>
 
+            <!-- Гайд по использованию ежедневника 
             <details id="daily-guide" class="daily-details">
                 <summary><div class="columns">
                     <div><h2>Гайд по использованию</h2>
@@ -169,7 +180,7 @@
                 <div class="daily-details-container">
 
                 </div>
-            </details>
+            </details>  -->
         </div>
 
         <!-- Главный интерфейс приложения -->

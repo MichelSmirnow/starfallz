@@ -9,10 +9,6 @@
     .scenery-postlayer { height: 15vw; }
     #scenery-stars-container, #scenery-home-container { bottom: 45% !important;}
 
-
-
-    #daily-desc {display: block !important; text-align: center !important;}
-
     #scenery-button-ad {font-size: medium !important;}
     #advertise-container {top: 12vw;}
     #advertise-container.ad-container-opened {top: -17vh !important;}
@@ -30,7 +26,7 @@
     #scenery-home-container { bottom: 35% !important;}
    
 
-    #daily-desc {display: flex !important;}
+
 
     #advertise-container {top: 10vw;}
     #advertise-container.ad-container-opened {top: -17vh !important;}
@@ -52,7 +48,6 @@
 
 
 
-    #daily-desc {display: flex !important;}
 
     #advertise-container {top: 8vw;}
     #advertise-container.ad-container-opened {top: -17vh !important;}
