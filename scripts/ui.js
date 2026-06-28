@@ -33,7 +33,7 @@ function loadState() {
       recoverStart: Math.max(0, Math.max(0, Math.floor(s.recoverStart || 0))),         // Время начала обновления, если количество зарядов меньше максимального
       dailyNextMidnight: Math.min(s.dailyNextMidnight, Infinity),                      // Время ближайшей полуночи обновления ежедневника
     
-      level: s.level,  // Словарь успешно просмотренных рекламных видеороликов от каждой рекламной компании
+      level: (s.level === undefined || typeof s.level !== 'object') ? STATE_DEFAULTS.level : s.level,  // Словарь успешно просмотренных рекламных видеороликов от каждой рекламной компании
     };
   } catch { return STATE_DEFAULTS; }
 }
