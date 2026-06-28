@@ -81,6 +81,8 @@ function randomInt(Nstart, Nend) {
   return Math.floor(Math.random() * (end - start + 1)) + start;
 }
 
+const onAdsNotFound = () => { showNotification('question'); }
+
 // Инициализация рекламных блоков (Настраивается в соответствии с данными личного кабинета поставщика рекламы)
 const adCompanies = ["Adsgram", "TADS"];
 const TADS1_init = window.tads.init({ widgetId: "tads-container-10255", type: "fullscreen", debug: DEBUG, onAdsNotFound: onAdsNotFound, });
@@ -98,8 +100,6 @@ const adBlock = {
   TADS1: TADS1_init,
   TADS2: TADS2_init,
 };
-
-const onAdsNotFound = () => { showNotification('question'); }
 
 // ✓ Функция возврата ошибки просмотра рекламного видеоролика
 function returnError(returnKey) {
