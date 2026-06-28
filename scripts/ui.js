@@ -1,3 +1,4 @@
+const DEBUG = false;
 // ======================================== База данных и настройки ======================================== \\
 
 // ✓ Консанты для генератора звездопада
@@ -7,96 +8,171 @@ const RECOVER_MINUTES = 25;
 const RECOVER_MS = RECOVER_MINUTES * 60 * 1000;
 const FULL_RECOVER_MS = RECOVER_MS * MAX_FUEL;
 const MAX_DAILY = 2;
-const STORAGE_KEY = "starfall";
 
 // ✓ Функция загрузки пользовательских данных (реализовано на локальном уровне)
+const STATE_KEY = "starfall";
+const STATE_DEFAULTS = { 
+  stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, 
+  dailyEnabled: MAX_DAILY, dailyClaimed: 0, dailyDay: 0, recoverStart: Date.now(), dailyNextMidnight: Infinity,
+  level: { Adsgram: 10, TADS: 10, },
+};
 function loadState() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, dailyClaimed: 0, dailyDay: 0, recoverStart: Date.now(), dailyNextMidnight: Infinity };
+  const raw = localStorage.getItem(STATE_KEY);
+  if (!raw) return STATE_DEFAULTS;
   try {
     const s = JSON.parse(raw);
     return {
       stars: Math.max(0, Math.floor(s.stars || 0)),   // Текущее количество выведенных звезд
       tokens: Math.max(0, Math.floor(s.tokens || 0)), // Текущее количество токенов
-      fuel: Math.min(MAX_FUEL, Math.max(0, Math.floor(s.fuel || 0))),        // Текущее количество топлива
-      charge: Math.min(MAX_CHARGE, Math.max(0, Math.floor(s.charge || 0))),  // Текущее количество зарядов генератора
-      lastUpdate: s.lastUpdate || Date.now(), // Время последнего обновления данных сохранения
+      fuel: Math.min(MAX_FUEL, Math.max(0, Math.floor(s.fuel || 0))),       // Текущее количество топлива
+      charge: Math.min(MAX_CHARGE, Math.max(0, Math.floor(s.charge || 0))), // Текущее количество зарядов генератора
+      
       dailyEnabled: Math.min(MAX_DAILY, Math.max(0, Math.floor(s.dailyEnabled || 0))), // Текущее количество доступных к просмотру реклам ежедневника
       dailyClaimed: Math.min(7, Math.max(0, Math.floor(s.dailyClaimed || 0))),         // Текущее количество забранных ежедневных наград
       dailyDay: Math.min(7, Math.max(0, Math.floor(s.dailyDay || 0))),                 // Текущий день в ежедневной серии
-      recoverStart: Math.max(0, Math.max(0, Math.floor(s.recoverStart || 0))),      // Время начала обновления, если количество зарядов меньше максимального
-      dailyNextMidnight: Math.min(s.dailyNextMidnight, Infinity)  // Время ближайшей полуночи обновления ежедневника
+      recoverStart: Math.max(0, Math.max(0, Math.floor(s.recoverStart || 0))),         // Время начала обновления, если количество зарядов меньше максимального
+      dailyNextMidnight: Math.min(s.dailyNextMidnight, Infinity),                      // Время ближайшей полуночи обновления ежедневника
+    
+      level: s.level,  // Словарь успешно просмотренных рекламных видеороликов от каждой рекламной компании
     };
-  } catch {
-    return { stars: 0, tokens: 0, fuel: MAX_FUEL, charge: 0, lastUpdate: Date.now(), dailyEnabled: MAX_DAILY, dailyClaimed: 0, dailyDay: 0, recoverStart: Date.now(), dailyNextMidnight: Infinity };
-  }
+  } catch { return STATE_DEFAULTS; }
 }
 
 // ✓ Функция сохранения пользовательских данных (реализовано на локальном уровне)
 function saveState(state) { 
-  state.lastUpdate = Date.now();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); 
+  localStorage.setItem(STATE_KEY, JSON.stringify(state)); 
 }
 
 // Загрузка локально сохраненных настроек (так и останется на локальном уровне)
-const SETTINGS_KEY = 'starfallz_settings';
-const SETTINGS_DEFAULTS = { audio: true, music: true };
+const SETTINGS_KEY = 'starfall_settings';
+const SETTINGS_DEFAULTS = { 
+  audio: true, music: true 
+};
 function loadSettings() {
   const raw = localStorage.getItem(SETTINGS_KEY);
-  if (!raw) return {SETTINGS_DEFAULTS};
+  if (!raw) return SETTINGS_DEFAULTS;
   try {
     const parsed = JSON.parse(raw) || {};
     return {
       audio: typeof parsed.audio === 'boolean' ? parsed.audio : SETTINGS_DEFAULTS.audio,
       music: typeof parsed.music === 'boolean' ? parsed.music : SETTINGS_DEFAULTS.music
     }
-  } catch {return {SETTINGS_DEFAULTS};}
+  } catch { return SETTINGS_DEFAULTS; }
+}
+
+// ✓ Функция сохранения пользовательских настроек (Работает исключительно на локальном уровне)
+function saveSettings(setting) {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(setting)); 
+}
+
+// Функция сброса настроек до стандартных
+function resetSettings() { 
+  setting = SETTINGS_DEFAULTS;
+  saveSettings(setting);
+  updateUI(state);
+}
+
+// ======================================== Функции показа рандомизированной рекламы ======================================== \\
+
+// ✓ Функция выбора случайного числа из промежутка [Nstart, Nend]
+function randomInt(Nstart, Nend) {
+  const start = Math.ceil(Nstart);
+  const end = Math.floor(Nend);
+  return Math.floor(Math.random() * (end - start + 1)) + start;
+}
+
+// Инициализация рекламных блоков (Настраивается в соответствии с данными личного кабинета поставщика рекламы)
+const adCompanies = ["Adsgram", "TADS"];
+const adBlock = {
+  Adsgram1: window.Adsgram.init({ blockId: "int-36327" }),
+  Adsgram2: window.Adsgram.init({ blockId: "int-36328" }),
+  Adsgram3: window.Adsgram.init({ blockId: "36333" }),
+  Adsgram4: window.Adsgram.init({ blockId: "int-36329" }),
+  Adsgram5: window.Adsgram.init({ blockId: "int-36334" }),
+  TADS1: window.tads.init({ widgetId: "tads-container-10255", type: "fullscreen", debug: DEBUG }),
+  TADS2: window.tads.init({ widgetId: "tads-container-10260", type: "fullscreen", debug: DEBUG }),
+};
+
+// ✓ Функция возврата ошибки просмотра рекламного видеоролика
+function returnError(returnKey) {
+  Object.keys(state.level).forEach(k => { if (k != returnKey) { state.level[k] = Math.max(0, Math.floor(state.level[k] || 0) + 1)}; });
+  state.level[returnKey] = Math.max(0, Math.floor(state.level[returnKey] || 0) - 1);
+  return { error: true, reward: false, declined: false };
+}
+
+// ✓ Функция возврата успешного просмотра рекламного видеоролика
+function returnReward(returnKey) {
+  state.level[returnKey] = Math.max(0, Math.floor(state.level[returnKey] || 0) + 1);
+  return { error: false, reward: true, declined: false };
+}
+
+// ✓ Функция возврата пользовательского отказа от просмотра рекламного видеоролика
+function returnDecline() {
+  return { error: false, reward: false, declined: true};
+}
+
+// Функция рандомизированного показа рекламы
+async function showAdvertise() {
+  const levelSum = Object.values(state.level).reduce((acc, v) => acc + v, 0);
+  const statement = Object.assign({}, state.level);
+  for (let i = 0; i <= adCompanies.length; i++) { statement[adCompanies[i]] = Math.ceil((state.level[adCompanies[i]] / levelSum) * 100); }
+  delete statement.undefined;
+  const statementSum = Object.values(statement).reduce((acc, v) => acc + v, 0);
+  const randomAd = randomInt(1, statementSum);
+  let conditionCounter = 0;
+  for (let i = 0; i < adCompanies.length; i++) {
+    const key = adCompanies[i]; 
+    const condition = (conditionCounter < randomAd && randomAd <= (conditionCounter + statement[key]));
+    conditionCounter += statement[key];
+    if (!condition) continue;
+    const variationsCount = Object.keys(adBlock).filter(k => k.startsWith(key)).length;
+    const randomBlock = randomInt(1, variationsCount);
+    let companyRandom = adBlock[`${key}${randomBlock}`];
+    if (key === "Adsgram") { try { // ✓ Особенности показа рекламы adsgram
+      await companyRandom.show(); } catch(result) { 
+        if (result.error == true) { return returnError(key); }
+        if (result.done == true) { return returnReward(key); }
+      }
+      // state.level.Adsgram = Math.max(0, Math.floor(state.level.Adsgram || 0) + 1);
+      // return { error: false, reward: true, declined: false };
+      
+    } else if (key === "TADS") { try { // ✓ Особенности показа рекламы TADS
+        const showResult = await companyRandom.showAd();
+        const showResultStrings = JSON.stringify(showResult);
+        if (showResultStrings.includes('Error') || showResultStrings.includes('error')) { return returnError(key); }
+        return returnReward(key);
+      } catch(result) { return returnError(key); }
+    }
+  }
+  return { error: true, reward: false, declined: false };
 }
 
 // ======================================== ✓ Реклама на главной странице ======================================== \\
 
 // ✓ Обработка нажатия кнопок просмотра рекламы
 const advertise_button = document.getElementById('scenery-button-ad');
-const MainVideoAd1 = window.Adsgram.init({ blockId: "int-36327" });
-const MainPostAd1 = window.Adsgram.init({ blockId: "int-36328" });
-const MainRewardAd1 = window.Adsgram.init({ blockId: "36333" });
 advertise_button.addEventListener('click', async() => {
   if (state.charge >= MAX_CHARGE) {  // Если набрана шкала генератора, запускаем генератор
-    generatorStart(); return;
+    generatorStart(); showNotification('starfall'); return;
   } else if (state.fuel <= 0) {      // Если не хватает топлива, блокируем показ
     showNotification('nofuel'); return;
   } else if (state.fuel > 0 && state.charge < MAX_CHARGE) { // Если топлива хватает и шкала генератора не собрана, показываем рекламный ролик
-    if (state.fuel % 3 == 2) {
-      try { await MainVideoAd1.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
-       giveReward(); return;
-    } else if ((state.fuel % 3 == 1)) {
-      try { await MainPostAd1.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
-      giveReward(); return;
-    } else if ((state.fuel % 3 == 0)) {
-      try { await MainRewardAd1.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
-      giveReward(); return;
-    }
-  }
+    const result = await showAdvertise();
+    if (result.declined == true) { // Если просмотр рекламы был отклонен
+      showNotification('declined'); return; 
+    } else if (result.error == true) { // Если во время загрузки рекламы произошла ошибка
+      showNotification('question'); return; 
+    } else if (result.reward == true) { // Успешный просмотр рекламы
+      giveReward(); showNotification('success'); return; 
+    } else { showNotification('question'); return; }
+  } else { showNotification('question'); return; }
 });
-/*
-    switch (state.fuel % 2) {
-      case 1: InitAdButton.show().then((result) => { 
-        giveReward(state); 
-      }).catch((result) => { 
-        alert('Произошла ошибка во время просмотра рекламного видеоролика: ', result); 
-      }); break;
-      default: RewarderAdButton.show();
-    } return;
 
-*/
-
-// Функции награждения за просмотр рекламы (Только для type reward!)
-// .addEventListener('onReward', () => { giveReward(state); });
+// ✓ Функция награждения за просмотр рекламы
 function giveReward() {
   state.fuel = Math.max(0, Math.floor(state.fuel || 0) - 1);
   state.charge = Math.min(MAX_CHARGE, Math.floor(state.charge || 0) + 1);
-  if (state.recoverStart <= 0 || state.recoverStart == null) state.recoverStart = Date.now();
-  showNotification('success');
+  if (state.recoverStart <= 0 || state.recoverStart == null) { state.recoverStart = Date.now(); }
   saveState(state);
   updateUI(state);
 }
@@ -105,7 +181,6 @@ function giveReward() {
 function generatorStart() {
   state.charge = 0;
   state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 1));
-  showNotification('starfall');
   saveState(state);
   updateUI(state);
 }
@@ -131,9 +206,153 @@ function applyRecovery() {
   }
 }
 
-// ======================================== Побочные окна приложения ======================================== \\
+// ======================================== ✓ Ежедневник ======================================== \\
 
+// ✓ Обработка нажатия на кнопку 
+const daily_button = document.getElementById('daily-button-ad');
+daily_button.addEventListener('click', async() => {
+  if (state.dailyEnabled <= 0) { // Если ежедневная выделенная реклама закончилась
+    showNotification('dailyno'); return;
+  } else if (state.dailyEnabled > 0 && state.dailyEnabled <= 2) { // Если есть доступные ежедневные рекламы, показываем их
+    const res = await showAdvertise();
+    console.log({res});
+    if (res.declined === true) { // Если просмотр рекламы был отклонен
+      showNotification('declined'); return; 
+    } else if (res.error === true) { // Если во время загрузки рекламы произошла ошибка
+      showNotification('question'); return; 
+    } else if (res.reward === true) { // Успешный просмотр рекламы
+      giveDailyReward(); showNotification('success'); return; 
+    } else { showNotification('question'); return; }
+  } else { showNotification('question'); return; }
+});
+
+// ✓ Награда за просмотр ежедневной рекламы
+function giveDailyReward() {
+  state.dailyEnabled = Math.min(MAX_DAILY, Math.floor(state.dailyEnabled || 0) - 1);
+  if (state.dailyEnabled <= 0) { state.dailyDay = Math.max(0, Math.floor(state.dailyDay || 0) + 1); } 
+  saveState(state);
+  updateUI(state);
+}
+
+// ✓ Обработка нажатия на кнопку с карточки
+function fetchDaily(button_number) {
+  if (button_number === state.dailyClaimed || button_number < state.dailyDay) {
+    showNotification('dailyalready');
+  } if (button_number === state.dailyDay && state.dailyEnabled <= 0 && button_number != state.dailyClaimed) {
+    // ✓ Обновляем счетчик до полуночи
+    state.dailyClaimed = Math.max(0, Math.floor(state.dailyClaimed || 0) + 1);
+    const now = Date.now();
+    const nextMidnight = new Date(now);
+    nextMidnight.setHours(24, 0, 0, 0);
+    state.dailyNextMidnight = nextMidnight.getTime();
+
+    // ✓ Проверка текущего дня серии
+    if (state.dailyDay >= 7) { 
+      state.dailyClaimed = 0; state.dailyDay = 0;
+      state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 5));
+      showNotification('dailygift');
+    } else { 
+      showNotification('dailysuccess'); 
+    } 
+  } if (button_number > state.dailyDay) {
+    showNotification('dailydecline');
+  }
+}
+
+// ✓ Автоматическое восстановление ежедневной доступной рекламы
+function applyDailyRecovery() {
+  const now = Date.now();
+  // Если прошла полночь, обновляем лимит
+  if (state.dailyNextMidnight < now) {
+    state.dailyEnabled = MAX_DAILY;
+    // Если награда не была забрана до последней полуночи, то серия нарушена
+    const elapsed = ((now - state.dailyNextMidnight) / (24*60*60*1000));
+    if (elapsed > 1) {
+      state.dailyDay = 0;
+      state.dailyClaimed = 0;
+    }
+    state.dailyNextMidnight = Infinity;
+  }
+}
+
+// ✓ Обновление стилей карточек
+const daily_enabled = document.getElementById('daily-enabled');
+function updateDaily() {
+  daily_enabled.textContent = `${state.dailyEnabled}`;
+  for (let i = 1; i <= 7; i++) {
+    const updateDaily_card = `daily-day-${i}`;
+    const updateDaily_button = `daily-button-${i}`;
+    const updateDaily_container = document.getElementById(updateDaily_card);
+    if (i <= state.dailyClaimed) {
+      changeDaily(updateDaily_card, updateDaily_button, 'done');
+    } else if ((i > state.dailyDay) || (state.dailyDays <= 0)) {
+      changeDaily(updateDaily_card, updateDaily_button, 'closed');
+    } else if (i === state.dailyDay) {
+      changeDaily(updateDaily_card, updateDaily_button, 'ready');
+    }
+  }
+}
+
+// ✓ Изменение стиля кнопки на карточке и самой карточки
+function changeDaily(card_id, button_id, card_mode) {
+    const daily_card = document.getElementById(card_id);
+    const daily_button = document.getElementById(button_id);
+    daily_card.classList.remove('disabled');
+    daily_button.classList.remove('disabled');
+    daily_card.classList.remove('activated');
+    daily_button.classList.remove('activated');
+    if (card_mode === 'ready') {
+      daily_button.textContent = `Открыть`;
+      daily_card.classList.add('activated');
+      daily_button.classList.add('activated');
+    } else if (card_mode === 'done') {
+      daily_button.textContent = `Забрано`;
+      daily_card.classList.add('disabled');
+      daily_button.classList.add('disabled');
+    } else if (card_mode === 'closed') {
+      daily_button.textContent = `Закрыто`;
+    }
+}
+const daily_button_1 = document.getElementById('daily-button-1');
+const daily_button_2 = document.getElementById('daily-button-2');
+const daily_button_3 = document.getElementById('daily-button-3');
+const daily_button_4 = document.getElementById('daily-button-4');
+const daily_button_5 = document.getElementById('daily-button-5');
+const daily_button_6 = document.getElementById('daily-button-6');
+const daily_button_7 = document.getElementById('daily-button-7');
+daily_button_1.addEventListener('click', () => { fetchDaily(1); });
+daily_button_2.addEventListener('click', () => { fetchDaily(2); });
+daily_button_3.addEventListener('click', () => { fetchDaily(3); });
+daily_button_4.addEventListener('click', () => { fetchDaily(4); });
+daily_button_5.addEventListener('click', () => { fetchDaily(5); });
+daily_button_6.addEventListener('click', () => { fetchDaily(6); });
+daily_button_7.addEventListener('click', () => { fetchDaily(7); });
+
+
+// ======================================== Профиль ======================================== \\
+
+// Боковая страница профиля
+const profile_info_avatar = document.getElementById('profile-info-avatar');
+const profile_info_name = document.getElementById('profile-info-name');
+const profile_info_id = document.getElementById('profile-info-id');
+const profile_info_date = document.getElementById('profile-info-date');
+const profile_stats_tokens = document.getElementById('profile-stats-tokens');
+const profile_stats_stars = document.getElementById('profile-stats-stars');
+const profile_stats_gifts = document.getElementById('profile-stats-gifts');
+const profile_stats_serials = document.getElementById('profile-stats-serials');
+const profile_stats_maxserial = document.getElementById('profile-stats-maxserial');
+const profile_stats_events = document.getElementById('profile-stats-events');
+const profile_stats_days = document.getElementById('profile-stats-days');
+const profile_achiv_container = document.getElementById('profile-achiv-container');
+
+// ======================================== Побочные окна приложения ======================================== \\
 /*
+// Главные элементы структуры приложения
+const perfomance_site = document.getElementById('site');
+const perfomance_toosmall = document.getElementById('toosmall');
+const perfomance_main = document.getElementById('main');
+const perfomance_load = document.getElementById('load');
+
 // Отчет о запуске приложения вне или в телеграмме 
 const tg = window.Telegram && window.Telegram.WebApp;
 if (tg) { 
@@ -160,19 +379,11 @@ if (tg) {
 
 // ======================================== ✓ Параллакс и позиционирование ======================================== \\
 
-// Главные элементы структуры приложения
-const perfomance_site = document.getElementById('site');
-const perfomance_toosmall = document.getElementById('toosmall');
-const perfomance_main = document.getElementById('main');
-const perfomance_load = document.getElementById('load');
-
 // Верхний пользовательский интерфейс
 const top_ui_star = document.getElementById('top-ui-star');
 const top_ui_stars = document.getElementById('top-ui-stars');
 const top_ui_token = document.getElementById('top-ui-token');
 const top_ui_tokens = document.getElementById('top-ui-tokens');
-
-
 
 // ✓ Функция рассчета параллакса (отклик на прокрутку)
 const scroll_parallax_stars = document.getElementById('scenery-stars-parallax');
@@ -321,7 +532,6 @@ scenery_income_container_giftsout_close.addEventListener('click', () => {
         scenery_income_container_giftslist.classList.add('visible'); }, 150);
 });
 
-
 /*
 
 // Функция применения тем приложения
@@ -428,146 +638,6 @@ if (foundIndex !== currentIndex) {
 
 */
 
-// ======================================== ✓ Ежедневник ======================================== \\
-
-// ✓ Обработка нажатия на кнопку 
-const daily_button = document.getElementById('daily-button-ad');
-const DailyVideoAd1 = window.Adsgram.init({ blockId: "int-36329" });
-const DailyVideoAd2 = window.Adsgram.init({ blockId: "int-36334" });
-daily_button.addEventListener('click', async(event) => {
-  if (state.dailyEnabled > 0 && state.dailyEnabled <= 2) {
-    if (state.dailyEnabled % 2 == 0) {
-      try { await DailyVideoAd1.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
-      giveDailyReward(); return;
-    } else if (state.dailyEnabled % 2 == 1) {
-      try { await DailyVideoAd2.show(); } catch(result) { if (result.error == true) { showNotification('question'); return; } }
-      giveDailyReward(); return;
-    }
-  } else if (state.dailyEnabled <= 0) {
-    showNotification('dailyno');
-  }
-});
-
-// ✓ Награда за просмотр ежедневной рекламы
-function giveDailyReward() {
-  state.dailyEnabled = Math.min(MAX_DAILY, Math.floor(state.dailyEnabled || 0) - 1);
-  if (state.dailyEnabled <= 0) { state.dailyDay = Math.max(0, Math.floor(state.dailyDay || 0) + 1); } 
-  showNotification('success');
-  saveState(state);
-  updateUI(state);
-}
-
-// ✓ Обработка нажатия на кнопку с карточки
-function fetchDaily(button_number) {
-  if (button_number === state.dailyClaimed || button_number < state.dailyDay) {
-    showNotification('dailyalready');
-  } if (button_number === state.dailyDay && state.dailyEnabled <= 0 && button_number != state.dailyClaimed) {
-    // ✓ Обновляем счетчик до полуночи
-    state.dailyClaimed = Math.max(0, Math.floor(state.dailyClaimed || 0) + 1);
-    const now = Date.now();
-    const nextMidnight = new Date(now);
-    nextMidnight.setHours(24, 0, 0, 0);
-    state.dailyNextMidnight = nextMidnight.getTime();
-
-    // ✓ Проверка текущего дня серии
-    if (state.dailyDay >= 7) { 
-      state.dailyClaimed = 0; state.dailyDay = 0;
-      state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 5));
-      showNotification('dailygift');
-    } else { 
-      showNotification('dailysuccess'); 
-    } 
-  } if (button_number > state.dailyDay) {
-    showNotification('dailydecline');
-  }
-}
-
-// ✓ Автоматическое восстановление ежедневной доступной рекламы
-function applyDailyRecovery() {
-  const now = Date.now();
-  // Если прошла полночь, обновляем лимит
-  if (state.dailyNextMidnight < now) {
-    state.dailyEnabled = MAX_DAILY;
-    // Если награда не была забрана до последней полуночи, то серия нарушена
-    const elapsed = ((now - state.dailyNextMidnight) / (24*60*60*1000));
-    if (elapsed > 1) {
-      state.dailyDay = 0;
-      state.dailyClaimed = 0;
-    }
-    state.dailyNextMidnight = Infinity;
-  }
-}
-
-// ✓ Обновление стилей карточек
-const daily_enabled = document.getElementById('daily-enabled');
-function updateDaily() {
-  daily_enabled.textContent = `${state.dailyEnabled}`;
-  for (let i = 1; i <= 7; i++) {
-    const updateDaily_card = `daily-day-${i}`;
-    const updateDaily_button = `daily-button-${i}`;
-    const updateDaily_container = document.getElementById(updateDaily_card);
-    if (i <= state.dailyClaimed) {
-      changeDaily(updateDaily_card, updateDaily_button, 'done');
-    } else if ((i > state.dailyDay) || (state.dailyDays <= 0)) {
-      changeDaily(updateDaily_card, updateDaily_button, 'closed');
-    } else if (i === state.dailyDay) {
-      changeDaily(updateDaily_card, updateDaily_button, 'ready');
-    }
-  }
-}
-
-// ✓ Изменение стиля кнопки на карточке и самой карточки
-function changeDaily(card_id, button_id, card_mode) {
-    const daily_card = document.getElementById(card_id);
-    const daily_button = document.getElementById(button_id);
-    daily_card.classList.remove('disabled');
-    daily_button.classList.remove('disabled');
-    daily_card.classList.remove('activated');
-    daily_button.classList.remove('activated');
-    if (card_mode === 'ready') {
-      daily_button.textContent = `Открыть`;
-      daily_card.classList.add('activated');
-      daily_button.classList.add('activated');
-    } else if (card_mode === 'done') {
-      daily_button.textContent = `Забрано`;
-      daily_card.classList.add('disabled');
-      daily_button.classList.add('disabled');
-    } else if (card_mode === 'closed') {
-      daily_button.textContent = `Закрыто`;
-    }
-}
-const daily_button_1 = document.getElementById('daily-button-1');
-const daily_button_2 = document.getElementById('daily-button-2');
-const daily_button_3 = document.getElementById('daily-button-3');
-const daily_button_4 = document.getElementById('daily-button-4');
-const daily_button_5 = document.getElementById('daily-button-5');
-const daily_button_6 = document.getElementById('daily-button-6');
-const daily_button_7 = document.getElementById('daily-button-7');
-daily_button_1.addEventListener('click', () => { fetchDaily(1); });
-daily_button_2.addEventListener('click', () => { fetchDaily(2); });
-daily_button_3.addEventListener('click', () => { fetchDaily(3); });
-daily_button_4.addEventListener('click', () => { fetchDaily(4); });
-daily_button_5.addEventListener('click', () => { fetchDaily(5); });
-daily_button_6.addEventListener('click', () => { fetchDaily(6); });
-daily_button_7.addEventListener('click', () => { fetchDaily(7); });
-
-
-// ======================================== Профиль ======================================== \\
-
-// ✓ Боковая страница профиля
-const profile_info_avatar = document.getElementById('profile-info-avatar');
-const profile_info_name = document.getElementById('profile-info-name');
-const profile_info_id = document.getElementById('profile-info-id');
-const profile_info_date = document.getElementById('profile-info-date');
-const profile_stats_tokens = document.getElementById('profile-stats-tokens');
-const profile_stats_stars = document.getElementById('profile-stats-stars');
-const profile_stats_gifts = document.getElementById('profile-stats-gifts');
-const profile_stats_serials = document.getElementById('profile-stats-serials');
-const profile_stats_maxserial = document.getElementById('profile-stats-maxserial');
-const profile_stats_events = document.getElementById('profile-stats-events');
-const profile_stats_days = document.getElementById('profile-stats-days');
-const profile_achiv_container = document.getElementById('profile-achiv-container');
-
 // ======================================== ✓ Уведомления ======================================== \\
 
 // ✓ Функция отображения уведомлений 
@@ -578,29 +648,20 @@ function showNotification(notification_name) {
     notifications_count += 1; 
     notifications_current += 1;
     const notification = {
-        achivement: {url: "images/notifications/notif_achivement.png", desc: "Получено новое достижение! Нажмите для просмотра дополнительной информации"},
-        dailyalready: {url: "images/notifications/notif_dailyalready.png", desc: "Награда за этот день уже взята"},
-        dailydecline: {url: "images/notifications/notif_dailydecline.png", desc: "Награда за этот день еще недоступна"},
-        dailyno: {url: "images/notifications/notif_dailyno.png", desc: "Ежедневная реклама уже просмотрена"},
-        dailysuccess: {url: "images/notifications/notif_dailysuccess.png", desc: "Награда за этот день успешно засчитана!"},
-        decline: {url: "images/notifications/notif_decline.png", desc: "Просмотр прерван пользователем"},
-        incomegift: {url: "images/notifications/notif_incomegift.png", desc: "Подарок успешно выведен из игры!"},
-        incomestar: {url: "images/notifications/notif_incomestar.png", desc: "Звезды успешно выведены из игры!"},
-        nofuel: {url: "images/notifications/notif_nofuel.png", desc: "Недостаточно топлива"},
-        question: {url: "images/notifications/notif_question.png", desc: "Во время загрузки произошла ошибка"},
-        starfall: {url: "images/notifications/notif_starfall.png", desc: "Звездопад завершен, +1 жетон на балланс"},
-        success: {url: "images/notifications/notif_success.png", desc: "Рекламный видеоролик просмотрен успешно!"},
-        dailygift: {url: "images/notifications/notif_dailygift.png", desc: "Подарок ежедневника успешно получен!"}
+        achivement: {url: "images/notifications/notif_achivement.png", desc: "Получено новое достижение! Нажмите для просмотра дополнительной информации", remain: 5000},
+        dailyalready: {url: "images/notifications/notif_dailyalready.png", desc: "Награда за этот день уже взята", remain: 3000},
+        dailydecline: {url: "images/notifications/notif_dailydecline.png", desc: "Награда за этот день еще недоступна", remain: 3000},
+        dailyno: {url: "images/notifications/notif_dailyno.png", desc: "Ежедневная реклама уже просмотрена", remain: 2500},
+        dailysuccess: {url: "images/notifications/notif_dailysuccess.png", desc: "Награда за этот день успешно засчитана!", remain: 4000},
+        decline: {url: "images/notifications/notif_decline.png", desc: "Просмотр прерван пользователем", remain: 3000},
+        incomegift: {url: "images/notifications/notif_incomegift.png", desc: "Подарок успешно выведен из игры!", remain: 5000},
+        incomestar: {url: "images/notifications/notif_incomestar.png", desc: "Звезды успешно выведены из игры!", remain: 5000},
+        nofuel: {url: "images/notifications/notif_nofuel.png", desc: "Недостаточно топлива", remain: 2500},
+        question: {url: "images/notifications/notif_question.png", desc: "Во время загрузки произошла ошибка", remain: 3000},
+        starfall: {url: "images/notifications/notif_starfall.png", desc: "Звездопад завершен, +1 жетон на балланс", remain: 5000},
+        success: {url: "images/notifications/notif_success.png", desc: "Рекламный видеоролик просмотрен успешно!", remain: 3000},
+        dailygift: {url: "images/notifications/notif_dailygift.png", desc: "Подарок ежедневника успешно получен!", remain: 5000}
     };
-
-    // Проверка на заполение шторки уведомлений 
-    /*
-    if (notifications_count > setting.notifcount) {
-        const todelete = notifications_current - notifications_count;
-        notification_container.deleteChild(`notification-${todelete}`);
-        notifications_count -= 1; 
-    } 
-    */
 
     // ✓ Создаем уведомление из элементов
     const notification_dom_div = document.createElement('div');
@@ -622,7 +683,7 @@ function showNotification(notification_name) {
         notification_dom_div.classList.add('notification-hidden');
         setTimeout(() => { notification_container.removeChild(notification_dom_div); }, 500);
         notifications_count -= 1;
-    }, 3000);
+    }, notification[notification_name].remain);
 }
 
 // ======================================== Пользовательский интерфейс ======================================== \\
@@ -654,7 +715,7 @@ function setBar(percent, bar_id) {
 }
 
 // Настройки приложения
-const setting = {
+const settingElement = {
     audio: document.getElementById('settings-audio'),
     music: document.getElementById('settings-music'),
     notif: document.getElementById('settings-notif'),
@@ -875,42 +936,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     function getThemeTheme() {
-        if (setting.update.basic_theme.checked == true) return "basic";
-        if (setting.update.winter_theme.checked == true) return "winter";
-        if (setting.update.angel_theme.checked == true) return "angel";
-        if (setting.update.summer_theme.checked == true) return "summer";
-        if (setting.update.halloween_theme.checked == true) return "halloween";
-        if (setting.update.birth_theme.checked == true) return "birth";
+        if (settingElement.update.basic_theme.checked == true) return "basic";
+        if (settingElement.update.winter_theme.checked == true) return "winter";
+        if (settingElement.update.angel_theme.checked == true) return "angel";
+        if (settingElement.update.summer_theme.checked == true) return "summer";
+        if (settingElement.update.halloween_theme.checked == true) return "halloween";
+        if (settingElement.update.birth_theme.checked == true) return "birth";
         return "basic";
     }
     function getThemeNika() {
-        if (setting.update.basic_nika.checked == true) return "basic";
-        if (setting.update.winter_nika.checked == true) return "winter";
-        if (setting.update.christmas_nika.checked == true) return "christmas";
-        if (setting.update.angel_nika.checked == true) return "angel";
-        if (setting.update.summer_nika.checked == true) return "summer";
-        if (setting.update.halloween_nika.checked == true) return "halloween";
-        if (setting.update.sexy_nika.checked == true) return "sexy";
-        if (setting.update.birth_nika.checked == true) return "birth";
+        if (settingElement.update.basic_nika.checked == true) return "basic";
+        if (settingElement.update.winter_nika.checked == true) return "winter";
+        if (settingElement.update.christmas_nika.checked == true) return "christmas";
+        if (settingElement.update.angel_nika.checked == true) return "angel";
+        if (settingElement.update.summer_nika.checked == true) return "summer";
+        if (settingElement.update.halloween_nika.checked == true) return "halloween";
+        if (settingElement.update.sexy_nika.checked == true) return "sexy";
+        if (settingElement.update.birth_nika.checked == true) return "birth";
         return "basic";
     }
     function getThemeSound() {
-        if (setting.update.basic_sound.checked == true) return "basic";
-        if (setting.update.winter_sound.checked == true) return "winter";
-        if (setting.update.angel_sound.checked == true) return "angel";
-        if (setting.update.summer_sound.checked == true) return "summer";
-        if (setting.update.halloween_sound.checked == true) return "halloween";
-        if (setting.update.birth_sound.checked == true) return "birth";
+        if (settingElement.update.basic_sound.checked == true) return "basic";
+        if (settingElement.update.winter_sound.checked == true) return "winter";
+        if (settingElement.update.angel_sound.checked == true) return "angel";
+        if (settingElement.update.summer_sound.checked == true) return "summer";
+        if (settingElement.update.halloween_sound.checked == true) return "halloween";
+        if (settingElement.update.birth_sound.checked == true) return "birth";
         return "basic";
     }
     function updateImages(t_theme, t_nika, t_sound) {
-        /*if (!setting.nika.checked) {
+        /*if (!settingElement.nika.checked) {
             daily_nika.setAttribute('src', ""); 
             scenery_stars_nika.setAttribute('src', ""); 
             scenery_home_nika.setAttribute('src', "");
             return; 
         }*/
-        if (setting.animations.checked) {
+        if (settingElement.animations.checked) {
             scenery_stars_nika.classList.remove('stated');
             scenery_home_nika.classList.remove('stated');
             scenery_stars_nika.classList.add('animated');
@@ -931,7 +992,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     updateImages(getThemeTheme(), getThemeNika(), getThemeSound());
-    setting.animations.addEventListener('change', updateImages(getThemeTheme(), getThemeNika(), getThemeSound()));
+    settingElement.animations.addEventListener('change', updateImages(getThemeTheme(), getThemeNika(), getThemeSound()));
     document.querySelectorAll('.update-theme-input').forEach(element => { element.addEventListener('change', (event) => { updateImages(getThemeTheme(), getThemeNika(), getThemeSound()); }); });
 
 });
