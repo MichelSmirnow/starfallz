@@ -83,14 +83,16 @@ function randomInt(Nstart, Nend) {
 
 // Инициализация рекламных блоков (Настраивается в соответствии с данными личного кабинета поставщика рекламы)
 const adCompanies = ["Adsgram", "TADS"];
+const TADS1_init = window.tads.init({ widgetId: "tads-container-10255", type: "fullscreen", debug: DEBUG });
+const TADS2_init = window.tads.init({ widgetId: "10260", type: "fullscreen", debug: DEBUG });
 const adBlock = {
   Adsgram1: window.Adsgram.init({ blockId: "int-36327" }),
   Adsgram2: window.Adsgram.init({ blockId: "int-36328" }),
   Adsgram3: window.Adsgram.init({ blockId: "36333" }),
   Adsgram4: window.Adsgram.init({ blockId: "int-36329" }),
   Adsgram5: window.Adsgram.init({ blockId: "int-36334" }),
-  TADS1: window.tads.init({ widgetId: "tads-container-10255", type: "fullscreen", debug: DEBUG }),
-  TADS2: window.tads.init({ widgetId: "tads-container-10260", type: "fullscreen", debug: DEBUG }),
+  TADS1: TADS1_init,
+  TADS2: TADS2_init,
 };
 
 // ✓ Функция возврата ошибки просмотра рекламного видеоролика
@@ -127,21 +129,21 @@ async function showAdvertise() {
     if (!condition) continue;
     const variationsCount = Object.keys(adBlock).filter(k => k.startsWith(key)).length;
     const randomBlock = randomInt(1, variationsCount);
-    let companyRandom = adBlock[`${key}${randomBlock}`];
+    const companyRandom = adBlock[`${key}${randomBlock}`];
     if (key === "Adsgram") { try { // ✓ Особенности показа рекламы adsgram
       await companyRandom.show(); } catch(result) { 
         if (result.error == true) { return returnError(key); }
         if (result.done == true) { return returnReward(key); }
       }
-      // state.level.Adsgram = Math.max(0, Math.floor(state.level.Adsgram || 0) + 1);
-      // return { error: false, reward: true, declined: false };
+      return returnReward(key);
       
-    } else if (key === "TADS") { try { // ✓ Особенности показа рекламы TADS
-        const showResult = await companyRandom.showAd();
-        const showResultStrings = JSON.stringify(showResult);
+    } else if (key === "TADS") { try {// ✓ Особенности показа рекламы TADS
+        await companyRandom.then(() => adController.showAd());
+      } catch(result) { 
+        const showResultStrings = JSON.stringify(result);
         if (showResultStrings.includes('Error') || showResultStrings.includes('error')) { return returnError(key); }
         return returnReward(key);
-      } catch(result) { return returnError(key); }
+      }
     }
   }
   return { error: true, reward: false, declined: false };
