@@ -86,11 +86,15 @@ const adCompanies = ["Adsgram", "TADS"];
 const TADS1_init = window.tads.init({ widgetId: "tads-container-10255", type: "fullscreen", debug: DEBUG });
 const TADS2_init = window.tads.init({ widgetId: "10260", type: "fullscreen", debug: DEBUG });
 const adBlock = {
+  Adsgram1: window.Adsgram.init({ blockId: "int-36550" }),
+  Adsgram2: window.Adsgram.init({ blockId: "int-36551" }),
+  /*
   Adsgram1: window.Adsgram.init({ blockId: "int-36327" }),
   Adsgram2: window.Adsgram.init({ blockId: "int-36328" }),
   Adsgram3: window.Adsgram.init({ blockId: "36333" }),
   Adsgram4: window.Adsgram.init({ blockId: "int-36329" }),
   Adsgram5: window.Adsgram.init({ blockId: "int-36334" }),
+  */
   TADS1: TADS1_init,
   TADS2: TADS2_init,
 };
@@ -141,8 +145,8 @@ async function showAdvertise() {
         await companyRandom.then(() => adController.showAd());
       } catch(result) { 
         const showResultStrings = JSON.stringify(result);
-        if (showResultStrings.includes('Error') || showResultStrings.includes('error')) { return returnError(key); }
-        return returnReward(key);
+        if (showResultStrings.includes('Error') || showResultStrings.includes('error')) { return returnError(key);           
+        } else { return returnReward(key); }
       }
     }
   }
@@ -159,12 +163,12 @@ advertise_button.addEventListener('click', async() => {
   } else if (state.fuel <= 0) {      // Если не хватает топлива, блокируем показ
     showNotification('nofuel'); return;
   } else if (state.fuel > 0 && state.charge < MAX_CHARGE) { // Если топлива хватает и шкала генератора не собрана, показываем рекламный ролик
-    const result = await showAdvertise();
-    if (result.declined == true) { // Если просмотр рекламы был отклонен
+    const resultAd = await showAdvertise();
+    if (resultAd.declined == true) { // Если просмотр рекламы был отклонен
       showNotification('declined'); return; 
-    } else if (result.error == true) { // Если во время загрузки рекламы произошла ошибка
+    } else if (resultAd.error == true) { // Если во время загрузки рекламы произошла ошибка
       showNotification('question'); return; 
-    } else if (result.reward == true) { // Успешный просмотр рекламы
+    } else if (resultAd.reward == true) { // Успешный просмотр рекламы
       giveReward(); showNotification('success'); return; 
     } else { showNotification('question'); return; }
   } else { showNotification('question'); return; }
@@ -216,13 +220,13 @@ daily_button.addEventListener('click', async() => {
   if (state.dailyEnabled <= 0) { // Если ежедневная выделенная реклама закончилась
     showNotification('dailyno'); return;
   } else if (state.dailyEnabled > 0 && state.dailyEnabled <= 2) { // Если есть доступные ежедневные рекламы, показываем их
-    const res = await showAdvertise();
+    const resultAd = await showAdvertise();
     console.log({res});
-    if (res.declined === true) { // Если просмотр рекламы был отклонен
+    if (resultAd.declined === true) { // Если просмотр рекламы был отклонен
       showNotification('declined'); return; 
-    } else if (res.error === true) { // Если во время загрузки рекламы произошла ошибка
+    } else if (resultAd.error === true) { // Если во время загрузки рекламы произошла ошибка
       showNotification('question'); return; 
-    } else if (res.reward === true) { // Успешный просмотр рекламы
+    } else if (resultAd.reward === true) { // Успешный просмотр рекламы
       giveDailyReward(); showNotification('success'); return; 
     } else { showNotification('question'); return; }
   } else { showNotification('question'); return; }
