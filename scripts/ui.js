@@ -144,7 +144,7 @@ async function showAdvertise() {
       return returnReward(key);
       
     } else if (key === "TADS") { try {// ✓ Особенности показа рекламы TADS
-        await companyRandom.then(() => adController.showAd());
+        await companyRandom.then(() => companyRandom.showAd());
       } catch(result) { 
         const showResultStrings = JSON.stringify(result);
         if (showResultStrings.includes('Error') || showResultStrings.includes('error')) { return returnError(key);           
