@@ -162,8 +162,9 @@ async function showAdvertise() {
 // ======================================== ✓ Реклама на главной странице ======================================== \\
 
 // ✓ Обработка нажатия кнопок просмотра рекламы
-/*
+
 const advertise_button = document.getElementById('scenery-button-ad');
+/*
 advertise_button.addEventListener('click', async() => {
   if (state.charge >= MAX_CHARGE) {  // Если набрана шкала генератора, запускаем генератор
     generatorStart(); showNotification('starfall'); return;
@@ -222,9 +223,11 @@ function applyRecovery() {
 }
 
 // ======================================== ✓ Ежедневник ======================================== \\
-/*
+
+
 // ✓ Обработка нажатия на кнопку 
 const daily_button = document.getElementById('daily-button-ad');
+/*
 daily_button.addEventListener('click', async() => {
   if (state.dailyEnabled <= 0) { // Если ежедневная выделенная реклама закончилась
     showNotification('dailyno'); return;
