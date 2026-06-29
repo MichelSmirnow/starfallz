@@ -1,4 +1,5 @@
 const DEBUG = false;
+const ADMIN = true;
 // ======================================== База данных и настройки ======================================== \\
 
 // ✓ Консанты для генератора звездопада
@@ -80,7 +81,7 @@ function randomInt(Nstart, Nend) {
   const end = Math.floor(Nend);
   return Math.floor(Math.random() * (end - start + 1)) + start;
 }
-
+/*
 const onAdsNotFound = () => { showNotification('question'); }
 
 // Инициализация рекламных блоков (Настраивается в соответствии с данными личного кабинета поставщика рекламы)
@@ -90,13 +91,13 @@ const TADS2_init = window.tads.init({ widgetId: "10260", type: "fullscreen", deb
 const adBlock = {
   Adsgram1: window.Adsgram.init({ blockId: "int-36550" }),
   Adsgram2: window.Adsgram.init({ blockId: "int-36551" }),
-  /*
-  Adsgram1: window.Adsgram.init({ blockId: "int-36327" }),
-  Adsgram2: window.Adsgram.init({ blockId: "int-36328" }),
-  Adsgram3: window.Adsgram.init({ blockId: "36333" }),
-  Adsgram4: window.Adsgram.init({ blockId: "int-36329" }),
-  Adsgram5: window.Adsgram.init({ blockId: "int-36334" }),
-  */
+
+  // Adsgram1: window.Adsgram.init({ blockId: "int-36327" }),
+  // Adsgram2: window.Adsgram.init({ blockId: "int-36328" }),
+  // Adsgram3: window.Adsgram.init({ blockId: "36333" }),
+  // Adsgram4: window.Adsgram.init({ blockId: "int-36329" }),
+  // Adsgram5: window.Adsgram.init({ blockId: "int-36334" }),
+
   TADS1: TADS1_init,
   TADS2: TADS2_init,
 };
@@ -137,6 +138,8 @@ async function showAdvertise() {
     const randomBlock = randomInt(1, variationsCount);
     const companyRandom = adBlock[`${key}${randomBlock}`];
     if (key === "Adsgram") { try { // ✓ Особенности показа рекламы adsgram
+
+
       await companyRandom.show(); } catch(result) { 
         if (result.error == true) { return returnError(key); }
         if (result.done == true) { return returnReward(key); }
@@ -154,10 +157,12 @@ async function showAdvertise() {
   }
   return { error: true, reward: false, declined: false };
 }
+*/
 
 // ======================================== ✓ Реклама на главной странице ======================================== \\
 
 // ✓ Обработка нажатия кнопок просмотра рекламы
+/*
 const advertise_button = document.getElementById('scenery-button-ad');
 advertise_button.addEventListener('click', async() => {
   if (state.charge >= MAX_CHARGE) {  // Если набрана шкала генератора, запускаем генератор
@@ -173,12 +178,14 @@ advertise_button.addEventListener('click', async() => {
     } else if (resultAd.reward == true) { // Успешный просмотр рекламы
       giveReward(); showNotification('success'); return; 
     } else { showNotification('question'); return; }
-  } else { showNotification('question'); return; }
+  } else { showNotification('question'); return; } 
 });
+*/
 
 // ✓ Функция награждения за просмотр рекламы
 function giveReward() {
   state.fuel = Math.max(0, Math.floor(state.fuel || 0) - 1);
+  if (ADMIN) state.fuel = 7;
   state.charge = Math.min(MAX_CHARGE, Math.floor(state.charge || 0) + 1);
   if (state.recoverStart <= 0 || state.recoverStart == null) { state.recoverStart = Date.now(); }
   saveState(state);
@@ -215,7 +222,7 @@ function applyRecovery() {
 }
 
 // ======================================== ✓ Ежедневник ======================================== \\
-
+/*
 // ✓ Обработка нажатия на кнопку 
 const daily_button = document.getElementById('daily-button-ad');
 daily_button.addEventListener('click', async() => {
@@ -223,7 +230,6 @@ daily_button.addEventListener('click', async() => {
     showNotification('dailyno'); return;
   } else if (state.dailyEnabled > 0 && state.dailyEnabled <= 2) { // Если есть доступные ежедневные рекламы, показываем их
     const resultAd = await showAdvertise();
-    console.log({res});
     if (resultAd.declined === true) { // Если просмотр рекламы был отклонен
       showNotification('declined'); return; 
     } else if (resultAd.error === true) { // Если во время загрузки рекламы произошла ошибка
@@ -233,7 +239,7 @@ daily_button.addEventListener('click', async() => {
     } else { showNotification('question'); return; }
   } else { showNotification('question'); return; }
 });
-
+*/
 // ✓ Награда за просмотр ежедневной рекламы
 function giveDailyReward() {
   state.dailyEnabled = Math.min(MAX_DAILY, Math.floor(state.dailyEnabled || 0) - 1);
@@ -768,7 +774,8 @@ const scenery_home_nika = document.getElementById('scenery-home-nika');
 const scenery_stars_nika_img = document.getElementById('scenery-stars-nika-img');
 const scenery_home_nika_img = document.getElementById('scenery-home-nika-img');
 // const scenery_income_nika = document.getElementById('scenery-income-nika-img');
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
+  /*
     const image = {
         nika: {
             basic: {
@@ -978,7 +985,7 @@ document.addEventListener('DOMContentLoaded', function() {
             scenery_stars_nika.setAttribute('src', ""); 
             scenery_home_nika.setAttribute('src', "");
             return; 
-        }*/
+        }*/ /*
         if (settingElement.animations.checked) {
             scenery_stars_nika.classList.remove('stated');
             scenery_home_nika.classList.remove('stated');
@@ -1002,7 +1009,111 @@ document.addEventListener('DOMContentLoaded', function() {
     updateImages(getThemeTheme(), getThemeNika(), getThemeSound());
     settingElement.animations.addEventListener('change', updateImages(getThemeTheme(), getThemeNika(), getThemeSound()));
     document.querySelectorAll('.update-theme-input').forEach(element => { element.addEventListener('change', (event) => { updateImages(getThemeTheme(), getThemeNika(), getThemeSound()); }); });
+    */
 
+  /*
+  const advertise_button = document.getElementById('scenery-button-ad');
+
+  // Callback for REWARDED format.
+  const onShowRewardCallback = (result) => {
+      console.log('Show ads, reward user:', result);
+  };
+
+  // Callback for no ads response
+  const onAdsNotFound = () => {
+      console.log('Callback which calls if no ads found to show',);
+  }
+
+  const adController = window.tads.init({
+    widgetId: 'tads-container-10255',
+    type: 'fullscreen',
+    debug: DEBUG,
+    onShowReward: onShowRewardCallback,
+    onAdsNotFound: onAdsNotFound,
+  });
+  
+  // Use your button or link HTML selector for getElementById
+  advertise_button.addEventListener('click', () => {
+    adController
+      .then(() => adController.showAd())
+      .catch((result) => {
+        console.log(result);
+      });
+  });
+  */
+  const WIDGET_ID = "tads-container-10255"; // Replace on your WIDGET ID
+  const IS_DEBUG = true; // Replace on false in production
+  const BTN_ID = "scenery-button-ad"; // Replace on your button ID
+  const TYPE = "fullscreen";
+
+  let adController = null;
+  let tadsReady = false;
+
+  const onShowRewardCallback = (result) => {
+    console.log("Show ads, reward user:", result);
+  };
+
+  const onAdsNotFound = () => {
+    console.log("No ads found to show");
+  };
+
+  function waitForTadsReady(timeout = 5000) {
+    return new Promise((resolve, reject) => {
+      if (window.tads && typeof window.tads.init === "function") {
+        return resolve();
+      }
+
+      const start = performance.now();
+      const iv = setInterval(() => {
+        if (window.tads && typeof window.tads.init === "function") {
+          clearInterval(iv);
+          resolve();
+        } else if (performance.now() - start > timeout) {
+          clearInterval(iv);
+          reject(new Error("TADS widget script not loaded"));
+        }
+      }, 50);
+    });
+  }
+
+  async function showAd() {
+    try {
+      if (!tadsReady) {
+        await waitForTadsReady();
+        tadsReady = true;
+      }
+
+      if (!adController) {
+        adController =
+          window.tads.controllers?.[WIDGET_ID] ||
+          window.tads.init({
+            widgetId: WIDGET_ID,
+            type: TYPE,
+            debug: IS_DEBUG,
+            onShowReward: onShowRewardCallback,
+            onAdsNotFound: onAdsNotFound,
+          });
+      }
+
+      if (adController && typeof adController.showAd === "function") {
+        adController.showAd().catch((err) => {
+          console.error(`Error showing ad:`, err);
+        });
+      } else {
+        console.warn("Ad controller not ready");
+      }
+    } catch (err) {
+      console.error("Failed to load TADS:", err);
+    }
+  }
+
+  const btn = document.getElementById(BTN_ID);
+  if (!btn) {
+    console.error("Button not found:", BTN_ID);
+    return;
+  }
+
+  btn.addEventListener("click", showAd);
 });
 
 // Обновление пользовательского интерфейса (данными из струкруры state)
