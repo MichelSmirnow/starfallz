@@ -1050,10 +1050,12 @@ document.addEventListener("DOMContentLoaded", function () {
   let tadsReady = false;
 
   const onShowRewardCallback = (result) => {
+    showNotification('success');
     console.log("Show ads, reward user:", result);
   };
 
   const onAdsNotFound = () => {
+    showNotification('question');
     console.log("No ads found to show");
   };
 
