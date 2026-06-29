@@ -1041,7 +1041,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
   */
-  const WIDGET_ID = "tads-container-10255"; // Replace on your WIDGET ID
+  const WIDGET_ID = "10260"; // Replace on your WIDGET ID
   const IS_DEBUG = true; // Replace on false in production
   const BTN_ID = "scenery-button-ad"; // Replace on your button ID
   const TYPE = "fullscreen";
