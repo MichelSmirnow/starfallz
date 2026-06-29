@@ -81,26 +81,6 @@ function randomInt(Nstart, Nend) {
   const end = Math.floor(Nend);
   return Math.floor(Math.random() * (end - start + 1)) + start;
 }
-/*
-const onAdsNotFound = () => { showNotification('question'); }
-
-// Инициализация рекламных блоков (Настраивается в соответствии с данными личного кабинета поставщика рекламы)
-const adCompanies = ["Adsgram", "TADS"];
-const TADS1_init = window.tads.init({ widgetId: "tads-container-10255", type: "fullscreen", debug: DEBUG, onAdsNotFound: onAdsNotFound, });
-const TADS2_init = window.tads.init({ widgetId: "10260", type: "fullscreen", debug: DEBUG, onAdsNotFound: onAdsNotFound, });
-const adBlock = {
-  Adsgram1: window.Adsgram.init({ blockId: "int-36550" }),
-  Adsgram2: window.Adsgram.init({ blockId: "int-36551" }),
-
-  // Adsgram1: window.Adsgram.init({ blockId: "int-36327" }),
-  // Adsgram2: window.Adsgram.init({ blockId: "int-36328" }),
-  // Adsgram3: window.Adsgram.init({ blockId: "36333" }),
-  // Adsgram4: window.Adsgram.init({ blockId: "int-36329" }),
-  // Adsgram5: window.Adsgram.init({ blockId: "int-36334" }),
-
-  TADS1: TADS1_init,
-  TADS2: TADS2_init,
-};
 
 // ✓ Функция возврата ошибки просмотра рекламного видеоролика
 function returnError(returnKey) {
@@ -120,68 +100,142 @@ function returnDecline() {
   return { error: false, reward: false, declined: true};
 }
 
-// Функция рандомизированного показа рекламы
-async function showAdvertise() {
-  const levelSum = Object.values(state.level).reduce((acc, v) => acc + v, 0);
-  const statement = Object.assign({}, state.level);
-  for (let i = 0; i <= adCompanies.length; i++) { statement[adCompanies[i]] = Math.ceil((state.level[adCompanies[i]] / levelSum) * 100); }
-  delete statement.undefined;
-  const statementSum = Object.values(statement).reduce((acc, v) => acc + v, 0);
-  const randomAd = randomInt(1, statementSum);
-  let conditionCounter = 0;
-  for (let i = 0; i < adCompanies.length; i++) {
-    const key = adCompanies[i]; 
-    const condition = (conditionCounter < randomAd && randomAd <= (conditionCounter + statement[key]));
-    conditionCounter += statement[key];
-    if (!condition) continue;
-    const variationsCount = Object.keys(adBlock).filter(k => k.startsWith(key)).length;
-    const randomBlock = randomInt(1, variationsCount);
-    const companyRandom = adBlock[`${key}${randomBlock}`];
-    if (key === "Adsgram") { try { // ✓ Особенности показа рекламы adsgram
-
-
-      await companyRandom.show(); } catch(result) { 
-        if (result.error == true) { return returnError(key); }
-        if (result.done == true) { return returnReward(key); }
-      }
-      return returnReward(key);
-      
-    } else if (key === "TADS") { try {// ✓ Особенности показа рекламы TADS
-        await companyRandom.then(() => companyRandom.showAd());
-      } catch(result) { 
-        const showResultStrings = JSON.stringify(result);
-        if (showResultStrings.includes('Error') || showResultStrings.includes('error')) { return returnError(key);           
-        } else { return returnReward(key); }
-      }
-    }
-  }
-  return { error: true, reward: false, declined: false };
+// Функция возврата отсутствия доступных к просмотру реклам
+function returnNoAds() {
+  return { error: true, reward: false, declined: true};
 }
-*/
+
+// ✓ Принудительная инициализация рекламных блоков при загрузке страницы
+const advertise_button = document.getElementById('scenery-button-ad');
+const daily_button = document.getElementById('daily-button-ad');
+document.addEventListener("DOMContentLoaded", function () {
+  let tadsReady = false;
+  function waitForTadsReady(timeout = 5000) { // ✓ Ожидание загрузки модуля рекламы TADS
+    return new Promise((resolve, reject) => {
+      if (window.tads && typeof window.tads.init === "function") { return resolve(); }
+      const start = performance.now();
+      const iv = setInterval(() => {
+        if (window.tads && typeof window.tads.init === "function") {
+          clearInterval(iv);
+          resolve();
+        } else if (performance.now() - start > timeout) {
+          clearInterval(iv);
+          reject(new Error("TADS widget script not loaded"));
+        }
+      }, 50);
+    });
+  }
+
+  // ✓ Функция рандомизированного показа рекламы
+  async function showAdvertise() {
+    return new Promise(async (resolve) => {
+      // ✓ Дополнительные методы завершения промиса
+      const onShowRewardCallback = (result) => { resolve(returnReward(result)); };
+      const onAdsNotFound = () => { resolve(returnNoAds()); };
+
+      // ✓ Инициализация рекламных блоков (Настраивается в соответствии с данными личного кабинета поставщика рекламы)
+      const adCompanies = ["Adsgram", "TADS"];
+      let TADS1_init = null; TADS1_init = window.tads.init({ widgetId: "10255", type: "fullscreen", debug: DEBUG, onShowReward: onShowRewardCallback, onAdsNotFound: onAdsNotFound, });
+      let TADS2_init = null; TADS1_init = window.tads.init({ widgetId: "10260", type: "fullscreen", debug: DEBUG, onShowReward: onShowRewardCallback, onAdsNotFound: onAdsNotFound, });
+      const adBlock = {
+        Adsgram1: window.Adsgram.init({ blockId: "int-36550" }),
+        Adsgram2: window.Adsgram.init({ blockId: "int-36551" }),
+
+        // Adsgram1: window.Adsgram.init({ blockId: "int-36327" }),
+        // Adsgram2: window.Adsgram.init({ blockId: "int-36328" }),
+        // Adsgram3: window.Adsgram.init({ blockId: "36333" }),
+        // Adsgram4: window.Adsgram.init({ blockId: "int-36329" }),
+        // Adsgram5: window.Adsgram.init({ blockId: "int-36334" }),
+
+        TADS1: TADS1_init,
+        TADS2: TADS2_init,
+      };
+
+      // ✓ Рандомизатор показа рекламы
+      async function showAdvertiseHelper() {
+        const levelSum = Object.values(state.level).reduce((acc, v) => acc + v, 0);
+        const statement = Object.assign({}, state.level);
+        for (let i = 0; i <= adCompanies.length; i++) { statement[adCompanies[i]] = Math.ceil((state.level[adCompanies[i]] / levelSum) * 100); }
+        delete statement.undefined;
+        const statementSum = Object.values(statement).reduce((acc, v) => acc + v, 0);
+        const randomAd = randomInt(1, statementSum);
+        let conditionCounter = 0;
+        for (let i = 0; i < adCompanies.length; i++) {
+          const key = adCompanies[i]; 
+          const condition = (conditionCounter < randomAd && randomAd <= (conditionCounter + statement[key]));
+          conditionCounter += statement[key];
+          if (!condition) continue;
+          const variationsCount = Object.keys(adBlock).filter(k => k.startsWith(key)).length;
+          const randomBlock = randomInt(1, variationsCount);
+          const companyRandom = adBlock[`${key}${randomBlock}`];
+
+          if (key === "Adsgram") { // ✓ Особенности показа рекламы adsgram
+            try {
+              await companyRandom.show(); } catch(result) { 
+              if (result.error == true) { resolve(returnError(key)); return; }
+              if (result.done == true) { resolve(returnReward(key)); return; }
+            } resolve(returnReward(key)); return;
+            
+          } else if (key === "TADS") { // Особенности показа рекламы TADS
+            try {
+              if (!tadsReady) { await waitForTadsReady(); tadsReady = true; }
+              if (!companyRandom) { resolve(returnError(key)); return; }
+              if (companyRandom && typeof adController.showAd === "function") {
+                companyRandom.showAd().catch(() => { resolve(returnError(key)); return; });
+              } else { resolve(returnError(key)); return; }
+            } catch (err) { resolve(returnError(key)); return; }
+          }
+        } return { error: true, reward: false, declined: false };
+      }
+
+      await showAdvertiseHelper(); // Показ рекламы и resolve по результатам работы функции
+    });
+  }
+
+  // ✓ Обработка нажатия кнопок просмотра рекламы
+  advertise_button.addEventListener('click', async() => {
+    if (state.charge >= MAX_CHARGE) {  // Если набрана шкала генератора, запускаем генератор
+      generatorStart(); showNotification('starfall'); return;
+    } else if (state.fuel <= 0) {      // Если не хватает топлива, блокируем показ
+      showNotification('nofuel'); return;
+    } else if (state.fuel > 0 && state.charge < MAX_CHARGE) { // Если топлива хватает и шкала генератора не собрана, показываем рекламный ролик
+      editBanner(true);
+      const resultAd = await showAdvertise();
+      editBanner(false);
+      if (resultAd.declined === true && resultAd.error === false) { // Если просмотр рекламы был отклонен
+        showNotification('declined'); return; 
+      } else if (resultAd.error === true && resultAd.declined === false) { // Если во время загрузки рекламы произошла ошибка
+        showNotification('question'); return; 
+      } else if (resultAd.error === true && resultAd.declined === екгу) {
+        showNotification('noads'); return; 
+      } else if (resultAd.reward === true) { // Успешный просмотр рекламы
+        giveReward(); showNotification('success'); return; 
+      } else { showNotification('question'); return; }
+    } else { showNotification('question'); return; } 
+  });
+
+  // ✓ Обработка нажатия на кнопку ежедневной рекламы
+  daily_button.addEventListener('click', async() => {
+    if (state.dailyEnabled <= 0) { // Если ежедневная выделенная реклама закончилась
+      showNotification('dailyno'); return;
+    } else if (state.dailyEnabled > 0 && state.dailyEnabled <= 2) { // Если есть доступные ежедневные рекламы, показываем их
+      editBanner(true);
+      const resultAd = await showAdvertise();
+      editBanner(false);
+      if (resultAd.declined === true && resultAd.error === false) { // Если просмотр рекламы был отклонен
+        showNotification('declined'); return; 
+      } else if (resultAd.error === true && resultAd.declined === false) { // Если во время загрузки рекламы произошла ошибка
+        showNotification('question'); return; 
+      } else if (resultAd.error === true && resultAd.declined === екгу) {
+        showNotification('noads'); return; 
+      } else if (resultAd.reward === true) { // Успешный просмотр рекламы
+        giveDailyReward(); showNotification('success'); return; 
+      } else { showNotification('question'); return; }
+    } else { showNotification('question'); return; }
+  });
+}, { once: true });
 
 // ======================================== ✓ Реклама на главной странице ======================================== \\
-
-// ✓ Обработка нажатия кнопок просмотра рекламы
-
-const advertise_button = document.getElementById('scenery-button-ad');
-/*
-advertise_button.addEventListener('click', async() => {
-  if (state.charge >= MAX_CHARGE) {  // Если набрана шкала генератора, запускаем генератор
-    generatorStart(); showNotification('starfall'); return;
-  } else if (state.fuel <= 0) {      // Если не хватает топлива, блокируем показ
-    showNotification('nofuel'); return;
-  } else if (state.fuel > 0 && state.charge < MAX_CHARGE) { // Если топлива хватает и шкала генератора не собрана, показываем рекламный ролик
-    const resultAd = await showAdvertise();
-    if (resultAd.declined == true) { // Если просмотр рекламы был отклонен
-      showNotification('declined'); return; 
-    } else if (resultAd.error == true) { // Если во время загрузки рекламы произошла ошибка
-      showNotification('question'); return; 
-    } else if (resultAd.reward == true) { // Успешный просмотр рекламы
-      giveReward(); showNotification('success'); return; 
-    } else { showNotification('question'); return; }
-  } else { showNotification('question'); return; } 
-});
-*/
 
 // ✓ Функция награждения за просмотр рекламы
 function giveReward() {
@@ -224,25 +278,6 @@ function applyRecovery() {
 
 // ======================================== ✓ Ежедневник ======================================== \\
 
-
-// ✓ Обработка нажатия на кнопку 
-const daily_button = document.getElementById('daily-button-ad');
-/*
-daily_button.addEventListener('click', async() => {
-  if (state.dailyEnabled <= 0) { // Если ежедневная выделенная реклама закончилась
-    showNotification('dailyno'); return;
-  } else if (state.dailyEnabled > 0 && state.dailyEnabled <= 2) { // Если есть доступные ежедневные рекламы, показываем их
-    const resultAd = await showAdvertise();
-    if (resultAd.declined === true) { // Если просмотр рекламы был отклонен
-      showNotification('declined'); return; 
-    } else if (resultAd.error === true) { // Если во время загрузки рекламы произошла ошибка
-      showNotification('question'); return; 
-    } else if (resultAd.reward === true) { // Успешный просмотр рекламы
-      giveDailyReward(); showNotification('success'); return; 
-    } else { showNotification('question'); return; }
-  } else { showNotification('question'); return; }
-});
-*/
 // ✓ Награда за просмотр ежедневной рекламы
 function giveDailyReward() {
   state.dailyEnabled = Math.min(MAX_DAILY, Math.floor(state.dailyEnabled || 0) - 1);
@@ -677,7 +712,9 @@ function showNotification(notification_name) {
         question: {url: "images/notifications/notif_question.png", desc: "Во время загрузки произошла ошибка", remain: 3000},
         starfall: {url: "images/notifications/notif_starfall.png", desc: "Звездопад завершен, +1 жетон на балланс", remain: 5000},
         success: {url: "images/notifications/notif_success.png", desc: "Рекламный видеоролик просмотрен успешно!", remain: 3000},
-        dailygift: {url: "images/notifications/notif_dailygift.png", desc: "Подарок ежедневника успешно получен!", remain: 5000}
+        dailygift: {url: "images/notifications/notif_dailygift.png", desc: "Подарок ежедневника успешно получен!", remain: 5000},
+        critical: {url: "images/notifications/notif_critical.png", desc: "Критическая ошибка приложения", remain: 10000},
+        noads: {url: "images/notifications/notif_noads.png", desc: "Нет доступной рекламы. Попробуйте еще раз", remain: 3000},
     };
 
     // ✓ Создаем уведомление из элементов
@@ -705,7 +742,19 @@ function showNotification(notification_name) {
 
 // ======================================== Пользовательский интерфейс ======================================== \\
 
-// ✓ Функция изменения уровня шкалы
+// ✓ Отображение и скрытие заблюренной подложки для загрузки/рекламы
+const banner = document.getElementById('banner');
+function editBanner(show) {
+  if (show) {
+    banner.classList.remove('hidden');
+    banner.classList.add('visible');
+  } else {
+    banner.classList.remove('visible');
+    banner.classList.add('hidden');
+  }
+}
+
+// ✓ Функция изменения уровня шкалы .bar
 function setBar(percent, bar_id) {
   const bar = document.getElementById(bar_id);
   if (!bar) return;
@@ -732,6 +781,7 @@ function setBar(percent, bar_id) {
 }
 
 // Настройки приложения
+/*
 const settingElement = {
     audio: document.getElementById('settings-audio'),
     music: document.getElementById('settings-music'),
@@ -778,348 +828,240 @@ const scenery_stars_nika_img = document.getElementById('scenery-stars-nika-img')
 const scenery_home_nika_img = document.getElementById('scenery-home-nika-img');
 // const scenery_income_nika = document.getElementById('scenery-income-nika-img');
 document.addEventListener("DOMContentLoaded", function () {
-  /*
-    const image = {
-        nika: {
-            basic: {
-                stars: {
-                    sit: "images/nika/nika_stars_classic_sit.png",
-                    stand: "images/nika/nika_stars_classic_stand.png",
-                    comein: "animations/basic-nika/nika_stars_comein.gif",
-                    sitdown: "animations/basic-nika/nika_stars_sitdown.gif",
-                    state: "animations/basic-nika/nika_stars_state.gif",
-                    comeout: "animations/basic-nika/nika_stars_comeout.gif"
-                }, home: {
-                    stand: "images/nika/nika_home_classic.png",
-                    comein: "animations/basic-nika/",
-                    state: "animations/basic-nika/",
-                    comeout: "animations/basic-nika/"
-                }, income: {
-                    stand: "images/nika/",
-                    comein: "animations/basic-nika/",
-                    state: "animations/basic-nika/",
-                    comeout: "animations/basic-nika/"
-                }, daily: {
-                    stand: "images/nika/nika_daily_classic.png",
-                    state: "animations/basic-nika/nika_daily.gif"
-                }
-            }, winter: {
-                stars: {
-                    sit: "images/nika/nika_stars_year_sit.png",
-                    stand: "images/nika/nika_stars_year_stand.png",
-                    comein: "animations/winter-nika/",
-                    state: "animations/winter-nika/",
-                    comeout: "animations/winter-nika/"
-                }, home: {
-                    stand: "images/nika/nika_home_year.png",
-                    comein: "animations/winter-nika/",
-                    state: "animations/winter-nika/",
-                    comeout: "animations/winter-nika/"
-                }, income: {
-                    stand: "images/nika/",
-                    comein: "animations/winter-nika/",
-                    state: "animations/winter-nika/",
-                    comeout: "animations/winter-nika/"
-                }, daily: {
-                    stand: "images/nika/nika_daily_winter.png",
-                    state: "animations/winter-nika/nika_daily.gif"
-                }
-            }, christmas: {
-                stars: {
-                    sit: "images/nika/nika_stars_christmas_sit.png",
-                    stand: "images/nika/nika_stars_christmas_stand.png",
-                    comein: "animations/christmas-nika/",
-                    state: "animations/christmas-nika/",
-                    comeout: "animations/christmas-nika/"
-                }, home: {
-                    stand: "images/nika/nika_home_christmas.png",
-                    comein: "animations/christmas-nika/",
-                    state: "animations/christmas-nika/",
-                    comeout: "animations/christmas-nika/"
-                }, income: {
-                    stand: "images/nika/",
-                    comein: "animations/christmas-nika/",
-                    state: "animations/christmas-nika/",
-                    comeout: "animations/christmas-nika/"
-                }, daily: {
-                    stand: "images/nika/nika_daily_christmas.png",
-                    state: "animations/christmas-nika/nika_daily.gif"
-                }
-            }, angel: {
-                stars: {
-                    sit: "images/nika/nika_stars_angel_sit.png",
-                    stand: "images/nika/nika_stars_angel_stand.png",
-                    comein: "animations/angel-nika/",
-                    state: "animations/angel-nika/",
-                    comeout: "animations/angel-nika/"
-                }, home: {
-                    stand: "images/nika/nika_home_angel.png",
-                    comein: "animations/angel-nika/",
-                    state: "animations/angel-nika/",
-                    comeout: "animations/angel-nika/"
-                }, income: {
-                    stand: "images/nika/",
-                    comein: "animations/angel-nika/",
-                    state: "animations/angel-nika/",
-                    comeout: "animations/angel-nika/"
-                }, daily: {
-                    stand: "images/nika/nika_daily_angel.png",
-                    state: "animations/angel-nika/nika_daily.gif"
-                }
-            }, summer: {
-                stars: {
-                    sit: "images/nika/nika_stars_summer_sit.png",
-                    stand: "images/nika/nika_stars_summer_stand.png",
-                    comein: "animations/summer-nika/",
-                    state: "animations/summer-nika/",
-                    comeout: "animations/summer-nika/"
-                }, home: {
-                    stand: "images/nika/nika_home_summer.png",
-                    comein: "animations/summer-nika/",
-                    state: "animations/summer-nika/",
-                    comeout: "animations/summer-nika/"
-                }, income: {
-                    stand: "images/nika/",
-                    comein: "animations/summer-nika/",
-                    state: "animations/summer-nika/",
-                    comeout: "animations/summer-nika/"
-                }, daily: {
-                    stand: "images/nika/nika_daily_summer.png",
-                    state: "animations/summer-nika/nika_daily.gif"
-                }
-            }, halloween: {
-                stars: {
-                    sit: "images/nika/nika_stars_halloween_sit.png",
-                    stand: "images/nika/nika_stars_halloween_stand.png",
-                    comein: "animations/halloween-nika/",
-                    state: "animations/halloween-nika/",
-                    comeout: "animations/halloween-nika/"
-                }, home: {
-                    stand: "images/nika/nika_home_halloween.png",
-                    comein: "animations/halloween-nika/",
-                    state: "animations/halloween-nika/",
-                    comeout: "animations/halloween-nika/"
-                }, income: {
-                    stand: "images/nika/",
-                    comein: "animations/halloween-nika/",
-                    state: "animations/halloween-nika/",
-                    comeout: "animations/halloween-nika/"
-                }, daily: {
-                    stand: "images/nika/nika_daily_halloween.png",
-                    state: "animations/halloween-nika/nika_daily.gif"
-                }
-            }, sexy: {
-                stars: {
-                    sit: "images/nika/nika_stars_sexy_sit.png",
-                    stand: "images/nika/nika_stars_sexy_stand.png",
-                    comein: "animations/sexy-nika/",
-                    state: "animations/sexy-nika/",
-                    comeout: "animations/sexy-nika/"
-                }, home: {
-                    stand: "images/nika/nika_home_sexy.png",
-                    comein: "animations/sexy-nika/",
-                    state: "animations/sexy-nika/",
-                    comeout: "animations/sexy-nika/"
-                }, income: {
-                    stand: "images/nika/",
-                    comein: "animations/sexy-nika/",
-                    state: "animations/sexy-nika/",
-                    comeout: "animations/sexy-nika/"
-                }, daily: {
-                    stand: "images/nika/nika_daily_sexy.png",
-                    state: "animations/sexy-nika/nika_daily.gif"
-                }
-            }, birth: {
-                stars: {
-                    sit: "images/nika/nika_stars_birth_sit.png",
-                    stand: "images/nika/nika_stars_birth_stand.png",
-                    comein: "animations/birth-nika/",
-                    state: "animations/birth-nika/",
-                    comeout: "animations/birth-nika/"
-                }, home: {
-                    stand: "images/nika/nika_home_birth.png",
-                    comein: "animations/birth-nika/",
-                    state: "animations/birth-nika/",
-                    comeout: "animations/birth-nika/"
-                }, income: {
-                    stand: "images/nika/",
-                    comein: "animations/birth-nika/",
-                    state: "animations/birth-nika/",
-                    comeout: "animations/birth-nika/"
-                }, daily: {
-                    stand: "images/nika/nika_daily_birth.png",
-                    state: "animations/birth-nika/nika_daily.gif"
-                }
-            }
-        }
-    };
-    function getThemeTheme() {
-        if (settingElement.update.basic_theme.checked == true) return "basic";
-        if (settingElement.update.winter_theme.checked == true) return "winter";
-        if (settingElement.update.angel_theme.checked == true) return "angel";
-        if (settingElement.update.summer_theme.checked == true) return "summer";
-        if (settingElement.update.halloween_theme.checked == true) return "halloween";
-        if (settingElement.update.birth_theme.checked == true) return "birth";
-        return "basic";
-    }
-    function getThemeNika() {
-        if (settingElement.update.basic_nika.checked == true) return "basic";
-        if (settingElement.update.winter_nika.checked == true) return "winter";
-        if (settingElement.update.christmas_nika.checked == true) return "christmas";
-        if (settingElement.update.angel_nika.checked == true) return "angel";
-        if (settingElement.update.summer_nika.checked == true) return "summer";
-        if (settingElement.update.halloween_nika.checked == true) return "halloween";
-        if (settingElement.update.sexy_nika.checked == true) return "sexy";
-        if (settingElement.update.birth_nika.checked == true) return "birth";
-        return "basic";
-    }
-    function getThemeSound() {
-        if (settingElement.update.basic_sound.checked == true) return "basic";
-        if (settingElement.update.winter_sound.checked == true) return "winter";
-        if (settingElement.update.angel_sound.checked == true) return "angel";
-        if (settingElement.update.summer_sound.checked == true) return "summer";
-        if (settingElement.update.halloween_sound.checked == true) return "halloween";
-        if (settingElement.update.birth_sound.checked == true) return "birth";
-        return "basic";
-    }
-    function updateImages(t_theme, t_nika, t_sound) {
-        /*if (!settingElement.nika.checked) {
-            daily_nika.setAttribute('src', ""); 
-            scenery_stars_nika.setAttribute('src', ""); 
-            scenery_home_nika.setAttribute('src', "");
-            return; 
-        }*/ /*
-        if (settingElement.animations.checked) {
-            scenery_stars_nika.classList.remove('stated');
-            scenery_home_nika.classList.remove('stated');
-            scenery_stars_nika.classList.add('animated');
-            scenery_home_nika.classList.add('animated');
-            daily_nika.setAttribute('src', image.nika[t_nika].daily.state); 
-            scenery_stars_nika_img.setAttribute('src', image.nika[t_nika].stars.state); 
-            scenery_home_nika_img.setAttribute('src', image.nika[t_nika].home.state);
-            return;
-        } else {
-            scenery_stars_nika.classList.remove('animated');
-            scenery_home_nika.classList.remove('animated');
-            scenery_stars_nika.classList.add('stated');
-            scenery_home_nika.classList.add('stated');
-            daily_nika.setAttribute('src', image.nika[t_nika].daily.stand); 
-            scenery_stars_nika_img.setAttribute('src', image.nika[t_nika].stars.stand); 
-            scenery_home_nika_img.setAttribute('src', image.nika[t_nika].home.stand);
-            return;
-        }
-    }
-    updateImages(getThemeTheme(), getThemeNika(), getThemeSound());
-    settingElement.animations.addEventListener('change', updateImages(getThemeTheme(), getThemeNika(), getThemeSound()));
-    document.querySelectorAll('.update-theme-input').forEach(element => { element.addEventListener('change', (event) => { updateImages(getThemeTheme(), getThemeNika(), getThemeSound()); }); });
-    */
-
-  /*
-  const advertise_button = document.getElementById('scenery-button-ad');
-
-  // Callback for REWARDED format.
-  const onShowRewardCallback = (result) => {
-      console.log('Show ads, reward user:', result);
+  const image = {
+      nika: {
+          basic: {
+              stars: {
+                  sit: "images/nika/nika_stars_classic_sit.png",
+                  stand: "images/nika/nika_stars_classic_stand.png",
+                  comein: "animations/basic-nika/nika_stars_comein.gif",
+                  sitdown: "animations/basic-nika/nika_stars_sitdown.gif",
+                  state: "animations/basic-nika/nika_stars_state.gif",
+                  comeout: "animations/basic-nika/nika_stars_comeout.gif"
+              }, home: {
+                  stand: "images/nika/nika_home_classic.png",
+                  comein: "animations/basic-nika/",
+                  state: "animations/basic-nika/",
+                  comeout: "animations/basic-nika/"
+              }, income: {
+                  stand: "images/nika/",
+                  comein: "animations/basic-nika/",
+                  state: "animations/basic-nika/",
+                  comeout: "animations/basic-nika/"
+              }, daily: {
+                  stand: "images/nika/nika_daily_classic.png",
+                  state: "animations/basic-nika/nika_daily.gif"
+              }
+          }, winter: {
+              stars: {
+                  sit: "images/nika/nika_stars_year_sit.png",
+                  stand: "images/nika/nika_stars_year_stand.png",
+                  comein: "animations/winter-nika/",
+                  state: "animations/winter-nika/",
+                  comeout: "animations/winter-nika/"
+              }, home: {
+                  stand: "images/nika/nika_home_year.png",
+                  comein: "animations/winter-nika/",
+                  state: "animations/winter-nika/",
+                  comeout: "animations/winter-nika/"
+              }, income: {
+                  stand: "images/nika/",
+                  comein: "animations/winter-nika/",
+                  state: "animations/winter-nika/",
+                  comeout: "animations/winter-nika/"
+              }, daily: {
+                  stand: "images/nika/nika_daily_winter.png",
+                  state: "animations/winter-nika/nika_daily.gif"
+              }
+          }, christmas: {
+              stars: {
+                  sit: "images/nika/nika_stars_christmas_sit.png",
+                  stand: "images/nika/nika_stars_christmas_stand.png",
+                  comein: "animations/christmas-nika/",
+                  state: "animations/christmas-nika/",
+                  comeout: "animations/christmas-nika/"
+              }, home: {
+                  stand: "images/nika/nika_home_christmas.png",
+                  comein: "animations/christmas-nika/",
+                  state: "animations/christmas-nika/",
+                  comeout: "animations/christmas-nika/"
+              }, income: {
+                  stand: "images/nika/",
+                  comein: "animations/christmas-nika/",
+                  state: "animations/christmas-nika/",
+                  comeout: "animations/christmas-nika/"
+              }, daily: {
+                  stand: "images/nika/nika_daily_christmas.png",
+                  state: "animations/christmas-nika/nika_daily.gif"
+              }
+          }, angel: {
+              stars: {
+                  sit: "images/nika/nika_stars_angel_sit.png",
+                  stand: "images/nika/nika_stars_angel_stand.png",
+                  comein: "animations/angel-nika/",
+                  state: "animations/angel-nika/",
+                  comeout: "animations/angel-nika/"
+              }, home: {
+                  stand: "images/nika/nika_home_angel.png",
+                  comein: "animations/angel-nika/",
+                  state: "animations/angel-nika/",
+                  comeout: "animations/angel-nika/"
+              }, income: {
+                  stand: "images/nika/",
+                  comein: "animations/angel-nika/",
+                  state: "animations/angel-nika/",
+                  comeout: "animations/angel-nika/"
+              }, daily: {
+                  stand: "images/nika/nika_daily_angel.png",
+                  state: "animations/angel-nika/nika_daily.gif"
+              }
+          }, summer: {
+              stars: {
+                  sit: "images/nika/nika_stars_summer_sit.png",
+                  stand: "images/nika/nika_stars_summer_stand.png",
+                  comein: "animations/summer-nika/",
+                  state: "animations/summer-nika/",
+                  comeout: "animations/summer-nika/"
+              }, home: {
+                  stand: "images/nika/nika_home_summer.png",
+                  comein: "animations/summer-nika/",
+                  state: "animations/summer-nika/",
+                  comeout: "animations/summer-nika/"
+              }, income: {
+                  stand: "images/nika/",
+                  comein: "animations/summer-nika/",
+                  state: "animations/summer-nika/",
+                  comeout: "animations/summer-nika/"
+              }, daily: {
+                  stand: "images/nika/nika_daily_summer.png",
+                  state: "animations/summer-nika/nika_daily.gif"
+              }
+          }, halloween: {
+              stars: {
+                  sit: "images/nika/nika_stars_halloween_sit.png",
+                  stand: "images/nika/nika_stars_halloween_stand.png",
+                  comein: "animations/halloween-nika/",
+                  state: "animations/halloween-nika/",
+                  comeout: "animations/halloween-nika/"
+              }, home: {
+                  stand: "images/nika/nika_home_halloween.png",
+                  comein: "animations/halloween-nika/",
+                  state: "animations/halloween-nika/",
+                  comeout: "animations/halloween-nika/"
+              }, income: {
+                  stand: "images/nika/",
+                  comein: "animations/halloween-nika/",
+                  state: "animations/halloween-nika/",
+                  comeout: "animations/halloween-nika/"
+              }, daily: {
+                  stand: "images/nika/nika_daily_halloween.png",
+                  state: "animations/halloween-nika/nika_daily.gif"
+              }
+          }, sexy: {
+              stars: {
+                  sit: "images/nika/nika_stars_sexy_sit.png",
+                  stand: "images/nika/nika_stars_sexy_stand.png",
+                  comein: "animations/sexy-nika/",
+                  state: "animations/sexy-nika/",
+                  comeout: "animations/sexy-nika/"
+              }, home: {
+                  stand: "images/nika/nika_home_sexy.png",
+                  comein: "animations/sexy-nika/",
+                  state: "animations/sexy-nika/",
+                  comeout: "animations/sexy-nika/"
+              }, income: {
+                  stand: "images/nika/",
+                  comein: "animations/sexy-nika/",
+                  state: "animations/sexy-nika/",
+                  comeout: "animations/sexy-nika/"
+              }, daily: {
+                  stand: "images/nika/nika_daily_sexy.png",
+                  state: "animations/sexy-nika/nika_daily.gif"
+              }
+          }, birth: {
+              stars: {
+                  sit: "images/nika/nika_stars_birth_sit.png",
+                  stand: "images/nika/nika_stars_birth_stand.png",
+                  comein: "animations/birth-nika/",
+                  state: "animations/birth-nika/",
+                  comeout: "animations/birth-nika/"
+              }, home: {
+                  stand: "images/nika/nika_home_birth.png",
+                  comein: "animations/birth-nika/",
+                  state: "animations/birth-nika/",
+                  comeout: "animations/birth-nika/"
+              }, income: {
+                  stand: "images/nika/",
+                  comein: "animations/birth-nika/",
+                  state: "animations/birth-nika/",
+                  comeout: "animations/birth-nika/"
+              }, daily: {
+                  stand: "images/nika/nika_daily_birth.png",
+                  state: "animations/birth-nika/nika_daily.gif"
+              }
+          }
+      }
   };
-
-  // Callback for no ads response
-  const onAdsNotFound = () => {
-      console.log('Callback which calls if no ads found to show',);
+  function getThemeTheme() {
+      if (settingElement.update.basic_theme.checked == true) return "basic";
+      if (settingElement.update.winter_theme.checked == true) return "winter";
+      if (settingElement.update.angel_theme.checked == true) return "angel";
+      if (settingElement.update.summer_theme.checked == true) return "summer";
+      if (settingElement.update.halloween_theme.checked == true) return "halloween";
+      if (settingElement.update.birth_theme.checked == true) return "birth";
+      return "basic";
   }
-
-  const adController = window.tads.init({
-    widgetId: 'tads-container-10255',
-    type: 'fullscreen',
-    debug: DEBUG,
-    onShowReward: onShowRewardCallback,
-    onAdsNotFound: onAdsNotFound,
-  });
-  
-  // Use your button or link HTML selector for getElementById
-  advertise_button.addEventListener('click', () => {
-    adController
-      .then(() => adController.showAd())
-      .catch((result) => {
-        console.log(result);
-      });
-  });
-  */
-  const WIDGET_ID = "10260"; // Replace on your WIDGET ID
-  const IS_DEBUG = true; // Replace on false in production
-  const BTN_ID = "scenery-button-ad"; // Replace on your button ID
-  const TYPE = "fullscreen";
-
-  let adController = null;
-  let tadsReady = false;
-
-  const onShowRewardCallback = (result) => {
-    showNotification('success');
-    console.log("Show ads, reward user:", result);
-  };
-
-  const onAdsNotFound = () => {
-    showNotification('question');
-    console.log("No ads found to show");
-  };
-
-  function waitForTadsReady(timeout = 5000) {
-    return new Promise((resolve, reject) => {
-      if (window.tads && typeof window.tads.init === "function") {
-        return resolve();
-      }
-
-      const start = performance.now();
-      const iv = setInterval(() => {
-        if (window.tads && typeof window.tads.init === "function") {
-          clearInterval(iv);
-          resolve();
-        } else if (performance.now() - start > timeout) {
-          clearInterval(iv);
-          reject(new Error("TADS widget script not loaded"));
-        }
-      }, 50);
-    });
+  function getThemeNika() {
+      if (settingElement.update.basic_nika.checked == true) return "basic";
+      if (settingElement.update.winter_nika.checked == true) return "winter";
+      if (settingElement.update.christmas_nika.checked == true) return "christmas";
+      if (settingElement.update.angel_nika.checked == true) return "angel";
+      if (settingElement.update.summer_nika.checked == true) return "summer";
+      if (settingElement.update.halloween_nika.checked == true) return "halloween";
+      if (settingElement.update.sexy_nika.checked == true) return "sexy";
+      if (settingElement.update.birth_nika.checked == true) return "birth";
+      return "basic";
   }
-
-  async function showAd() {
-    try {
-      if (!tadsReady) {
-        await waitForTadsReady();
-        tadsReady = true;
+  function getThemeSound() {
+      if (settingElement.update.basic_sound.checked == true) return "basic";
+      if (settingElement.update.winter_sound.checked == true) return "winter";
+      if (settingElement.update.angel_sound.checked == true) return "angel";
+      if (settingElement.update.summer_sound.checked == true) return "summer";
+      if (settingElement.update.halloween_sound.checked == true) return "halloween";
+      if (settingElement.update.birth_sound.checked == true) return "birth";
+      return "basic";
+  }
+  function updateImages(t_theme, t_nika, t_sound) {
+      if (!settingElement.nika.checked) {
+          daily_nika.setAttribute('src', ""); 
+          scenery_stars_nika.setAttribute('src', ""); 
+          scenery_home_nika.setAttribute('src', "");
+          return; 
       }
-
-      if (!adController) {
-        adController =
-          window.tads.controllers?.[WIDGET_ID] ||
-          window.tads.init({
-            widgetId: WIDGET_ID,
-            type: TYPE,
-            debug: IS_DEBUG,
-            onShowReward: onShowRewardCallback,
-            onAdsNotFound: onAdsNotFound,
-          });
-      }
-
-      if (adController && typeof adController.showAd === "function") {
-        adController.showAd().catch((err) => {
-          console.error(`Error showing ad:`, err);
-        });
+      if (settingElement.animations.checked) {
+          scenery_stars_nika.classList.remove('stated');
+          scenery_home_nika.classList.remove('stated');
+          scenery_stars_nika.classList.add('animated');
+          scenery_home_nika.classList.add('animated');
+          daily_nika.setAttribute('src', image.nika[t_nika].daily.state); 
+          scenery_stars_nika_img.setAttribute('src', image.nika[t_nika].stars.state); 
+          scenery_home_nika_img.setAttribute('src', image.nika[t_nika].home.state);
+          return;
       } else {
-        console.warn("Ad controller not ready");
+          scenery_stars_nika.classList.remove('animated');
+          scenery_home_nika.classList.remove('animated');
+          scenery_stars_nika.classList.add('stated');
+          scenery_home_nika.classList.add('stated');
+          daily_nika.setAttribute('src', image.nika[t_nika].daily.stand); 
+          scenery_stars_nika_img.setAttribute('src', image.nika[t_nika].stars.stand); 
+          scenery_home_nika_img.setAttribute('src', image.nika[t_nika].home.stand);
+          return;
       }
-    } catch (err) {
-      console.error("Failed to load TADS:", err);
-    }
   }
-
-  const btn = document.getElementById(BTN_ID);
-  if (!btn) {
-    console.error("Button not found:", BTN_ID);
-    return;
-  }
-
-  btn.addEventListener("click", showAd);
-});
+  updateImages(getThemeTheme(), getThemeNika(), getThemeSound());
+  settingElement.animations.addEventListener('change', updateImages(getThemeTheme(), getThemeNika(), getThemeSound()));
+  document.querySelectorAll('.update-theme-input').forEach(element => { element.addEventListener('change', (event) => { updateImages(getThemeTheme(), getThemeNika(), getThemeSound()); }); });
+}, { once: true }); */
 
 // Обновление пользовательского интерфейса (данными из струкруры state)
 const advertise_fuel = document.getElementById('stars-advertise-fuel');
@@ -1202,11 +1144,17 @@ function updateUI(state) {
   // updateAnimations();
 }
 
+/*
+
+window.addEventListener("error", (e) => {
+  showNotification('critical');
+}, true); */
+
 // ✓ Инициализация и периодическое обновление
 let state = loadState();
 function tick() { applyRecovery(); applyDailyRecovery(); updateUI(state); } 
 tick();
 saveState(state);
-window.addEventListener('beforeunload', () => saveState(state));
+window.addEventListener('beforeunload', () => { saveState(state); });
 let uiTimer = setInterval(tick, 500);
-let saveTimer = setInterval(() => { saveState(state); }, 5000);
+let saveTimer = setInterval(() => { saveState(state); }, 5000 );

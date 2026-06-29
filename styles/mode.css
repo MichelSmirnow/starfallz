@@ -53,15 +53,10 @@
     #advertise-container.ad-container-opened {top: -17vh !important;}
 }
 
-
 /* ТОЛЬКО ДЛЯ ПОДПИСИ К КНОПКЕ РЕКЛАМЫ!!!!! ДОДЕЛАТЬ!!!!!! */
 @media (max-width: 470px) {
     #scenery-button-ad-status { top: 21% !important; }
 }
-
-
-
-
 
 /* ✓ Режим малого размера страницы */
 @media (max-width: 330px) or (max-height: 280px) {
@@ -78,8 +73,10 @@
 #load-message { color: #CACACA; font-family: 'StarfallVAGRounded-Regular'; font-size: large; text-align: center; line-height: 1.2; max-width: 60%; opacity: 1; transition: opacity 0.5s ease; }
 #load.hidden { z-index: 0; opacity: 0; pointer-events: none; transition: z-index 0.5s ease, opacity 0.5s ease; }
 
-
-
+/* ✓ Подложка рекламного баннера */
+#banner { z-index: 999999; position: fixed; top: 0; left: 0; right: 0; bottom: 0; backdrop-filter: blur(30px); }
+#banner div { position: relative; width: 100%; height: 100%;}
+#banner img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 700px; filter: drop-shadow(0 0 15px rgba(73, 86, 255, 0.7))}
 
 /* Окно приложения, открытого вне telegram */
 #site {
