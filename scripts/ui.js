@@ -136,10 +136,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // ✓ Инициализация рекламных блоков (Настраивается в соответствии с данными личного кабинета поставщика рекламы)
       const adCompanies = ["Adsgram", "TADS"];
       const adBlock = {
-        Adsgram1: window.Adsgram.init({ blockId: "int-36550" }),
-        Adsgram2: window.Adsgram.init({ blockId: "int-36551" }),
-        TADS1: "10255",
-        TADS2: "10260",
+        Adsgram1: window.Adsgram.init({ blockId: "int-36633" }),
+        Adsgram2: window.Adsgram.init({ blockId: "int-36634" }),
+        TADS1: "tads-container-10255",
+        TADS2: "tads-container-10255",
+        TADS3: "tads-container-10296",
 
         // Adsgram1: window.Adsgram.init({ blockId: "int-36327" }),
         // Adsgram2: window.Adsgram.init({ blockId: "int-36328" }),
