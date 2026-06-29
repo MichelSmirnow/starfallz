@@ -100,7 +100,7 @@ function returnDecline() {
   return { error: false, reward: false, declined: true};
 }
 
-// Функция возврата отсутствия доступных к просмотру реклам
+// ✓ Функция возврата отсутствия доступных к просмотру реклам
 function returnNoAds() {
   return { error: true, reward: false, declined: true};
 }
@@ -135,20 +135,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // ✓ Инициализация рекламных блоков (Настраивается в соответствии с данными личного кабинета поставщика рекламы)
       const adCompanies = ["Adsgram", "TADS"];
-      let TADS1_init = null; TADS1_init = window.tads.init({ widgetId: "10255", type: "fullscreen", debug: DEBUG, onShowReward: onShowRewardCallback, onAdsNotFound: onAdsNotFound, });
-      let TADS2_init = null; TADS1_init = window.tads.init({ widgetId: "10260", type: "fullscreen", debug: DEBUG, onShowReward: onShowRewardCallback, onAdsNotFound: onAdsNotFound, });
       const adBlock = {
         Adsgram1: window.Adsgram.init({ blockId: "int-36550" }),
         Adsgram2: window.Adsgram.init({ blockId: "int-36551" }),
+        TADS1: "10255",
+        TADS2: "10260",
 
         // Adsgram1: window.Adsgram.init({ blockId: "int-36327" }),
         // Adsgram2: window.Adsgram.init({ blockId: "int-36328" }),
         // Adsgram3: window.Adsgram.init({ blockId: "36333" }),
         // Adsgram4: window.Adsgram.init({ blockId: "int-36329" }),
         // Adsgram5: window.Adsgram.init({ blockId: "int-36334" }),
-
-        TADS1: TADS1_init,
-        TADS2: TADS2_init,
       };
 
       // ✓ Рандомизатор показа рекламы
@@ -176,12 +173,17 @@ document.addEventListener("DOMContentLoaded", function () {
               if (result.done == true) { resolve(returnReward(key)); return; }
             } resolve(returnReward(key)); return;
             
-          } else if (key === "TADS") { // Особенности показа рекламы TADS
+          } else if (key === "TADS") { // ✓ Особенности показа рекламы TADS
             try {
               if (!tadsReady) { await waitForTadsReady(); tadsReady = true; }
-              if (!companyRandom) { resolve(returnError(key)); return; }
-              if (companyRandom && typeof adController.showAd === "function") {
-                companyRandom.showAd().catch(() => { resolve(returnError(key)); return; });
+              const adController = window.tads.controllers?.[WIDGET_ID] || window.tads.init({
+                widgetId: companyRandom, type: "fullscreen", debug: DEBUG,
+                onShowReward: onShowRewardCallback,
+                onAdsNotFound: onAdsNotFound,
+              });
+              if (!adController) { resolve(returnError(key)); return; }
+              if (adController && typeof adController.showAd === "function") {
+                adController.showAd().catch(() => { resolve(returnError(key)); return; });
               } else { resolve(returnError(key)); return; }
             } catch (err) { resolve(returnError(key)); return; }
           }
@@ -206,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
         showNotification('declined'); return; 
       } else if (resultAd.error === true && resultAd.declined === false) { // Если во время загрузки рекламы произошла ошибка
         showNotification('question'); return; 
-      } else if (resultAd.error === true && resultAd.declined === екгу) {
+      } else if (resultAd.error === true && resultAd.declined === true) {
         showNotification('noads'); return; 
       } else if (resultAd.reward === true) { // Успешный просмотр рекламы
         giveReward(); showNotification('success'); return; 
@@ -226,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
         showNotification('declined'); return; 
       } else if (resultAd.error === true && resultAd.declined === false) { // Если во время загрузки рекламы произошла ошибка
         showNotification('question'); return; 
-      } else if (resultAd.error === true && resultAd.declined === екгу) {
+      } else if (resultAd.error === true && resultAd.declined === true) {
         showNotification('noads'); return; 
       } else if (resultAd.reward === true) { // Успешный просмотр рекламы
         giveDailyReward(); showNotification('success'); return; 
