@@ -1,5 +1,5 @@
-const DEBUG = false;
-const ADMIN = true;
+const DEBUG = true;
+const ADMIN = false;
 // ======================================== База данных и настройки ======================================== \\
 
 // ✓ Консанты для генератора звездопада
@@ -70,7 +70,7 @@ function saveSettings(setting) {
 function resetSettings() { 
   setting = SETTINGS_DEFAULTS;
   saveSettings(setting);
-  updateUI(state);
+  updateUI();
 }
 
 // ======================================== Функции показа рандомизированной рекламы ======================================== \\
@@ -141,12 +141,6 @@ document.addEventListener("DOMContentLoaded", function () {
         TADS1: "tads-container-10255",
         TADS2: "tads-container-10255",
         TADS3: "tads-container-10296",
-
-        // Adsgram1: window.Adsgram.init({ blockId: "int-36327" }),
-        // Adsgram2: window.Adsgram.init({ blockId: "int-36328" }),
-        // Adsgram3: window.Adsgram.init({ blockId: "36333" }),
-        // Adsgram4: window.Adsgram.init({ blockId: "int-36329" }),
-        // Adsgram5: window.Adsgram.init({ blockId: "int-36334" }),
       };
 
       // ✓ Рандомизатор показа рекламы
@@ -217,9 +211,18 @@ document.addEventListener("DOMContentLoaded", function () {
     } else { showNotification('question'); return; } 
   });
 
-  // ✓ Обработка нажатия на кнопку ежедневной рекламы
+  // Обработка нажатия на кнопку ежедневной рекламы
   daily_button.addEventListener('click', async() => {
-    if (state.dailyEnabled <= 0) { // Если ежедневная выделенная реклама закончилась
+    if (state.dailyEnabled <= 0 && state.dailyClaimed != state.dailyDay) { // Если ежедневная выделенная реклама закончилась, но награда не забрана
+      state.dailyClaimed = Math.max(0, Math.floor(state.dailyClaimed || 0) + 1);
+      if (state.dailyDay >= 7) { 
+        state.dailyClaimed = 0; state.dailyDay = 0;
+        state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 5));
+        showNotification('dailygift');
+      } else { 
+        showNotification('dailysuccess'); 
+      } 
+    } else if (state.dailyEnabled <= 0 && state.dailyClaimed == state.dailyDay) { // Если ежедневная выделенная реклама закончилась и награда уже забрана
       showNotification('dailyno'); return;
     } else if (state.dailyEnabled > 0 && state.dailyEnabled <= 2) { // Если есть доступные ежедневные рекламы, показываем их
       editBanner(true);
@@ -247,7 +250,7 @@ function giveReward() {
   state.charge = Math.min(MAX_CHARGE, Math.floor(state.charge || 0) + 1);
   if (state.recoverStart <= 0 || state.recoverStart == null) { state.recoverStart = Date.now(); }
   saveState(state);
-  updateUI(state);
+  updateUI();
 }
 
 // ✓ Функция запуска звездопада
@@ -255,7 +258,7 @@ function generatorStart() {
   state.charge = 0;
   state.tokens = Math.max(0, (Math.floor(state.tokens || 0) + 1));
   saveState(state);
-  updateUI(state);
+  updateUI();
 }
 
 // ✓ Функция для добавления топливных единиц (восстановление по 1 единице каждые 25 минут)
@@ -286,7 +289,7 @@ function giveDailyReward() {
   state.dailyEnabled = Math.min(MAX_DAILY, Math.floor(state.dailyEnabled || 0) - 1);
   if (state.dailyEnabled <= 0) { state.dailyDay = Math.max(0, Math.floor(state.dailyDay || 0) + 1); } 
   saveState(state);
-  updateUI(state);
+  updateUI();
 }
 
 // ✓ Обработка нажатия на кнопку с карточки
@@ -333,11 +336,11 @@ function applyDailyRecovery() {
 // ✓ Обновление стилей карточек
 const daily_enabled = document.getElementById('daily-enabled');
 function updateDaily() {
+  // ✓ Обновление карточек ежедневника
   daily_enabled.textContent = `${state.dailyEnabled}`;
   for (let i = 1; i <= 7; i++) {
     const updateDaily_card = `daily-day-${i}`;
     const updateDaily_button = `daily-button-${i}`;
-    const updateDaily_container = document.getElementById(updateDaily_card);
     if (i <= state.dailyClaimed) {
       changeDaily(updateDaily_card, updateDaily_button, 'done');
     } else if ((i > state.dailyDay) || (state.dailyDays <= 0)) {
@@ -345,6 +348,32 @@ function updateDaily() {
     } else if (i === state.dailyDay) {
       changeDaily(updateDaily_card, updateDaily_button, 'ready');
     }
+  }
+
+  // ✓ Режимы кнопки просмотра рекламы в ежедневнике
+  if (state.dailyEnabled > 0) {
+    daily_button.classList.remove('disabled');
+    daily_button.classList.remove('complete');
+    daily_button.textContent = `Смотреть рекламу`;
+    daily_button_status.textContent = ``;
+  } else if (state.dailyEnabled <= 0 && state.dailyClaimed != state.dailyDay) {
+    daily_button.classList.remove('disabled');
+    daily_button.classList.add('complete');
+    daily_button.textContent = `Забрать награду`;
+    daily_button_status.textContent = ``;
+  } else {
+    daily_button.classList.add('disabled');
+    daily_button.classList.remove('complete');
+    daily_button.textContent = `Реклама закончилась`;
+    const now = new Date();
+    const nextMidnight = new Date(now);
+    nextMidnight.setHours(24, 0, 0, 0);
+    const elapsed = nextMidnight - now;
+    const remainder = Math.floor(elapsed / 1000);
+    const hd = Math.floor(remainder / 3600);
+    const md = Math.floor((remainder - (hd * 3600)) / 60);
+    const sd = remainder % 60;
+    daily_button_status.textContent = `До обновления лимита осталось: ${hd}ч ${md}мин ${sd}сек`;
   }
 }
 
@@ -361,7 +390,7 @@ function changeDaily(card_id, button_id, card_mode) {
       daily_card.classList.add('activated');
       daily_button.classList.add('activated');
     } else if (card_mode === 'done') {
-      daily_button.textContent = `Забрано`;
+      daily_button.textContent = `Получено`;
       daily_card.classList.add('disabled');
       daily_button.classList.add('disabled');
     } else if (card_mode === 'closed') {
@@ -587,8 +616,14 @@ scenery_income_container_giftsout_close.addEventListener('click', () => {
         scenery_income_container_giftslist.classList.add('visible'); }, 150);
 });
 
-/*
+// ✓ Обработка нажатия на кнопку события
+const event_button = document.getElementById('home-button-event');
+event_button.addEventListener('click', () => {
+  showNotification('noevents');
+});
 
+
+/*
 // Функция применения тем приложения
 const update_basic_nika = document.getElementById('update-basic-nika');
 const update_winter_nika = document.getElementById('update-winter-nika');
@@ -598,99 +633,7 @@ const update_summer_nika = document.getElementById('update-summer-nika');
 const update_halloween_nika = document.getElementById('update-halloween-nika');
 const update_sexy_nika = document.getElementById('update-sexy-nika');
 const update_birth_nika = document.getElementById('update-birth-nika');
-
-
-// Функция однократного показа gif анимации
-function showAnimation(id, src, lengh) {
-  const img = document.getElementById(id); if (!img) return;
-  const cacheBuster = Date.now() + Math.random().toString(36).slice(2);
-  const sep = src.includes('?') ? '&' : '?';
-  const newSrc = src + sep + 'cb=' + cacheBuster;
-  img.src = newSrc;
-
-  if (img._gifTimeout) clearTimeout(img._gifTimeout);
-  img._gifTimeout = setTimeout(() => {
-    img.style.display = 'none';
-    img.removeAttribute('src');
-    delete img._gifTimeout;
-  }, lengh);
 }
-
-// Функции фокусирования на блоках scenery
-const anim_lengh_comein = 5280;
-const anim_lengh_sitdown = 4920;
-function onEnterStars(from) { 
-    console.log('Entered stars', {from}); 
-    showAnimation("scenery-stars-nika", "animations/nika_stars_comein.gif", anim_lengh_comein);
-    setTimeout(() => { showAnimation("scenery-stars-nika", "animations/nika_stars_sitdown.gif", anim_lengh_sitdown); }, anim_lengh_comein);
-}
-function onEnterHome(from) { 
-    console.log('Entered home', {from}); 
-}
-function onEnterIncome(from) { 
-    console.log('Entered income', {from}); 
-}
-
-const BLOCK_SELECTOR = '.scenery-container';
-const CENTER_OFFSET_VH = 10;
-const THROTTLE_MS = 100;
-
-function throttle(fn, wait) {
-  let last = 0, timeout = null, lastArgs = null;
-  return function(...args) {
-    const now = Date.now();
-    const remaining = wait - (now - last);
-    lastArgs = args;
-    if (remaining <= 0) {
-      clearTimeout(timeout);
-      timeout = null;
-      last = now;
-      fn.apply(this, lastArgs);
-      lastArgs = null;
-    } else if (!timeout) {
-      timeout = setTimeout(() => {
-        last = Date.now();
-        timeout = null;
-        fn.apply(this, lastArgs);
-        lastArgs = null;
-      }, remaining);
-    }
-  };
-}
-
-function updateVH() { vh = window.innerHeight / 100; }
-
-function checkFocus() {
-updateVH();
-const list = getBlocks();
-if (list.length === 0) return;
-
-const centerY = window.scrollY + window.innerHeight / 2;
-const offsetPx = CENTER_OFFSET_VH * vh;
-const zoneTop = centerY - offsetPx;
-const zoneBottom = centerY + offsetPx;
-
-let foundIndex = -1;
-for (let i = 0; i < list.length; i++) {
-    const el = list[i];
-    const rect = el.getBoundingClientRect();
-    const top = rect.top + window.scrollY;
-    const bottom = rect.bottom + window.scrollY;
-    if (!(bottom < zoneTop || top > zoneBottom)) {
-    foundIndex = i;
-    break;
-    }
-}
-
-if (foundIndex !== currentIndex) {
-    const prev = currentIndex;
-    currentIndex = foundIndex;
-    if (foundIndex === 0) onEnterBlock1(prev, foundIndex);
-    else if (foundIndex === 1) onEnterBlock2(prev, foundIndex);
-    else if (foundIndex === 2) onEnterBlock3(prev, foundIndex);
-}
-}
-
 */
 
 // ======================================== ✓ Уведомления ======================================== \\
@@ -700,47 +643,48 @@ let notifications_count = 0;
 let notifications_current = 0;
 const notification_container = document.getElementById('notifications');
 function showNotification(notification_name) {
-    notifications_count += 1; 
-    notifications_current += 1;
-    const notification = {
-        achivement: {url: "images/notifications/notif_achivement.png", desc: "Получено новое достижение! Нажмите для просмотра дополнительной информации", remain: 5000},
-        dailyalready: {url: "images/notifications/notif_dailyalready.png", desc: "Награда за этот день уже взята", remain: 3000},
-        dailydecline: {url: "images/notifications/notif_dailydecline.png", desc: "Награда за этот день еще недоступна", remain: 3000},
-        dailyno: {url: "images/notifications/notif_dailyno.png", desc: "Ежедневная реклама уже просмотрена", remain: 2500},
-        dailysuccess: {url: "images/notifications/notif_dailysuccess.png", desc: "Награда за этот день успешно засчитана!", remain: 4000},
-        decline: {url: "images/notifications/notif_decline.png", desc: "Просмотр прерван пользователем", remain: 3000},
-        incomegift: {url: "images/notifications/notif_incomegift.png", desc: "Подарок успешно выведен из игры!", remain: 5000},
-        incomestar: {url: "images/notifications/notif_incomestar.png", desc: "Звезды успешно выведены из игры!", remain: 5000},
-        nofuel: {url: "images/notifications/notif_nofuel.png", desc: "Недостаточно топлива", remain: 2500},
-        question: {url: "images/notifications/notif_question.png", desc: "Во время загрузки произошла ошибка", remain: 3000},
-        starfall: {url: "images/notifications/notif_starfall.png", desc: "Звездопад завершен, +1 жетон на балланс", remain: 5000},
-        success: {url: "images/notifications/notif_success.png", desc: "Рекламный видеоролик просмотрен успешно!", remain: 3000},
-        dailygift: {url: "images/notifications/notif_dailygift.png", desc: "Подарок ежедневника успешно получен!", remain: 5000},
-        critical: {url: "images/notifications/notif_critical.png", desc: "Критическая ошибка приложения", remain: 10000},
-        noads: {url: "images/notifications/notif_noads.png", desc: "Нет доступной рекламы. Попробуйте еще раз", remain: 3000},
-    };
+  notifications_count += 1; 
+  notifications_current += 1;
+  const notification = {
+    achivement: {url: "images/notifications/notif_achivement.png", desc: "Получено новое достижение! Нажмите для просмотра дополнительной информации", remain: 5000},
+    dailyalready: {url: "images/notifications/notif_dailyalready.png", desc: "Награда за этот день уже взята", remain: 3000},
+    dailydecline: {url: "images/notifications/notif_dailydecline.png", desc: "Награда за этот день еще недоступна", remain: 3000},
+    dailyno: {url: "images/notifications/notif_dailyno.png", desc: "Ежедневная реклама уже просмотрена", remain: 2500},
+    dailysuccess: {url: "images/notifications/notif_dailysuccess.png", desc: "Награда за этот день успешно засчитана!", remain: 4000},
+    decline: {url: "images/notifications/notif_decline.png", desc: "Просмотр прерван пользователем", remain: 3000},
+    incomegift: {url: "images/notifications/notif_incomegift.png", desc: "Подарок успешно выведен из игры!", remain: 5000},
+    incomestar: {url: "images/notifications/notif_incomestar.png", desc: "Звезды успешно выведены из игры!", remain: 5000},
+    nofuel: {url: "images/notifications/notif_nofuel.png", desc: "Недостаточно топлива", remain: 2500},
+    question: {url: "images/notifications/notif_question.png", desc: "Во время загрузки произошла ошибка", remain: 3000},
+    starfall: {url: "images/notifications/notif_starfall.png", desc: "Звездопад завершен, +1 жетон на балланс", remain: 5000},
+    success: {url: "images/notifications/notif_success.png", desc: "Рекламный видеоролик просмотрен успешно!", remain: 3000},
+    dailygift: {url: "images/notifications/notif_dailygift.png", desc: "Подарок ежедневника успешно получен!", remain: 5000},
+    critical: {url: "images/notifications/notif_critical.png", desc: "Критическая ошибка приложения", remain: 10000},
+    noads: {url: "images/notifications/notif_noads.png", desc: "Нет доступной рекламы. Попробуйте еще раз", remain: 3000},
+    noevents: {url: "images/notifications/notif_noevents.png", desc: "В данный момент нет активных событий", remain: 3000},
+  };
 
-    // ✓ Создаем уведомление из элементов
-    const notification_dom_div = document.createElement('div');
-    notification_dom_div.setAttribute("class", "notification-dom-container notification-hidden "); 
-    notification_dom_div.setAttribute("id", `notification-${notifications_current}`);
-    const notification_dom_img = document.createElement('img');
-    notification_dom_img.setAttribute("src", notification[notification_name].url); 
-    notification_dom_img.setAttribute("class", "notification-dom-image");
-    notification_container.appendChild(notification_dom_div);
-    notification_dom_div.appendChild(notification_dom_img);
-    setTimeout(() => {
-        notification_dom_div.classList.remove('notification-hidden');
-        notification_dom_div.classList.add('notification-visible');
-    }, 10);
+  // ✓ Создаем уведомление из элементов
+  const notification_dom_div = document.createElement('div');
+  notification_dom_div.setAttribute("class", "notification-dom-container notification-hidden "); 
+  notification_dom_div.setAttribute("id", `notification-${notifications_current}`);
+  const notification_dom_img = document.createElement('img');
+  notification_dom_img.setAttribute("src", notification[notification_name].url); 
+  notification_dom_img.setAttribute("class", "notification-dom-image");
+  notification_container.appendChild(notification_dom_div);
+  notification_dom_div.appendChild(notification_dom_img);
+  setTimeout(() => {
+      notification_dom_div.classList.remove('notification-hidden');
+      notification_dom_div.classList.add('notification-visible');
+  }, 10);
 
-    // ✓ Удаляем устаревшее уведомление
-    setTimeout(() => {
-        notification_dom_div.classList.remove('notification-visible');
-        notification_dom_div.classList.add('notification-hidden');
-        setTimeout(() => { notification_container.removeChild(notification_dom_div); }, 500);
-        notifications_count -= 1;
-    }, notification[notification_name].remain);
+  // ✓ Удаляем устаревшее уведомление
+  setTimeout(() => {
+      notification_dom_div.classList.remove('notification-visible');
+      notification_dom_div.classList.add('notification-hidden');
+      setTimeout(() => { notification_container.removeChild(notification_dom_div); }, 500);
+      notifications_count -= 1;
+  }, notification[notification_name].remain);
 }
 
 // ======================================== Пользовательский интерфейс ======================================== \\
@@ -1076,7 +1020,7 @@ const advertise_status_fuel_container = document.getElementById('scenery-button-
 const daily_button_status = document.getElementById('daily-button-ad-status');
 const balance_tokens = document.getElementById('top-ui-tokens');
 const balance_stars= document.getElementById('top-ui-stars');
-function updateUI(state) {
+function updateUI() {
   // ✓ Шкалы генератора
   const fuel_percentage = (state.fuel / MAX_FUEL) * 100;
   const charge_percentage = (state.charge / MAX_CHARGE) * 100;
@@ -1123,39 +1067,18 @@ function updateUI(state) {
     advertise_button.textContent = `Смотреть рекламу`;
   }
 
-  // ✓ Режимы кнопки просмотра рекламы в ежедневнике
-  if (state.dailyEnabled > 0) {
-    daily_button.classList.remove('disabled');
-    daily_button.textContent = `Смотреть рекламу`;
-    daily_button_status.textContent = ``;
-  } else {
-    daily_button.classList.add('disabled');
-    daily_button.textContent = `Реклама закончилась`;
-    const now = new Date();
-    const nextMidnight = new Date(now);
-    nextMidnight.setHours(24, 0, 0, 0);
-    const elapsed = nextMidnight - now;
-    const remainder = Math.floor(elapsed / 1000);
-    const hd = Math.floor(remainder / 3600);
-    const md = Math.floor((remainder - (hd * 3600)) / 60);
-    const sd = remainder % 60;
-    daily_button_status.textContent = `До обновления лимита осталось: ${hd}ч ${md}мин ${sd}сек`;
-  }
-
   // Сторонние функции обновления
-  updateDaily(state);
+  updateDaily();
   // updateAnimations();
 }
 
-/*
-
-window.addEventListener("error", (e) => {
+/* window.addEventListener("error", (e) => {
   showNotification('critical');
 }, true); */
 
 // ✓ Инициализация и периодическое обновление
 let state = loadState();
-function tick() { applyRecovery(); applyDailyRecovery(); updateUI(state); } 
+function tick() { applyRecovery(); applyDailyRecovery(); updateUI(); } 
 tick();
 saveState(state);
 window.addEventListener('beforeunload', () => { saveState(state); });

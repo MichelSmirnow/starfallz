@@ -28,8 +28,6 @@
     <div id="tads-container-10255"></div>
     <div id="tads-container-10296"></div>
 
-
-
     <!-- ✓ Контейнер уведослений -->
     <div id="notifications"></div>
 
@@ -104,7 +102,7 @@
                 <summary><div class="columns">
                     <div><h2>Достижения</h2>
                     <p>Получено <span id="profile-achiv-number">0</span> достижений из N</p></div>
-                    <img src="images/ui-profile-achiv.png" alt="Изображение на кнопке открытия достижений"/>
+                    <img src="images/ui/ui-profile-achiv.png" alt="Изображение на кнопке открытия достижений"/>
                 </div></summary>
                 <div id="profile-achiv-container" class="profile-details-container">
                     <div class="achivement" class="columns"><img src="images/achivements/" alt=""/><div><h3></h3><p></p></div>
@@ -166,7 +164,7 @@
                     <p><span id="daily-button-ad-status"></span></p>
                 </div>
                 <img id="daily-nika" src="images/nika/nika_daily_classic.png" alt="Ника с плюшевым мишкой в руках сидит на большом красном подарке с желтой лентой"/>
-                <p><i>* Не забывайте каждый день открывать карточки - иначе накопленные рекламные ролики сгорят!</i></p>
+                <p><i>* Не забывайте каждый день открывать карточки - иначе накопленные награды сгорят!</i></p>
             </div>
             
             <!-- ✓ Галлерея с ежедневными наградами -->
@@ -197,7 +195,7 @@
         <div id="background"></div>
         <div id="scenery">
 
-            <!-- Нагорье -->
+            <!-- ✓ Нагорье -->
             <div id="scenery-stars" class="scenery-element">
                 <div id="scenery-stars-parallax"><img src="images/decorations/scenery_stars_parallax.png" alt="Город на заднем фоне (Просмотр с вершины)" /></div>
                 <div id="scenery-stars-scenery">
@@ -235,7 +233,7 @@
                 </div>
             </div>
             
-            <!-- Связка нагорья и дома -->
+            <!-- ✓ Связка нагорья и дома -->
             <div id="scenery-stars-postlayer" class="scenery-postlayer"><img src="images/decorations/scenery_stars_postlayer.png" alt="" /></div>
             
             <!-- Дом -->
@@ -245,6 +243,10 @@
                 <div id="scenery-home-scenery">
                     <img src="images/decorations/scenery_home.png" alt="Основное изображение приложения (если оно не прогрузилось - пользоваться приложением не получится)" />
                     <button id="scenery-home-button" class="scenery-button"></button>
+                    <div id="scenery-home-button-container"><div class="position-relative">
+                        <div class="position-relative"><button id="home-button-event" class="disabled">Учавствовать в событии</button></div>
+                        <p id="home-button-event-status-container"><span id="home-button-event-status-span">В данный момент нет активных событий, возвращайтесь позже</span></p>
+                    </div></div>
                     <div id="scenery-home-nika" class="scenery-nika stated"><img id="scenery-home-nika-img" src="images/nika/nika_home_classic.png" alt="Изображение Ники"/></div>
                 </div>
                 <div id="scenery-home-container" class="scenery-container">
@@ -436,12 +438,13 @@
                                 <input type="radio" name="update-sound" id="update-birth-sound" class="update-theme-input"/>
                             </div>
                         </div>
+                        <hr />
                     </div>
                     <button id="scenery-home-container-close" class="scenery-container-button-close">Закрыть</button>
                 </div>
             </div>
 
-            <!-- Связка дома и кошелька -->
+            <!-- ✓ Связка дома и кошелька -->
             <div id="scenery-home-postlayer" class="scenery-postlayer"><img src="images/decorations/scenery_home_postlayer.png" alt="" /></div>
 
             <!-- Кошелек -->
@@ -463,14 +466,14 @@
                                 <h2>Телеграмм-звезды</h2>
                                 <p>Вывести жетоны в самую распространенную валюту в телеграмме</p>
                             </div>
-                            <img src="animations/income-stars.gif" alt="Изображение телеграмм-звезды"/>
+                            <img src="images/ui/income-stars.png" alt="Изображение телеграмм-звезды"/>
                         </div>
                         <div id="income-button-gifts" class="income-button">
                             <div>
                                 <h2>NFT-подарки</h2>
                                 <p><b>(Рекомендуется)</b> Получить или подарить уникальный подарок за жетоны</p>
                             </div>
-                            <img src="animations/income-gift.gif" alt="Изображение телеграмм-подарка"/>
+                            <img src="images/ui/income-gifts.png" alt="Изображение телеграмм-подарка"/>
                         </div>
                         </div>
                     </div>

@@ -31,7 +31,7 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 /* ✓ Элементы среднего уровня параллакса*/
 #scenery-stars-scenery { z-index: 13; bottom: 0;}
 #scenery-home-prelayer { z-index: 8; top: 0;}
-#scenery-home-scenery { z-index: 12; bottom: 0;}
+#scenery-home-scenery { z-index: 12; bottom: 0; }
 #scenery-income-scenery { z-index: 11; bottom: 0;}
 #scenery-footer { z-index: 10; width: 100% !important; height: 100% !important; margin: -5px 0; padding: 0;}
 #scenery-footer img { width: 100% !important; height: 100% !important; margin: 0; padding: 0;}
@@ -49,21 +49,30 @@ body { z-index: 1; position: relative; display: block; align-items: center; just
 .scenery-container::-webkit-scrollbar, .panel_bottom::-webkit-scrollbar { display: none; }
 
 /* ========================================= Кнопки, переключатели, шкалы ========================================= */
-/* ✓ Кнопки просмотра рекламы (#scenery-stars и #daily)*/
-#scenery-button-ad, #daily-button-ad { z-index: 998; padding: 10px 20px; margin: 0; color: #2e0606; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; border: 0; border-radius: 25px; background-size: 150% auto; background-position: left center; background-image: linear-gradient(to right, #eb9b23 0%, #e5c319 50%, #eea928 100%); box-shadow: 0 5px 15px 0 rgba(246, 152, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; }
-#scenery-stars-button-container { position: absolute; left: 50%; top: -5%; transform: translateX(-50%); min-width: 45%; margin: 0; padding: 0; }
-#scenery-stars-button-container div { width: 100%; margin: 0; padding: 0; align-items: center; justify-content: center; }
-#scenery-button-ad { position: static !important; width: 100% !important; }
+/* ✓ Контейнеры кнопок просмотра рекламы и событий (#scenery-stars, #home и #daily)*/
+#scenery-stars-button-container, #scenery-home-button-container { position: absolute; margin: 0; padding: 0; }
+#scenery-stars-button-container { left: 50%; top: -5%; transform: translateX(-50%); min-width: 45%; }
+#scenery-home-button-container { left: 75%; top: 30%; margin-top: -15vh !important; transform: translateX(-50%); max-width: 40%; }
+#scenery-stars-button-container div, #scenery-home-button-container div { width: 100%; margin: 0; padding: 0; align-items: center; justify-content: center; }
+
+/* ✓ Кнопки просмотра рекламы и событий (#scenery-stars, #home и #daily)*/
+#scenery-button-ad, #daily-button-ad, #home-button-event { z-index: 998; padding: 10px 20px; margin: 0; color: #2e0606; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; border: 0; border-radius: 25px; background-size: 150% auto; background-position: left center; background-image: linear-gradient(to right, #eb9b23 0%, #e5c319 50%, #eea928 100%); box-shadow: 0 5px 15px 0 rgba(246, 152, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; }
+#scenery-button-ad { position: static !important; width: 100% !important; min-width: 70%;}
 #daily-button-ad { position: static; min-width: 70%; }
-#scenery-stars-button-container p { position: static; z-index: 998; width: 70%; min-width: 200px; margin: 5px auto !important; padding: 5px 10px; margin: 0;  text-align: center !important; color: #ffffff; font-family: 'StarfallVAGRounded-Regular'; font-size: 15px; background-color: rgba(0, 0, 0, 0.1); border-radius: 20px; filter: drop-shadow(0 0 10px rgba(0,0,0,1)); }
+#home-button-event { position: static; min-width: 35%; }
+#scenery-stars-button-container p, #scenery-home-button-container p { position: static; z-index: 998; margin: 5px auto !important; padding: 5px 10px; margin: 0; text-align: center !important; font-family: 'StarfallVAGRounded-Regular'; background-color: rgba(0, 0, 0, 0.1); border-radius: 20px; filter: drop-shadow(0 0 10px rgba(0,0,0,1)); }
+#scenery-stars-button-container p { min-width: 200px; width: 70%; font-size: 15px; color: #ffffff; }
+#scenery-home-button-container p { min-width: 150px; width: 70%; font-size: 15px; color: #bbbbbb; }
 
 /* ✓ Режимы наведения на кнопку прсомотра рекламы */
-#scenery-button-ad:hover, #daily-button-ad:hover { background-position: right center; box-shadow: 0 5px 40px 0 rgba(246, 136, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; padding: 12px 20px; cursor: pointer; }
-#scenery-button-ad:active, #daily-button-ad:active { background-position: left center; padding: 6px 20px; transition: background-position 0.5s ease, padding 0.5s ease, top 1s ease; }
-#scenery-button-ad.disabled, #daily-button-ad.disabled { color: #333; background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #cfcfcf 100%) !important; box-shadow: 0 5px 15px 0 rgba(102, 102, 102, 0.7) !important; }
-#scenery-button-ad.disabled:hover, #daily-button-ad.disabled:hover { box-shadow: 0 5px 40px 0 rgba(102, 102, 102, 0.7) !important; }
+#scenery-button-ad:hover, #daily-button-ad:hover, #home-button-event:hover { background-position: right center; box-shadow: 0 5px 40px 0 rgba(246, 136, 11, 0.7); transition: background-position 0.5s ease, box-shadow 0.5s ease, padding 0.5s ease, top 1s ease; padding: 12px 20px; cursor: pointer; }
+#scenery-button-ad:active, #daily-button-ad:active, #home-button-event:active { background-position: left center; padding: 6px 20px; transition: background-position 0.5s ease, padding 0.5s ease, top 1s ease; }
+#scenery-button-ad.disabled, #daily-button-ad.disabled, #home-button-event.disabled { color: #333; background-image: linear-gradient(to right, #e2e2e2 0%, #A5A5A5 50%, #cfcfcf 100%) !important; box-shadow: 0 5px 15px 0 rgba(102, 102, 102, 0.7) !important; }
+#scenery-button-ad.disabled:hover, #daily-button-ad.disabled:hover, #home-button-event.disabled:hover { box-shadow: 0 5px 40px 0 rgba(102, 102, 102, 0.7) !important; }
 #scenery-button-ad.starfall { color: #e2e2e2 !important; background-image: linear-gradient(to right, #803bc0 0%, #de19e5 50%, #1a25c4 100%) !important; box-shadow: 0 5px 15px 0 rgba(113, 32, 189, 0.7) !important; }
 #scenery-button-ad.starfall:hover { box-shadow: 0 5px 40px 0 rgba(189, 57, 250, 1) !important; }
+#daily-button-ad.complete { color: #e2e2e2 !important; background-image: linear-gradient(to right, #1b9e16 0%, #20e519 50%, #0eb345 100%) !important; box-shadow: 0 5px 15px 0 rgba(113, 32, 189, 0.7) !important; }
+#daily-button-ad.complete:hover { box-shadow: 0 5px 40px 0 rgb(27, 202, 42) !important; }
 
 /* ✓ Шкалы (Топливо и заряд генератора) */
 .bar { overflow: hidden; position: relative; display: inline-block; vertical-align: bottom; margin: 10px auto; width: 60px; height: 25vh; min-height: 200px; border-radius: 100px; background-color:rgba(0, 0, 0, 0.5); box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.5); }
@@ -91,9 +100,16 @@ input[type=radio]{} */
 
 /* Scenery home container */
 #scenery-container-inset-home { padding-right: 50px; }
-.home-button { background-color: rgba(0, 0, 0, 0.5); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); display: flex; border: 0; border-radius: 40px; width: 100%; min-height: 80px; margin: 0; margin-bottom: 20px; padding: 10px; text-align: left;}
+.home-button { background-color: rgba(0, 0, 0, 0.5); box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); display: flex; border: 0; border-radius: 40px; width: 100%; min-height: 80px; margin: 0 10px; margin-bottom: 20px; padding: 10px; text-align: left;}
 .home-button img { width: 80px !important; height: 80px !important; filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5)); margin: 0 15px !important; border-radius: 15px;}
 .home-button div { display: block !important; width: 70% !important; }
+
+/* Кнопки активации темы в home */
+.home-theme-button { width: 100%; padding: 5px; margin: 0 10px; border: 0; background-size: 150% auto; background-position: right center; background-image: linear-gradient(to left, #5f1212 0%, #830d0d 60%, #640f0c 100%); border-radius: 100px; box-shadow: 0 0 15px #000; font-family: 'FindSansPro-Light'; font-size: small; text-align: center; text-shadow: 0 0 10px #000; color: #E5E5E5; transition: background-position 0.5s ease, padding 0.5s ease; }
+.home-theme-button:hover { cursor: pointer; background-position: left center; padding: 7px; transition: background-position 0.5s ease, padding 0.5s ease; }
+.home-theme-button:active { cursor: pointer; background-position: right center; padding: 3px; transition: background-position 0.5s ease, padding 0.5s ease; }
+.home-theme-button.activated { background-image: linear-gradient(to bottom left, #0b5e12 0%, #24c41f 60%, #095a14 100%) !important; }
+.home-theme-button.activated { background-image: linear-gradient(to left, #0b5e12 0%, #24c41f 60%, #095a14 100%) !important; }
 
 /* Scenery income container */
 #scenery-income-container-main div { overflow: unset !important;}
@@ -103,16 +119,6 @@ input[type=radio]{} */
 .income-button div { position: absolute; left: 30px; width: 58%; text-align: left; }
 .income-button img { position: absolute !important; right: 15px !important; width: auto !important; height: 90% !important; filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));}
 #scenery-income-container-stars div img { height: 50% !important; width: auto !important;}
-
-/*#stars-bar-fuel-lasttime {
-    width: auto;
-    background-color: rgba(30, 30, 30, 0.75);
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 0 20px rgba(200, 200, 200, 0.25);
-    margin: 0;
-}*/
-
 
 /* ✓ Кнопка закрытия информационного окна */
 .scenery-container-button-close { position: absolute; bottom: 10px; left: 48%; transform: translateX(-50%); padding: 7px 30px; margin: 10px; border-radius: 10px; border: 0; box-shadow: inset 0 0 10px rgba(0, 0, 0, 1); color: #d1d1d1; background-color: rgba(0, 0, 0, 0.23); text-shadow: 0; text-align: center; font-family: 'FindSansPro-Regular'; font-size: large; transition: padding 0.5s ease, text-shadow 0.5s ease; }
@@ -165,9 +171,12 @@ input[type=radio]{} */
     z-index: 3 !important;
     opacity: 0.1 !important;
     transition: opacity 0.5s ease, z-index 0.5s ease;
+    pointer-events: none !important;
 }
 
-/* ✓ Описания и заголовки профиля */
+
+
+/* Описания и заголовки профиля */
 
 /* Кнопки профиля */
 .profile-details {
